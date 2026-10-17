@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>html,body{margin:0;padding:0}</style>
+<title>Tokyo Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<style>
+  /* Layout: one reading column sized for a phone, styled like Tokyo station signage.
+     Line colors are the real signage colors and appear only where a line is meant. */
+  :root {
+    --bg: #f4f6f5;
+    --surface: #ffffff;
+    --ink: #17201d;
+    --muted: #55625d;
+    --rule: #d6dedb;
+    --accent: #0a7f73;
+    --sign: #1c2a26;
+    --sign-ink: #f4f6f5;
+    --badge-bg: #ffffff;
+    --map-loop: #8cc63f;
+    --home: #d9480f;
+
+    --yamanote: #8cc63f;
+    --namboku: #00ac9b;
+    --mita: #0079c2;
+    --ginza: #f39700;
+    --asakusa: #e85298;
+    --oedo: #b6007a;
+
+    --display: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+    --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #111715; --surface: #18201d; --ink: #e5ece9; --muted: #9daaa5; --rule: #2c3833;
+      --accent: #3cc4b4; --sign: #e5ece9; --sign-ink: #111715; --badge-bg: #111715;
+      --map-loop: #8cc63f; --home: #ff7a45; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #111715; --surface: #18201d; --ink: #e5ece9; --muted: #9daaa5; --rule: #2c3833;
+    --accent: #3cc4b4; --sign: #e5ece9; --sign-ink: #111715; --badge-bg: #111715;
+    --map-loop: #8cc63f; --home: #ff7a45; color-scheme: dark;
+  }
+
+  body { background: var(--bg); color: var(--ink); font: 17px/1.55 var(--body); }
+  .wrap { max-width: 40rem; margin: 0 auto; padding-inline: 18px; padding-block: 0 3rem; }
+
+  header.masthead { padding-block: 1.75rem 1.25rem; display: grid; gap: .6rem; }
+  .eyebrow { font: 600 .72rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  h1 { font: 900 clamp(2.2rem, 9vw, 3.1rem)/1.02 var(--display); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+  h1 .ja { display: block; font-size: .42em; font-weight: 700; color: var(--muted); letter-spacing: .08em; margin-top: .35rem; }
+  .lede { margin: 0; color: var(--muted); max-width: 34rem; }
+
+  nav.jump { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg);
+    border-block: 1px solid var(--rule); margin-inline: -18px; padding: .55rem 18px; overflow-x: auto; }
+  nav.jump ul { list-style: none; margin: 0; padding: 0; display: flex; gap: .45rem; white-space: nowrap; }
+  nav.jump a { display: inline-block; font: 600 .8rem/1 var(--mono); color: var(--ink); text-decoration: none;
+    border: 1px solid var(--rule); border-radius: 999px; padding: .5rem .8rem; background: var(--surface); }
+  nav.jump a:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  section { padding-block: 1.9rem .4rem; scroll-margin-top: 3.6rem; }
+  h2 { display: flex; align-items: center; gap: .6rem; font: 700 1.45rem/1.2 var(--display); margin: 0 0 .9rem; text-wrap: balance; }
+  h2 .plate { font: 600 .7rem/1 var(--mono); letter-spacing: .1em; background: var(--sign); color: var(--sign-ink);
+    padding: .38rem .5rem; border-radius: 4px; flex: none; }
+  h3 { font: 700 1.05rem/1.3 var(--display); margin: 1.4rem 0 .5rem; }
+  p { margin: 0 0 .85rem; }
+  a { color: var(--accent); }
+
+  ul.points { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
+  ul.points li { padding-left: 1rem; position: relative; }
+  ul.points li::before { content: ""; position: absolute; left: 0; top: .62em; width: .42rem; height: .42rem;
+    border-radius: 50%; background: var(--line, var(--muted)); }
+  ul.points b { font-weight: 700; }
+
+  figure.map { margin: 0 0 1rem; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: .75rem .5rem .5rem; }
+  figure.map svg { display: block; width: 100%; height: auto; }
+  figure.map figcaption { font-size: .82rem; color: var(--muted); padding: .35rem .5rem 0; }
+  .svg-label { font: 600 12px var(--body); fill: var(--ink); }
+  .svg-muted { font: italic 11px var(--body); fill: var(--muted); }
+  .svg-home { font: 700 12px var(--body); fill: var(--home); }
+
+  figure.map .ring { fill: none; stroke: var(--rule); stroke-width: 1; }
+  figure.map .ring-label { font: italic 10px var(--body); fill: var(--muted); }
+  figure.map .stn { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+  figure.map .stn-label { font: 600 10.5px var(--body); fill: var(--ink); }
+  figure.map .dot { stroke: var(--surface); stroke-width: 1; }
+  figure.map .dot.sushi { fill: var(--mita); }
+  figure.map .dot.beef { fill: var(--home); }
+  figure.map .dot.pot { fill: var(--oedo); }
+  figure.map .dot.tori { fill: var(--ginza); }
+  figure.map .dot.set, figure.map .dot.dest { fill: var(--accent); }
+  figure.map .eat-label { font: 10px var(--body); fill: var(--ink); }
+  figure.map .num { font: 700 8px var(--body); fill: #fff; }
+  figure.map .key-label { font: 9.5px var(--body); fill: var(--ink); }
+  figure.map .home { fill: var(--home); }
+  figure.map .home-label { font: 700 11px var(--body); fill: var(--home); }
+  figure.map .off-label { font: italic 9.5px var(--body); fill: var(--muted); }
+  .map-key { display: flex; flex-wrap: wrap; gap: .35rem .9rem; font-size: .82rem; color: var(--muted); padding: .4rem .5rem 0; }
+  .map-key span::before { content: ""; display: inline-block; width: .6rem; height: .6rem; border-radius: 50%; margin-right: .35rem; background: var(--k); vertical-align: -.05em; }
+
+  .stn { display: inline-flex; align-items: center; gap: .15rem; font: 600 .78rem/1 var(--mono);
+    border: 2.5px solid var(--line); border-radius: 999px; padding: .18rem .42rem; background: var(--badge-bg);
+    color: var(--ink); vertical-align: .08em; white-space: nowrap; }
+  .stn b { color: var(--line); font-weight: 700; }
+
+  .lines { display: grid; gap: .6rem; margin: .4rem 0 1rem; }
+  .line-row { display: grid; grid-template-columns: .45rem 1fr; gap: .75rem; align-items: stretch; }
+  .line-row .bar { background: var(--line); border-radius: 3px; }
+  .line-row div:last-child { min-width: 0; }
+  .line-row strong { font-family: var(--display); }
+
+  table.trips { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  .table-scroll { overflow-x: auto; margin: 0 0 1rem; }
+  table.trips th, table.trips td { text-align: left; padding: .55rem .5rem .55rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  table.trips th { font: 600 .72rem/1.2 var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  table.trips td.t { font-variant-numeric: tabular-nums; white-space: nowrap; font-family: var(--mono); font-size: .85rem; }
+
+  .budget { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); gap: .6rem; margin: .4rem 0 1.2rem; }
+  .budget div { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: .7rem .85rem; }
+  .budget .yen { font: 600 1.25rem/1.1 var(--mono); display: block; margin-bottom: .2rem; }
+  .budget span:last-child { font-size: .85rem; color: var(--muted); }
+  ul.eats { list-style: none; margin: 0 0 .6rem; padding: 0; display: grid; gap: .55rem; }
+  ul.eats li { display: grid; grid-template-columns: 3.1rem 1fr; gap: .6rem; align-items: baseline; min-width: 0; }
+  ul.eats .score { font: 600 .85rem/1.5 var(--mono); color: var(--accent); white-space: nowrap; }
+  ul.eats .score.hi { color: var(--home); }
+  ul.eats .who { min-width: 0; }
+  ul.eats .who a { color: var(--ink); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--rule); }
+  ul.eats .meta { display: block; font-size: .88rem; color: var(--muted); }
+  .pick { font: 600 .7rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--home); margin-left: .35rem; }
+
+  .callout { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--home); border-radius: 6px; padding: .85rem 1rem; margin: 1rem 0; }
+  .callout p:last-child { margin: 0; }
+
+  .phones { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .6rem; margin: .5rem 0 1rem; }
+  .phone { background: var(--sign); color: var(--sign-ink); border-radius: 8px; padding: .75rem .9rem; }
+  .phone .num { font: 600 1.6rem/1 var(--mono); display: block; }
+  .phone span:last-child { font-size: .85rem; }
+
+  footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .85rem; }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .tool, .chips button { font: 600 .78rem/1 var(--mono); color: var(--ink); background: var(--surface);
+    border: 1px solid var(--rule); border-radius: 999px; padding: .5rem .8rem; cursor: pointer; text-decoration: none; }
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: 0 0 .6rem; }
+  .chips .lab { font: 600 .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: .2rem; }
+  .chips button[aria-pressed="true"] { background: var(--sign); color: var(--sign-ink); border-color: var(--sign); }
+  .count { font-size: .85rem; color: var(--muted); margin: .2rem 0 1rem; }
+  ul.eats li[hidden], .group[hidden] { display: none; }
+  ul.eats .meta a { color: var(--accent); font-weight: 400; border: 0; }
+  figure.map a { cursor: pointer; }
+  figure.map a:hover .eat-label, figure.map a:focus .eat-label { fill: var(--accent); text-decoration: underline; }
+  figure.map a:focus { outline: none; }
+  figure.map .dot.fash { fill: var(--mita); }
+  figure.map .dot.craft { fill: var(--home); }
+  figure.map .dot.geek { fill: var(--oedo); }
+  figure.map .dot.vint { fill: var(--ginza); }
+  figure.map .dot.near, figure.map .dot.garden { fill: var(--accent); }
+  figure.map .dot.modern { fill: var(--mita); }
+  figure.map .dot.classic { fill: var(--home); }
+  figure.map .dot.digital { fill: var(--oedo); }
+  table.trips td.c { white-space: nowrap; }
+  .museum-list b a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .pill { display: inline-block; font: 600 .68rem/1 var(--mono); letter-spacing: .04em; color: var(--home); border: 1px solid var(--home); border-radius: 999px; padding: .2rem .45rem; margin: 0 .2rem; vertical-align: .1em; white-space: nowrap; }
+  .phones .phone .num.small { font-size: .92rem; line-height: 1.3; letter-spacing: -.01em; }
+  figure.map .lead { stroke: var(--muted); stroke-width: .7; opacity: .7; }
+  table.trips td a { color: var(--ink); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .shops { display: grid; gap: .8rem; margin: .4rem 0 1.2rem; }
+  .shops > div { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--k, var(--rule)); border-radius: 8px; padding: .8rem .95rem; }
+  .shops h4 { margin: 0 0 .3rem; font: 700 1rem/1.3 var(--display); }
+  .shops p { margin: 0; font-size: .95rem; }
+  .shops .go { display: flex; flex-wrap: wrap; gap: .3rem .8rem; font: 600 .74rem/1.4 var(--mono); color: var(--muted); margin-top: .5rem; }
+  .shops .go a { color: var(--accent); text-decoration: none; }
+
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  @media print {
+    nav.jump, .chips, .toolbar, .count { display: none; }
+    ul.eats li[hidden] { display: grid; }
+    .group[hidden] { display: block; }
+    body { font-size: 11.5pt; }
+    section { break-inside: auto; padding-block: 1rem .2rem; }
+    h2, h3, figure.map, .line-row, .callout, table.trips tr { break-inside: avoid; }
+    h2 { break-after: avoid; }
+  }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <span class="eyebrow">October 2026 · base in Shirokane, Minato</span>
+    <h1>Tokyo Field Guide<span class="ja">東京 · 初めての方へ</span></h1>
+    <p class="lede">The layout of the city, your corner of it, day trips, museums and sculpture, amusement parks, where to eat and shop, the days with older relatives, and the mistakes first-timers make.</p>
+    <div class="toolbar"><button class="tool" id="theme" type="button" aria-pressed="false">Dark mode</button></div>
+  </header>
+
+  <nav class="jump" aria-label="Sections">
+    <ul>
+      <li><a href="#shape">The loop</a></li>
+      <li><a href="#base">Your base</a></li>
+      <li><a href="#trips">Day trips</a></li>
+      <li><a href="#museums">Museums</a></li>
+      <li><a href="#parks">Parks</a></li>
+      <li><a href="#shop">Shopping</a></li>
+      <li><a href="#moving">Getting around</a></li>
+      <li><a href="#booking">Hours &amp; booking</a></li>
+      <li><a href="#eat">Where to eat</a></li>
+      <li><a href="#food">Dining rules</a></li>
+      <li><a href="#relatives">Relatives</a></li>
+      <li><a href="#manners">Manners</a></li>
+      <li><a href="#help">Help</a></li>
+    </ul>
+  </nav>
+
+  <section id="shape">
+    <h2><span class="plate">JY</span>The shape of the city</h2>
+    <p>Tokyo looks endless on a map. Almost everything a visitor wants sits on or near one rail loop, the JR Yamanote line. It has about 30 stations and takes roughly an hour to go all the way around.</p>
+
+    <figure class="map">
+      <svg viewBox="0 0 420 320" role="img" aria-labelledby="map-title map-desc">
+        <title id="map-title">Schematic map of the Yamanote loop</title>
+        <desc id="map-desc">The green loop with major stations around it. Asakusa and Skytree sit outside to the northeast, Toyosu and Odaiba on the bay to the southeast. Your base in Shirokane is inside the loop near its southern edge.</desc>
+        <path d="M352 205 Q392 250 420 262 L420 320 L300 320 Q330 290 352 205 Z" fill="var(--rule)" opacity=".55"/>
+        <text x="408" y="312" text-anchor="end" class="svg-muted">Tokyo Bay</text>
+        <ellipse cx="245" cy="149" rx="20" ry="15" fill="var(--map-loop)" opacity=".25"/>
+        <ellipse cx="190" cy="160" rx="112" ry="128" fill="none" stroke="var(--map-loop)" stroke-width="7"/>
+        <g fill="var(--surface)" stroke="var(--ink)" stroke-width="2">
+          <circle cx="115" cy="65" r="5"/><circle cx="243" cy="47" r="5"/><circle cx="273" cy="74" r="5"/>
+          <circle cx="297" cy="120" r="5"/><circle cx="302" cy="171" r="6"/><circle cx="289" cy="220" r="5"/>
+          <circle cx="228" cy="280" r="6"/><circle cx="143" cy="276" r="5"/><circle cx="97" cy="232" r="6"/>
+          <circle cx="83" cy="200" r="5"/><circle cx="78" cy="156" r="6"/>
+        </g>
+        <g class="svg-label">
+          <text x="106" y="58" text-anchor="end">Ikebukuro</text>
+          <text x="249" y="39">Nippori</text>
+          <text x="284" y="70">Ueno</text>
+          <text x="310" y="124">Akihabara</text>
+          <text x="316" y="176">Tokyo</text>
+          <text x="301" y="234">Shimbashi</text>
+          <text x="236" y="300">Shinagawa</text>
+          <text x="137" y="296" text-anchor="end">Meguro</text>
+          <text x="86" y="246" text-anchor="end">Shibuya</text>
+          <text x="70" y="208" text-anchor="end">Harajuku</text>
+          <text x="64" y="160" text-anchor="end">Shinjuku</text>
+        </g>
+        <g fill="var(--muted)">
+          <circle cx="328" cy="62" r="4"/><circle cx="372" cy="80" r="4"/>
+          <circle cx="350" cy="250" r="4"/><circle cx="322" cy="284" r="4"/>
+          <circle cx="180" cy="213" r="3.5"/><circle cx="273" cy="198" r="3.5"/>
+        </g>
+        <g class="svg-label">
+          <text x="336" y="66">Asakusa</text>
+          <text x="372" y="97" text-anchor="middle">Skytree</text>
+          <text x="358" y="254">Toyosu</text>
+          <text x="330" y="288">Odaiba</text>
+          <text x="172" y="210" text-anchor="end">Roppongi</text>
+          <text x="266" y="202" text-anchor="end">Ginza</text>
+        </g>
+        <text x="245" y="139" text-anchor="middle" class="svg-muted">Imperial Palace</text>
+        <path d="M196 241 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" fill="var(--home)"/>
+        <text x="206" y="250" class="svg-home">Your base</text>
+      </svg>
+      <figcaption>Schematic, not to scale. North is up.</figcaption>
+    </figure>
+
+    <ul class="points">
+      <li style="--line: var(--yamanote)"><b>West side.</b> Shinjuku has skyscrapers, nightlife and Shinjuku Gyoen garden. Shibuya has the famous crossing and youth shopping. Harajuku, Omotesando and Meiji Shrine sit between them.</li>
+      <li style="--line: var(--yamanote)"><b>East side.</b> Tokyo Station, Marunouchi and Ginza surround the Imperial Palace. Akihabara is just north. Ueno is the museum district, with Tokyo National Museum, the zoo and the park.</li>
+      <li style="--line: var(--asakusa)"><b>Old Tokyo, east of the loop.</b> Asakusa and Sensō-ji temple, with Skytree across the river.</li>
+      <li style="--line: var(--accent)"><b>The bay, southeast.</b> Toyosu has teamLab Planets and the fish market. Tsukiji's outer market is the better place to eat. Odaiba is a short ride from either.</li>
+      <li><b>"Tokyo" is 23 city wards plus suburbs and islands.</b> Very little of what you came for is outside the wards, apart from day trips.</li>
+    </ul>
+  </section>
+
+  <section id="base">
+    <h2><span class="plate">N03</span>Your corner: Shirokane</h2>
+    <p>Shirokane is quiet, upscale and residential, in the southern middle of Minato ward. Expect few tourists, good restaurants and calm evenings. Your station is Shirokane-takanawa <span class="stn" style="--line: var(--namboku)"><b>N</b>03</span> <span class="stn" style="--line: var(--mita)"><b>I</b>03</span>, about a 7-minute walk.</p>
+
+    <div class="lines">
+      <div class="line-row" style="--line: var(--namboku)"><span class="bar"></span><div><strong>Namboku line</strong>. North to Azabu-Juban <span class="stn"><b>N</b>04</span>, Roppongi-itchome <span class="stn"><b>N</b>05</span> and Tameike-sanno <span class="stn"><b>N</b>06</span>, where you change to the Ginza line for Ginza or Asakusa.</div></div>
+      <div class="line-row" style="--line: var(--mita)"><span class="bar"></span><div><strong>Mita line</strong>. North to Mita <span class="stn"><b>I</b>04</span> for the Asakusa line and the airport train, then on to Otemachi <span class="stn"><b>I</b>09</span> and Jimbocho <span class="stn"><b>I</b>10</span>.</div></div>
+      <div class="line-row" style="--line: var(--oedo)"><span class="bar"></span><div><strong>Ōedo line</strong> at Azabu-Juban, one stop north. It loops through Roppongi, Shinjuku and Tsukiji.</div></div>
+    </div>
+
+    <figure class="map">
+<svg viewBox="0 0 440 480" role="img" aria-labelledby="time-title time-desc">
+<title id="time-title">How far things are from the base, in minutes</title>
+<desc id="time-desc">Destinations arranged by compass direction, with distance from the centre showing typical door-to-door travel time by train. Rings at 15, 30, 60, 120 and 180 minutes. Each dot links to a live route search.</desc>
+<circle cx="220.0" cy="244.0" r="46" class="ring"/>
+<text x="224" y="209" class="ring-label">15 min</text>
+<circle cx="220.0" cy="244.0" r="86" class="ring"/>
+<text x="224" y="169" class="ring-label">30 min</text>
+<circle cx="220.0" cy="244.0" r="126" class="ring"/>
+<text x="224" y="129" class="ring-label">60 min</text>
+<circle cx="220.0" cy="244.0" r="162" class="ring"/>
+<text x="224" y="93" class="ring-label">120 min</text>
+<circle cx="220.0" cy="244.0" r="192" class="ring"/>
+<text x="224" y="63" class="ring-label">180 min</text>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E6%AD%A6%E6%97%A5%E5%85%89" target="_blank" rel="noopener" aria-label="Live route to Nikko"><circle cx="220" cy="62" r="3.5" class="dot dest"/><text x="220" y="55" class="eat-label" text-anchor="middle">Nikko · 160</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Ueno"><circle cx="233" cy="152" r="3.5" class="dot dest"/><text x="234" y="145" class="eat-label" text-anchor="middle">Ueno · 35</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A7%8B%E8%91%89%E5%8E%9F" target="_blank" rel="noopener" aria-label="Live route to Akihabara"><circle cx="272" cy="167" r="3.5" class="dot dest"/><text x="277" y="164" class="eat-label" text-anchor="start">Akihabara · 35</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B5%85%E8%8D%89" target="_blank" rel="noopener" aria-label="Live route to Asakusa"><circle cx="282" cy="184" r="3.5" class="dot dest"/><text x="288" y="182" class="eat-label" text-anchor="start">Asakusa · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A9%BA%E6%B8%AF%E7%AC%AC%EF%BC%92%E3%83%93%E3%83%AB" target="_blank" rel="noopener" aria-label="Live route to Narita Airport"><circle cx="352" cy="161" r="3.5" class="dot dest"/><text x="360" y="161" class="eat-label" text-anchor="start">Narita Airport · 110</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener" aria-label="Live route to Tokyo Station"><circle cx="285" cy="212" r="3.5" class="dot dest"/><text x="293" y="212" class="eat-label" text-anchor="start">Tokyo Station · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8A%80%E5%BA%A7" target="_blank" rel="noopener" aria-label="Live route to Ginza"><circle cx="292" cy="231" r="3.5" class="dot dest"/><text x="300" y="234" class="eat-label" text-anchor="start">Ginza · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AF%89%E5%9C%B0" target="_blank" rel="noopener" aria-label="Live route to Tsukiji"><circle cx="292" cy="252" r="3.5" class="dot dest"/><text x="301" y="257" class="eat-label" text-anchor="start">Tsukiji · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%88%9E%E6%B5%9C" target="_blank" rel="noopener" aria-label="Live route to Disney Resort"><circle cx="336" cy="273" r="3.5" class="dot dest"/><text x="345" y="279" class="eat-label" text-anchor="start">Disney Resort · 55</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E8%B1%8A%E6%B4%B2" target="_blank" rel="noopener" aria-label="Live route to Toyosu / teamLab"><circle cx="315" cy="290" r="3.5" class="dot dest"/><text x="323" y="298" class="eat-label" text-anchor="start">Toyosu / teamLab · 45</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8F%B0%E5%A0%B4" target="_blank" rel="noopener" aria-label="Live route to Odaiba"><circle cx="299" cy="315" r="3.5" class="dot dest"/><text x="305" y="325" class="eat-label" text-anchor="start">Odaiba · 45</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%BE%BD%E7%94%B0%E7%A9%BA%E6%B8%AF%E7%AC%AC%EF%BC%93%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB" target="_blank" rel="noopener" aria-label="Live route to Haneda Airport"><circle cx="257" cy="336" r="3.5" class="dot dest"/><text x="261" y="348" class="eat-label" text-anchor="start">Haneda Airport · 40</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%93%81%E5%B7%9D" target="_blank" rel="noopener" aria-label="Live route to Shinagawa"><circle cx="228" cy="289" r="3.5" class="dot dest"/><text x="230" y="302" class="eat-label" text-anchor="middle">Shinagawa · 15</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8E%8C%E5%80%89" target="_blank" rel="noopener" aria-label="Live route to Kamakura"><circle cx="183" cy="374" r="3.5" class="dot dest"/><text x="180" y="386" class="eat-label" text-anchor="end">Kamakura · 75</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%9B%AE%E9%BB%92" target="_blank" rel="noopener" aria-label="Live route to Meguro"><circle cx="195" cy="271" r="3.5" class="dot dest"/><text x="189" y="282" class="eat-label" text-anchor="end">Meguro · 12</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AE%B1%E6%A0%B9%E6%B9%AF%E6%9C%AC" target="_blank" rel="noopener" aria-label="Live route to Hakone"><circle cx="70" cy="305" r="3.5" class="dot dest"/><text x="61" y="312" class="eat-label" text-anchor="end">Hakone · 120</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%BA%83%E5%B0%BE" target="_blank" rel="noopener" aria-label="Live route to Hiroo"><circle cx="166" cy="248" r="3.5" class="dot dest"/><text x="157" y="252" class="eat-label" text-anchor="end">Hiroo · 18</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B8%8B%E8%B0%B7" target="_blank" rel="noopener" aria-label="Live route to Shibuya"><circle cx="149" cy="226" r="3.5" class="dot dest"/><text x="141" y="228" class="eat-label" text-anchor="end">Shibuya · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8E%9F%E5%AE%BF" target="_blank" rel="noopener" aria-label="Live route to Harajuku"><circle cx="146" cy="201" r="3.5" class="dot dest"/><text x="138" y="200" class="eat-label" text-anchor="end">Harajuku · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E5%AE%BF" target="_blank" rel="noopener" aria-label="Live route to Shinjuku"><circle cx="167" cy="176" r="3.5" class="dot dest"/><text x="162" y="173" class="eat-label" text-anchor="end">Shinjuku · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8" target="_blank" rel="noopener" aria-label="Live route to Roppongi"><circle cx="207" cy="200" r="3.5" class="dot dest"/><text x="205" y="195" class="eat-label" text-anchor="end">Roppongi · 15</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%BA%BB%E5%B8%83%E5%8D%81%E7%95%AA" target="_blank" rel="noopener" aria-label="Live route to Azabu-Juban"><circle cx="235" cy="210" r="3.5" class="dot dest"/><text x="239" y="206" class="eat-label" text-anchor="start">Azabu-Juban · 12</text></a>
+<path d="M220 235 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
+<text x="8" y="14" class="ring-label">N ↑ · numbers are minutes · tap a dot for a live route</text>
+</svg>
+      <figcaption>Door-to-door minutes from the Airbnb by train, laid out by compass direction. Typical daytime times from route lookups and general knowledge. Tap any dot for a live route from Shirokane-takanawa in Yahoo Transit.</figcaption>
+    </figure>
+
+    <h3>Easy outings nearby</h3>
+    <ul class="points">
+      <li><b>Azabu-Juban shopping street.</b> Old-fashioned shops, sweets and cafés, mostly flat.</li>
+      <li><b>Tokyo Metropolitan Teien Art Museum.</b> An Art Deco mansion with gardens, near Shirokanedai. Good with older relatives.</li>
+      <li><b>Roppongi Hills.</b> Louise Bourgeois's giant spider sculpture <i>Maman</i> stands outside, and the Mori Art Museum is upstairs.</li>
+    </ul>
+  </section>
+
+  <section id="trips">
+    <h2><span class="plate">OH</span>Day trips for your interests</h2>
+    <p>Each name opens a live route. Sample trains below were read from Yahoo Transit on 18 October for Wednesday 21 October; the pattern holds on other days but check the day before. Late October is leaf season, so the first train out beats the crowds everywhere on this list.</p>
+    <div class="shops">
+      <div style="--k: var(--accent)"><h4>Hakone, for the sculpture park and hot springs</h4>
+        <p><b>Getting there.</b> The Odakyu Romancecar runs from Shinjuku to Hakone-Yumoto in about 75 to 85 minutes, all reserved seats, roughly two an hour from early morning. Book the seat on Odakyu's e-Romancecar site or at the Shinjuku counter the day before; the seat charge is on top of the fare. Shinjuku is 30 minutes from the Airbnb, so leaving home at 7:00 gets you into Hakone before 9:30.</p>
+        <p><b>The loop.</b> Buy the two-day Hakone Freepass at Shinjuku (about ¥7,100, confirm) and it covers everything after the Romancecar: the Tozan mountain railway with its switchbacks, the cable car, the ropeway over Owakudani's sulphur vents, the pirate ship across Lake Ashi and the buses back. <b>The Hakone Open-Air Museum</b> is at Chokoku-no-Mori station on the Tozan line, open 9:00 to 17:00 every day, about ¥2,000 or a little less online, with the Picasso pavilion, a Henry Moore field and a hot-spring foot bath among the sculptures. Do it first, before the loop fills up, and allow two hours. Fuji shows from the ropeway and the lake on a clear morning.</p>
+        <p><b>Back.</b> Reserve the return Romancecar when you book the outbound; the last ones leave in the evening and fill on weekends. If you miss it, the Tozan train to Odawara and a Shinkansen or local JR train still gets you to Shinjuku, with a sample last connection at 22:21 from Hakone-Yumoto.</p>
+        <span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AE%B1%E6%A0%B9%E6%B9%AF%E6%9C%AC" target="_blank" rel="noopener">Shinjuku to Hakone-Yumoto</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E5%AE%BF" target="_blank" rel="noopener">Home to Shinjuku · 30 min</a></span></div>
+      <div style="--k: var(--accent)"><h4>Nikko, for the national park and the shrines</h4>
+        <p><b>Getting there.</b> Tobu limited expresses leave Asakusa for Tobu-Nikko in just under two hours, all reserved; the sample 8:30 Revaty on 21 October arrives 10:23 with one platform change at Shimo-Imaichi. Book on Tobu's site; the newer Spacia X sells out first. From the Airbnb, Mita line to Mita and the Asakusa line straight to Asakusa is about 35 minutes with one change, so a 7:40 start works.</p>
+        <p><b>The day.</b> Toshogu shrine, Rinnoji temple and the red Shinkyo bridge are a short bus ride from the station and make a full day on their own. Toshogu has long flights of stone steps; the 200-plus to Ieyasu's tomb are optional. The World Heritage Area bus pass sold at the station covers the loop. Lake Chuzenji and Kegon Falls are higher up the Irohazaka hairpin road, which gridlocks in leaf season; in late October go up only if you're on the first buses, or save it.</p>
+        <p><b>Back.</b> Book the return express too. Last trains out of Tobu-Nikko are around 21:00 and the JR alternative via Utsunomiya runs a little later; the sample 20:57 departure reaches Asakusa at 23:54.</p>
+        <span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E6%AD%A6%E6%97%A5%E5%85%89" target="_blank" rel="noopener">Asakusa to Tobu-Nikko</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B5%85%E8%8D%89" target="_blank" rel="noopener">Home to Asakusa · 35 min</a></span></div>
+      <div style="--k: var(--accent)"><h4>Kamakura, the easy one</h4>
+        <p>JR from Shinagawa to Kamakura is about 45 minutes with a change at Yokohama or Ofuna, Suica only, no booking. Get off one stop early at Kita-Kamakura for Engaku-ji, walk 20 minutes to Kencho-ji and on to Tsurugaoka Hachimangu, lunch on Komachi-dori, then the little Enoden tram to Hase for the Great Buddha and Hasedera's hillside garden. The Buddha is flat and easy; Hasedera has steps. The Enoden continues to Enoshima island if there's time and light. Shinagawa is about 20 minutes from the Airbnb.</p>
+        <span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8E%8C%E5%80%89" target="_blank" rel="noopener">Shinagawa to Kamakura</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%93%81%E5%B7%9D" target="_blank" rel="noopener">Home to Shinagawa · 20 min</a></span></div>
+      <div style="--k: var(--accent)"><h4>Kawaguchiko, for Fuji</h4>
+        <p>Two ways from Shinjuku: the Fuji Excursion limited express straight to Kawaguchiko in about two hours, reserved and only a few a day, or the highway bus from Busta Shinjuku, also about two hours and cheaper, booked online. The sample 8:00 bus on 21 October arrives 10:07. Fuji is clearest early and often gone behind cloud by noon, so this is a first-departure day and a gamble; Hakone's lake and ropeway show the mountain too, with more to do if it hides. At the lake: the Chureito pagoda view, the loop bus, the Kachi Kachi ropeway.</p>
+        <span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B2%B3%E5%8F%A3%E6%B9%96" target="_blank" rel="noopener">Shinjuku to Kawaguchiko</a></span></div>
+    </div>
+    <p>Tokyo Disney Resort is under <a href="#parks">Amusement parks</a>. Without leaving the city, the National Museum of Western Art in Ueno has major Rodin bronzes in its front courtyard; see <a href="#museums">Museums</a>.</p>
+  </section>
+
+  <section id="museums">
+    <h2><span class="plate">美</span>Museums and sculpture</h2>
+    <p>The trap is the closed day. Most museums close on Monday, the Roppongi contemporary ones close on Tuesday instead, and a few close between exhibitions. On this trip the Mondays are 19 and 26 October and the Tuesdays are 20 and 27. Minutes are door-to-door from the Airbnb; tap a name for a live route.</p>
+
+    <figure class="map">
+<svg viewBox="0 0 440 430" role="img" aria-labelledby="mus-title mus-desc">
+<title id="mus-title">Museums by travel time from the base</title>
+<desc id="mus-desc">Museums arranged by compass direction, with distance from the centre showing door-to-door minutes by train. Rings at 15, 30, 60 and 120 minutes. Colour shows the kind of museum. Each dot links to a live route search.</desc>
+<circle cx="220.0" cy="221.0" r="50" class="ring"/>
+<text x="224" y="182" class="ring-label">15 min</text>
+<circle cx="220.0" cy="221.0" r="100" class="ring"/>
+<text x="224" y="132" class="ring-label">30 min</text>
+<circle cx="220.0" cy="221.0" r="150" class="ring"/>
+<text x="224" y="82" class="ring-label">60 min</text>
+<circle cx="220.0" cy="221.0" r="192" class="ring"/>
+<text x="224" y="40" class="ring-label">120 min</text>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%99%BD%E9%87%91%E5%8F%B0" target="_blank" rel="noopener" aria-label="Live route to Teien Art Museum"><circle cx="206" cy="259" r="4" class="dot garden"/><text x="213" y="263" class="eat-label" text-anchor="start">Teien Art Museum · 12</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8%E4%B8%80%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener" aria-label="Live route to Mori Art Museum / Maman"><circle cx="212" cy="162" r="4" class="dot modern"/><text x="219" y="166" class="eat-label" text-anchor="start">Mori Art Museum / Maman · 18</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8%E4%B8%80%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener" aria-label="Live route to teamLab Borderless"><line x1="233" y1="149" x2="238" y2="194" class="lead"/><circle cx="233" cy="149" r="4" class="dot digital"/><text x="240" y="197" class="eat-label" text-anchor="start">teamLab Borderless · 22</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B9%83%E6%9C%A8%E5%9D%82" target="_blank" rel="noopener" aria-label="Live route to 21_21 Design Sight"><line x1="183" y1="128" x2="178" y2="173" class="lead"/><circle cx="183" cy="128" r="4" class="dot modern"/><text x="176" y="176" class="eat-label" text-anchor="end">21_21 Design Sight · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B9%83%E6%9C%A8%E5%9D%82" target="_blank" rel="noopener" aria-label="Live route to National Art Center"><circle cx="162" cy="135" r="4" class="dot modern"/><text x="155" y="139" class="eat-label" text-anchor="end">National Art Center · 32</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%A1%A8%E5%8F%82%E9%81%93" target="_blank" rel="noopener" aria-label="Live route to Nezu Museum"><circle cx="139" cy="157" r="4" class="dot garden"/><text x="132" y="161" class="eat-label" text-anchor="end">Nezu Museum · 32</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%89%9B%E8%BE%BC%E6%9F%B3%E7%94%BA" target="_blank" rel="noopener" aria-label="Live route to Kusama Museum"><circle cx="188" cy="100" r="4" class="dot modern"/><text x="181" y="104" class="eat-label" text-anchor="end">Kusama Museum · 45</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Tokyo National Museum"><circle cx="254" cy="101" r="4" class="dot classic"/><text x="261" y="105" class="eat-label" text-anchor="start">Tokyo National Museum · 45</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Western Art (Rodin)"><circle cx="273" cy="113" r="4" class="dot classic"/><text x="266" y="117" class="eat-label" text-anchor="end">Western Art (Rodin) · 42</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener" aria-label="Live route to Artizon Museum"><circle cx="309" cy="146" r="4" class="dot classic"/><text x="316" y="150" class="eat-label" text-anchor="start">Artizon Museum · 40</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E8%B1%8A%E6%B4%B2" target="_blank" rel="noopener" aria-label="Live route to teamLab Planets"><circle cx="347" cy="272" r="4" class="dot digital"/><text x="340" y="276" class="eat-label" text-anchor="end">teamLab Planets · 52</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AE%B1%E6%A0%B9%E6%B9%AF%E6%9C%AC" target="_blank" rel="noopener" aria-label="Live route to Hakone Open-Air"><circle cx="42" cy="293" r="4" class="dot garden"/><text x="49" y="297" class="eat-label" text-anchor="start">Hakone Open-Air · 120</text></a>
+<path d="M220 212 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
+<text x="8" y="14" class="ring-label">N ↑ · numbers are minutes · tap a dot for a live route</text>
+</svg>
+      <div class="map-key" aria-label="Map key">
+        <span style="--k: var(--mita)">modern and contemporary</span>
+        <span style="--k: var(--home)">classic collections</span>
+        <span style="--k: var(--oedo)">teamLab</span>
+        <span style="--k: var(--accent)">gardens and sculpture outdoors</span>
+      </div>
+      <figcaption>Museums by travel time from the Airbnb. Hakone's sculpture park sits on the outer ring at two hours. Roppongi's cluster is inside the 30-minute ring.</figcaption>
+    </figure>
+
+    <h3>Closed days at a glance</h3>
+    <ul class="points museum-list">
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AE%B1%E6%A0%B9%E6%B9%AF%E6%9C%AC" target="_blank" rel="noopener">Hakone Open-Air Museum</a></b> <span class="pill">closed never</span> 9:00–17:00. The sculpture stop. See Day trips.</li>
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%99%BD%E9%87%91%E5%8F%B0" target="_blank" rel="noopener">Teien Art Museum</a></b> <span class="pill">closed Mon</span> 10 min walk. Marimekko show 3 Oct–20 Dec. 10:00–18:00.</li>
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%A1%A8%E5%8F%82%E9%81%93" target="_blank" rel="noopener">Nezu Museum</a></b> <span class="pill">closed Mon</span> East Asian art and a garden you'll remember. 10:00–17:00.</li>
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener">Tokyo National Museum</a></b> <span class="pill">closed Mon</span> Ueno. 9:30–17:00, later Fri and Sat.</li>
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener">Western Art (Rodin)</a></b> <span class="pill">closed Mon</span> Ueno. Rodin bronzes in the courtyard are free.</li>
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener">Artizon Museum</a></b> <span class="pill">closed Mon</span> Near Tokyo Station. Modern collection, dated tickets online.</li>
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8%E4%B8%80%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener">Mori Art Museum</a></b> <span class="pill">closed Tue, and between shows</span> Next show opens 31 Oct, so the galleries are probably dark during your stay. Check.</li>
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B9%83%E6%9C%A8%E5%9D%82" target="_blank" rel="noopener">National Art Center</a></b> <span class="pill">closed Tue</span> Kurokawa's glass wave; no permanent collection, so check what's on.</li>
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B9%83%E6%9C%A8%E5%9D%82" target="_blank" rel="noopener">21_21 Design Sight</a></b> <span class="pill">closed Tue</span> Tadao Ando building in Midtown's garden. Design shows.</li>
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%89%9B%E8%BE%BC%E6%9F%B3%E7%94%BA" target="_blank" rel="noopener">Yayoi Kusama Museum</a></b> <span class="pill">closed Mon–Wed</span> Thu–Sun only, timed tickets sold online on the 1st of the month. October is likely gone.</li>
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8%E4%B8%80%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener">teamLab Borderless</a></b> <span class="pill">closed a few days a month</span> Azabudai Hills, two stops. Timed tickets on the official site only, priced by date.</li>
+      <li><b><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E8%B1%8A%E6%B4%B2" target="_blank" rel="noopener">teamLab Planets</a></b> <span class="pill">closed rarely</span> Toyosu. Barefoot and through water; wear trousers you can roll up.</li>
+    </ul>
+
+    <h3>Sculpture, in order of payoff</h3>
+    <ul class="points">
+      <li style="--line: var(--accent)"><b>Hakone Open-Air Museum</b> is the one worth a whole day: Moore, Miró, Niki de Saint Phalle, Picasso's own pavilion, all on a hillside with hot springs below. It never closes. The plan is in Day trips.</li>
+      <li style="--line: var(--accent)"><b>Rodin at the National Museum of Western Art.</b> The Gates of Hell, The Thinker and The Burghers of Calais stand in the front courtyard in Ueno, free, with Le Corbusier's building behind them. Combine with the Tokyo National Museum across the park on any day but Monday.</li>
+      <li style="--line: var(--accent)"><b>Maman.</b> Louise Bourgeois's spider is outside Roppongi Hills, free, two stops from the base. Good at night.</li>
+      <li style="--line: var(--mita)"><b>Yayoi Kusama Museum</b> is small, five floors, Thursday to Sunday only, and sells timed tickets on its website on the first of each month. If October is sold out, her pumpkins and dots also turn up at the Mori and National Art Center shops and, this trip, likely nowhere else in the city.</li>
+      <li style="--line: var(--mita)"><b>Nezu Museum</b> is the quiet one: a Kengo Kuma building, bronzes and ceramics inside, and a garden with stone lanterns and tea houses that is at its best in late October.</li>
+      <li style="--line: var(--mita)"><b>21_21 Design Sight and the National Art Center</b> are a ten-minute walk apart in Roppongi and both close on Tuesday. Neither has a permanent collection, so check the show before you go.</li>
+    </ul>
+
+    <h3>Worth knowing</h3>
+    <ul class="points">
+      <li><b>The Mori Art Museum is between exhibitions.</b> Ron Mueck closed 23 September and Mariko Mori opens 31 October, the day after you fly. Past gaps have meant closed galleries, so treat it as closed unless the website says otherwise. The observation deck and shop in the same tower run on their own schedule.</li>
+      <li><b>The Teien Art Museum is your neighbourhood museum,</b> a ten-minute walk, an Art Deco prince's house with a garden and, right now, the Marimekko printmaking show. The easiest museum outing on the list for older relatives.</li>
+      <li><b>teamLab needs tickets before you go.</b> Both venues are timed entry, sold only on the official site, and the popular slots go a week or more out. Borderless at Azabudai Hills is the closer one and the better one for a first visit; Planets is the one with water.</li>
+      <li><b>Big museums are cheap,</b> usually ¥1,000 to ¥2,000. teamLab is the exception at ¥3,400 and up.</li>
+      <li><b>Friday and Saturday evenings</b> are when the Ueno museums stay open late and the crowds thin.</li>
+    </ul>
+  </section>
+
+  <section id="parks">
+    <h2><span class="plate">遊</span>Amusement parks</h2>
+    <p>Tokyo Disney Resort is the main event and it is in Halloween mode for your whole stay, which runs to 31 October. Minutes are door-to-door from the Airbnb.</p>
+    <div class="shops">
+      <div style="--k: var(--oedo)"><h4>Tokyo Disney Resort, 45 minutes</h4>
+        <p><b>Which park.</b> DisneySea exists nowhere else in the world and is the one for adults: harbour and volcano scenery, better food, Fantasy Springs with the Frozen and Tangled lands. Disneyland is the familiar one and the better choice if small children are along. One park per ticket; a day each if you have two days.</p>
+        <p><b>Tickets.</b> Dated, sold on the official site or app, with prices that move by date; October weekends run to about ¥12,400 for an adult and weekdays nearer ¥9,000. Buy now for any date in your window; weekends do sell out. Download the app before you go: it holds the ticket, lets you take a free Standby Pass for the busiest attractions and buy Premier Access, a paid skip-the-line per ride, which is worth it for one or two headliners. Arrive 45 minutes before opening.</p>
+        <p><b>Halloween.</b> Adult costumes are allowed on set days in the second half of October; the parade and the decorations are the draw, and the parks are busier than usual.</p>
+        <p><b>Getting there.</b> Mita line to Otemachi or Hibiya, then to Tokyo Station and the JR Keiyo line to Maihama, about 45 minutes with two changes. The Keiyo platforms at Tokyo Station are a long underground walk; allow 10 minutes.</p>
+        <span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%88%9E%E6%B5%9C" target="_blank" rel="noopener">Home to Maihama</a></span></div>
+      <div style="--k: var(--oedo)"><h4>Tokyo Dome City, 25 minutes, no transfer</h4>
+        <p>A city-centre amusement park with no entry fee, you pay per ride. The Thunder Dolphin coaster threads through a hole in a building and the Big O is a centreless ferris wheel. The Mita line runs straight to Suidobashi, one stop from the park's doorstep, so it fits into an afternoon. Spa LaQua next door is a hot-spring complex for anyone sitting the rides out.</p>
+        <span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B0%B4%E9%81%93%E6%A9%8B" target="_blank" rel="noopener">Home to Suidobashi</a></span></div>
+      <div style="--k: var(--oedo)"><h4>Yomiuriland, about an hour</h4>
+        <p>The local alternative, on the Odakyu line to the west with a gondola from the station to the gate. Coasters and a big illumination show that starts in late October. Only if Disney is sold out or you want a second park day.</p>
+        <span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%AA%AD%E5%A3%B2%E3%83%A9%E3%83%B3%E3%83%89%E5%89%8D" target="_blank" rel="noopener">Home to Yomiuriland-mae</a></span></div>
+    </div>
+  </section>
+
+  <section id="shop">
+    <h2><span class="plate">買</span>Shopping</h2>
+    <p>Tokyo shopping is organised by district, and each district does one thing well. Pick the kind of shopping first, then the area. Minutes are door-to-door from the Airbnb by train, read from Yahoo Transit for a weekday late morning. Tap any name for a live route.</p>
+
+    <figure class="map">
+<svg viewBox="0 0 440 430" role="img" aria-labelledby="shop-title shop-desc">
+<title id="shop-title">Shopping districts by travel time from the base</title>
+<desc id="shop-desc">Shopping areas arranged by compass direction, with distance from the centre showing door-to-door minutes by train. Rings at 15, 30 and 60 minutes. Colour shows the kind of shopping. Each dot links to a live route search.</desc>
+<circle cx="220.0" cy="221.0" r="62" class="ring"/>
+<text x="224" y="170" class="ring-label">15 min</text>
+<circle cx="220.0" cy="221.0" r="122" class="ring"/>
+<text x="224" y="110" class="ring-label">30 min</text>
+<circle cx="220.0" cy="221.0" r="192" class="ring"/>
+<text x="224" y="40" class="ring-label">60 min</text>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%BA%BB%E5%B8%83%E5%8D%81%E7%95%AA" target="_blank" rel="noopener" aria-label="Live route to Azabu-Juban"><line x1="239" y1="175" x2="244" y2="198" class="lead"/><circle cx="239" cy="175" r="4" class="dot near"/><text x="246" y="201" class="eat-label" text-anchor="start">Azabu-Juban · 12</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8" target="_blank" rel="noopener" aria-label="Live route to Roppongi"><line x1="216" y1="159" x2="211" y2="171" class="lead"/><circle cx="216" cy="159" r="4" class="dot near"/><text x="209" y="174" class="eat-label" text-anchor="end">Roppongi · 15</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%BA%83%E5%B0%BE" target="_blank" rel="noopener" aria-label="Live route to Hiroo"><circle cx="156" cy="184" r="4" class="dot near"/><text x="163" y="188" class="eat-label" text-anchor="start">Hiroo · 18</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A5%9E%E4%BF%9D%E7%94%BA" target="_blank" rel="noopener" aria-label="Live route to Jimbocho books"><line x1="243" y1="130" x2="248" y2="230" class="lead"/><circle cx="243" cy="130" r="4" class="dot vint"/><text x="250" y="233" class="eat-label" text-anchor="start">Jimbocho books · 23</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A7%8B%E8%91%89%E5%8E%9F" target="_blank" rel="noopener" aria-label="Live route to Akihabara"><line x1="280" y1="99" x2="285" y2="166" class="lead"/><circle cx="280" cy="99" r="4" class="dot geek"/><text x="287" y="169" class="eat-label" text-anchor="start">Akihabara · 36</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%94%B0%E5%8E%9F%E7%94%BA" target="_blank" rel="noopener" aria-label="Live route to Kappabashi"><circle cx="307" cy="102" r="4" class="dot craft"/><text x="314" y="106" class="eat-label" text-anchor="start">Kappabashi · 41</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%94%B5%E5%89%8D" target="_blank" rel="noopener" aria-label="Live route to Kuramae"><circle cx="313" cy="131" r="4" class="dot craft"/><text x="320" y="135" class="eat-label" text-anchor="start">Kuramae · 33</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener" aria-label="Live route to Tokyo Station"><circle cx="327" cy="149" r="4" class="dot fash"/><text x="320" y="153" class="eat-label" text-anchor="end">Tokyo Station · 33</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8A%80%E5%BA%A7" target="_blank" rel="noopener" aria-label="Live route to Ginza"><circle cx="315" cy="183" r="4" class="dot fash"/><text x="308" y="187" class="eat-label" text-anchor="end">Ginza · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AF%89%E5%9C%B0" target="_blank" rel="noopener" aria-label="Live route to Tsukiji"><circle cx="346" cy="212" r="4" class="dot craft"/><text x="339" y="216" class="eat-label" text-anchor="end">Tsukiji · 32</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B1%A0%E8%A2%8B" target="_blank" rel="noopener" aria-label="Live route to Ikebukuro"><circle cx="187" cy="89" r="4" class="dot geek"/><text x="194" y="93" class="eat-label" text-anchor="start">Ikebukuro · 36</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E5%AE%BF%E4%B8%89%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener" aria-label="Live route to Shinjuku"><line x1="167" y1="111" x2="162" y2="145" class="lead"/><circle cx="167" cy="111" r="4" class="dot fash"/><text x="160" y="148" class="eat-label" text-anchor="end">Shinjuku · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%AD%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Nakano Broadway"><circle cx="128" cy="111" r="4" class="dot geek"/><text x="121" y="115" class="eat-label" text-anchor="end">Nakano Broadway · 39</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%A1%A8%E5%8F%82%E9%81%93" target="_blank" rel="noopener" aria-label="Live route to Omotesando"><circle cx="155" cy="132" r="4" class="dot fash"/><text x="148" y="136" class="eat-label" text-anchor="end">Omotesando · 27</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8E%9F%E5%AE%BF" target="_blank" rel="noopener" aria-label="Live route to Harajuku"><circle cx="140" cy="158" r="4" class="dot vint"/><text x="133" y="162" class="eat-label" text-anchor="end">Harajuku · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%90%89%E7%A5%A5%E5%AF%BA" target="_blank" rel="noopener" aria-label="Live route to Kichijoji"><line x1="68" y1="147" x2="73" y2="214" class="lead"/><circle cx="68" cy="147" r="4" class="dot vint"/><text x="75" y="217" class="eat-label" text-anchor="start">Kichijoji · 50</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B8%8B%E8%B0%B7" target="_blank" rel="noopener" aria-label="Live route to Shibuya"><line x1="131" y1="192" x2="126" y2="248" class="lead"/><circle cx="131" cy="192" r="4" class="dot fash"/><text x="124" y="251" class="eat-label" text-anchor="end">Shibuya · 23</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8B%E5%8C%97%E6%B2%A2" target="_blank" rel="noopener" aria-label="Live route to Shimokitazawa"><line x1="81" y1="197" x2="86" y2="275" class="lead"/><circle cx="81" cy="197" r="4" class="dot vint"/><text x="88" y="278" class="eat-label" text-anchor="start">Shimokitazawa · 38</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%BB%A3%E5%AE%98%E5%B1%B1" target="_blank" rel="noopener" aria-label="Live route to Daikanyama"><circle cx="86" cy="226" r="4" class="dot fash"/><text x="93" y="230" class="eat-label" text-anchor="start">Daikanyama · 35</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%AD%E7%9B%AE%E9%BB%92" target="_blank" rel="noopener" aria-label="Live route to Nakameguro"><circle cx="102" cy="259" r="4" class="dot vint"/><text x="109" y="263" class="eat-label" text-anchor="start">Nakameguro · 31</text></a>
+<path d="M220 212 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
+<text x="8" y="14" class="ring-label">N ↑ · numbers are minutes · tap a dot for a live route</text>
+</svg>
+      <div class="map-key" aria-label="Map key">
+        <span style="--k: var(--mita)">department stores, fashion</span>
+        <span style="--k: var(--home)">kitchen, craft, stationery</span>
+        <span style="--k: var(--oedo)">electronics, anime, games</span>
+        <span style="--k: var(--ginza)">vintage, books, backstreets</span>
+        <span style="--k: var(--accent)">near the base</span>
+      </div>
+      <figcaption>Shopping districts by travel time from the Airbnb, laid out by compass direction. Rings are 15, 30 and 60 minutes door to door.</figcaption>
+    </figure>
+
+    <h3>Near the base, no planning needed</h3>
+    <ul class="points">
+      <li style="--line: var(--accent)"><b>Azabu-Juban shopping street,</b> one stop or a 15-minute walk. Mamegen has sold roasted beans and rice crackers since 1865, Naniwaya does the taiyaki, and there are small ceramics and gift shops along the street. Flat and easy with older relatives.</li>
+      <li style="--line: var(--accent)"><b>Platinum-dori in Shirokanedai,</b> a 10-minute walk south. A tree-lined street of boutiques and cafés. Pleasant more than essential.</li>
+      <li style="--line: var(--accent)"><b>Hiroo,</b> for National Azabu, the expat supermarket, if anyone wants familiar groceries or packaged Japanese food gifts.</li>
+      <li style="--line: var(--accent)"><b>Roppongi Hills and Tokyo Midtown,</b> two stops. Design shops, the Mori Art Museum shop and the 21_21 Design Sight shop. The best museum shops in the city for anyone who likes sculpture and design objects.</li>
+    </ul>
+
+    <h3>What to buy where</h3>
+    <div class="shops">
+      <div style="--k: var(--mita)"><h4>Department stores and the food basements</h4><p>Ginza Mitsukoshi, Isetan in Shinjuku and Takashimaya in Nihombashi are the classic ones. Every department store has a <i>depachika</i>, a basement food hall, which is the best single stop for edible gifts: sweets, tea, pickles, beautifully boxed. Tax-free counters are usually on an upper floor; bring your passport.</p><span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8A%80%E5%BA%A7" target="_blank" rel="noopener">Ginza · 25 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E5%AE%BF%E4%B8%89%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener">Shinjuku · 30 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%97%A5%E6%9C%AC%E6%A9%8B" target="_blank" rel="noopener">Nihombashi · 26 min</a></span></div>
+      <div style="--k: var(--mita)"><h4>Fashion and the big flagships</h4><p>Uniqlo's twelve-floor Ginza flagship and the Muji flagship a few doors down are worth seeing even if you own both at home; Muji's has a hotel upstairs. Ginza Six is the upscale mall. Omotesando is the architecture-and-brand avenue, with Cat Street behind it for streetwear. Shibuya Parco has Nintendo Tokyo and the Pokémon Center. Daikanyama is quieter, with the T-Site bookstore.</p><span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8A%80%E5%BA%A7" target="_blank" rel="noopener">Ginza · 25 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%A1%A8%E5%8F%82%E9%81%93" target="_blank" rel="noopener">Omotesando · 27 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B8%8B%E8%B0%B7" target="_blank" rel="noopener">Shibuya · 23 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%BB%A3%E5%AE%98%E5%B1%B1" target="_blank" rel="noopener">Daikanyama · 35 min</a></span></div>
+      <div style="--k: var(--home)"><h4>Knives, kitchenware and tableware</h4><p>Kappabashi is the restaurant-supply street behind Asakusa: a kilometre of knife shops, ceramics, lacquer bowls and the plastic food models. Kama-Asa and Tsubaya will engrave a knife while you wait. Tsukiji's outer market also has knife shops, Aritsugu among them. Knives go in checked luggage, never carry-on.</p><span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%94%B0%E5%8E%9F%E7%94%BA" target="_blank" rel="noopener">Kappabashi · 41 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AF%89%E5%9C%B0" target="_blank" rel="noopener">Tsukiji · 32 min</a></span></div>
+      <div style="--k: var(--home)"><h4>Stationery, paper and craft</h4><p>Itoya in Ginza is twelve floors of stationery. Kakimori in Kuramae makes notebooks to order and mixes custom ink; Kuramae's side streets have small leather and craft workshops too. Loft and Hands are the department-store-sized lifestyle shops for everything else, with branches in Shibuya and Ginza. Japan Traditional Crafts Aoyama Square shows regional crafts under one roof, near Omotesando.</p><span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8A%80%E5%BA%A7" target="_blank" rel="noopener">Ginza · 25 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%94%B5%E5%89%8D" target="_blank" rel="noopener">Kuramae · 33 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%A1%A8%E5%8F%82%E9%81%93" target="_blank" rel="noopener">Omotesando · 27 min</a></span></div>
+      <div style="--k: var(--oedo)"><h4>The two giant camera stores</h4><p><b>Yodobashi Camera</b> and <b>Bic Camera</b> are the names you were trying to remember. Both started as camera shops and now sell everything electronic, plus watches, luggage, toys and cosmetics, across eight or nine floors with a staffed tax-free counter. Yodobashi's biggest is Yodobashi-Akiba, attached to Akihabara station; its original store fills the west exit of Shinjuku. Bic Camera's flagship is at Yurakucho, a two-minute walk from Ginza, with big branches in Shibuya, Shinjuku and Ikebukuro. For new camera gear, the lens floor at Yodobashi-Akiba is the biggest in the city. For a camera bag, either chain has a whole floor of them, with Peak Design, Think Tank, Shimoda and Lowepro next to Japanese makers you rarely see abroad: Artisan &amp; Artist, Hakuba and Etsumi. Yodobashi's Shinjuku west-exit camera building is a five-minute walk from Map Camera, so used body first, then bag, in one trip. For a bag you'd carry every day rather than a padded one, Porter by Yoshida Kaban makes the Tokyo classic; its flagship, Kura Chika, is in Omotesando. Open until about 22:00, cards accepted, passport for tax-free.</p><span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&amp;to=%E7%A7%8B%E8%91%89%E5%8E%9F" target="_blank" rel="noopener">Yodobashi-Akiba · 36 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&amp;to=%E6%96%B0%E5%AE%BF" target="_blank" rel="noopener">Yodobashi Shinjuku · 30 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&amp;to=%E6%9C%89%E6%A5%BD%E7%94%BA" target="_blank" rel="noopener">Bic Camera Yurakucho · 25 min</a></span></div>
+      <div style="--k: var(--oedo)"><h4>Used cameras and lenses</h4><p><b>Map Camera</b> is the one to go to: a multi-floor shop a few minutes from Shinjuku's west exit, the largest used-camera dealer in Japan, with condition grades you can trust, a one-year warranty on used gear, tax-free and English-speaking staff. Prices are not cheap, but the selection and condition are why people fly in for it. Check the stock online first; it moves fast. Two more worth a look: <b>Kitamura Camera Shinjuku</b>, seven floors on the east side of the station, strong on used and vintage, and <b>Fujiya Camera</b> in Nakano, a short walk from Nakano Broadway, cheaper and more cluttered. Map Camera and Kitamura close around 20:30; bring your passport for tax-free, and remember that Japanese-market bodies may have menus in Japanese only on some models, so ask.</p><span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&amp;to=%E6%96%B0%E5%AE%BF" target="_blank" rel="noopener">Map Camera, Shinjuku · 30 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&amp;to=%E6%96%B0%E5%AE%BF" target="_blank" rel="noopener">Kitamura, Shinjuku · 30 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&amp;to=%E4%B8%AD%E9%87%8E" target="_blank" rel="noopener">Fujiya, Nakano · 39 min</a></span></div>
+      <div style="--k: var(--oedo)"><h4>Electronics, anime, games</h4><p>Akihabara for Yodobashi Camera, the multi-floor electronics store, plus anime, figures and retro games at Mandarake and Super Potato. Nakano Broadway is the collectors' mall, with Mandarake's original shop spread across dozens of small units. Ikebukuro has the biggest Pokémon Center. Tokyo Station's Character Street, inside the station, has the Ghibli and Studio shops for quick gifts.</p><span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A7%8B%E8%91%89%E5%8E%9F" target="_blank" rel="noopener">Akihabara · 36 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%AD%E9%87%8E" target="_blank" rel="noopener">Nakano Broadway · 39 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B1%A0%E8%A2%8B" target="_blank" rel="noopener">Ikebukuro · 36 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener">Tokyo Station · 33 min</a></span></div>
+      <div style="--k: var(--ginza)"><h4>Vintage, secondhand and books</h4><p>Shimokitazawa is the vintage-clothing neighbourhood, with Koenji and the Harajuku backstreets close behind. Kichijoji mixes vintage with the Inokashira park. Jimbocho is a whole district of used bookshops, a direct 15-minute ride on the Mita line, and good for old prints and maps. Secondhand in Japan is in remarkable condition; the 2nd Street chain is reliable for brand pieces.</p><span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8B%E5%8C%97%E6%B2%A2" target="_blank" rel="noopener">Shimokitazawa · 38 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8E%9F%E5%AE%BF" target="_blank" rel="noopener">Harajuku · 25 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%90%89%E7%A5%A5%E5%AF%BA" target="_blank" rel="noopener">Kichijoji · 50 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A5%9E%E4%BF%9D%E7%94%BA" target="_blank" rel="noopener">Jimbocho · 23 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%AD%E7%9B%AE%E9%BB%92" target="_blank" rel="noopener">Nakameguro · 31 min</a></span></div>
+      <div style="--k: var(--rule)"><h4>Cheap, late and everything at once</h4><p>Don Quijote is the discount chain open until the small hours, tax-free, chaotic and useful for snacks, cosmetics and a cheap extra suitcase. Daiso and Seria are the ¥100 shops, good for small gifts. Convenience stores sell better food than they have any right to.</p><span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B8%8B%E8%B0%B7" target="_blank" rel="noopener">Shibuya · 23 min</a> <a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8A%80%E5%BA%A7" target="_blank" rel="noopener">Ginza · 25 min</a></span></div>
+    </div>
+
+    <h3>How shopping works here</h3>
+    <ul class="points">
+      <li><b>Tax-free needs your passport and ¥5,000 or more at one shop in one day.</b> The shop takes the tax off at the till and seals consumables in a bag you must not open in Japan. Look for the "Tax-Free" sign. A refund-at-the-airport system is scheduled to replace this from November 2026, after your trip.</li>
+      <li><b>Shops open late and close early.</b> Most open at 10:30 or 11:00 and close at 20:00. Department stores are strict about 20:00. Don Quijote and convenience stores are the exceptions.</li>
+      <li><b>Cash still matters</b> at small shops, markets and the used-book district. Department stores and chains take cards and phone wallets.</li>
+      <li><b>Bags cost a few yen</b> and staff will ask. Carry a tote.</li>
+      <li><b>Sizes run small.</b> Shoe sizes are in centimetres. Try things on; returns are rare.</li>
+      <li><b>Buy a suitcase here rather than hauling an empty one.</b> Don Quijote and the Ginza department stores sell them, then ship the full bag to Narita by <i>takkyubin</i> from any convenience store two days before you fly.</li>
+      <li><b>Post offices ship abroad</b> and sell the boxes. Heavy ceramics are cheaper to post than to carry.</li>
+      <li><b>Knives and anything sharp go in checked bags.</b> Big electronics are often cheaper at home once you add the voltage question; small things like earphones and cameras are the good buys.</li>
+    </ul>
+  </section>
+
+  <section id="moving">
+    <h2><span class="plate">IC</span>Getting around</h2>
+    <ul class="points">
+      <li><b>Pick your exit before you arrive.</b> Big stations have dozens of exits, and the wrong one can add 10 minutes outside. Route apps list the exit number.</li>
+      <li><b>JR, Tokyo Metro and Toei are separate companies.</b> One IC card pays for all of them. Changing between companies sometimes means passing through orange transfer gates.</li>
+      <li><b>Put Suica in your phone's wallet.</b> On iPhone it takes a minute, and you top it up with a card.</li>
+      <li><b>Google Maps transit works well on your phone.</b> Yahoo Transit and NAVITIME are good local alternatives.</li>
+      <li><b>Check line status before a day trip:</b> <a href="https://www.kotsu.metro.tokyo.jp/eng/operation_status/" target="_blank" rel="noopener">Toei</a> (your Mita line), <a href="https://www.tokyometro.jp/en/" target="_blank" rel="noopener">Tokyo Metro</a> (Namboku line) and <a href="https://traininfo.jreast.co.jp/train_info/e/kanto.aspx" target="_blank" rel="noopener">JR East</a>. Delays under 15 minutes are not posted.</li>
+      <li><b>Avoid rush hour with older relatives and bags.</b> Trains are packed roughly 7:30–9:30 and 17:30–19:30.</li>
+      <li><b>Last trains run around midnight.</b> After that it's a taxi, and night fares cost more.</li>
+      <li><b>Elevators exist at most stations</b> but can be a long walk from your platform. Leave extra time.</li>
+    </ul>
+    <div class="callout">
+      <p><b>Send the bags, not the people.</b> Luggage forwarding, called <i>takkyubin</i>, ships suitcases from hotels and convenience stores to the airport or your next hotel, usually overnight, for a modest fee. It's ideal for the trip back to Narita.</p>
+    </div>
+    <ul class="points">
+      <li><b>Big suitcases need a reserved space on the Shinkansen.</b> Book the oversized-baggage seat when you buy the ticket.</li>
+      <li><b>Skip the nationwide Japan Rail Pass.</b> It rarely pays off for a Tokyo base with day trips.</li>
+    </ul>
+  </section>
+
+  <section id="booking">
+    <h2><span class="plate">10:00</span>Hours and booking</h2>
+    <ul class="points">
+      <li><b>Many museums close on Mondays.</b> On this trip that's 19 and 26 October. When a Monday is a public holiday, the closure usually moves to Tuesday.</li>
+      <li><b>Book popular places ahead.</b> Disney tickets are dated. teamLab entry is timed. The Ghibli Museum sells a month in advance, so October is probably gone.</li>
+      <li><b>Shops open around 10 or 11.</b> Many restaurants close between lunch and dinner, roughly 14:30–17:30.</li>
+    </ul>
+  </section>
+
+  <section id="eat">
+    <h2><span class="plate">食</span>Where to eat near the base</h2>
+    <p>These come from Tabelog, Japan's restaurant guide. Its scores run low: 3.5 is very good and anything over 4.0 is rare. Prices are Tabelog's average spend per person, before drinks. Everything here is within one or two stops of Shirokane-takanawa, most of it walkable.</p>
+
+    <figure class="map">
+<svg viewBox="0 0 440 560" role="img" aria-labelledby="eats-title eats-desc">
+<title id="eats-title">Restaurants around the base</title>
+<desc id="eats-desc">Every recommended restaurant plotted by distance from the Airbnb. Azabu-Juban cluster to the north, Hiroo cluster to the northwest, a small cluster at Shirokane-takanawa station. Gotanda and Roppongi picks are off the map with arrows.</desc>
+<circle cx="320" cy="290" r="100" class="ring"/>
+<text x="416" y="286" class="ring-label" text-anchor="end">500 m</text>
+<circle cx="320" cy="290" r="200" class="ring"/>
+<text x="516" y="286" class="ring-label" text-anchor="end">1000 m</text>
+<circle cx="320" cy="290" r="300" class="ring"/>
+<text x="616" y="286" class="ring-label" text-anchor="end">1500 m</text>
+<rect x="340" y="368" width="10" height="10" class="stn"/>
+<text x="353" y="377" class="stn-label" text-anchor="start">Shirokane-takanawa</text>
+<rect x="394" y="96" width="10" height="10" class="stn"/>
+<text x="391" y="105" class="stn-label" text-anchor="end">Azabu-Juban</text>
+<rect x="123" y="166" width="10" height="10" class="stn"/>
+<text x="136" y="175" class="stn-label" text-anchor="start">Hiroo</text>
+<circle cx="322" cy="65" r="6.5" class="dot set"/>
+<text x="322" y="68" class="num" text-anchor="middle">1</text>
+<circle cx="376" cy="66" r="6.5" class="dot sushi"/>
+<text x="376" y="69" class="num" text-anchor="middle">2</text>
+<circle cx="404" cy="73" r="6.5" class="dot beef"/>
+<text x="404" y="76" class="num" text-anchor="middle">3</text>
+<circle cx="362" cy="79" r="6.5" class="dot set"/>
+<text x="362" y="82" class="num" text-anchor="middle">4</text>
+<circle cx="366" cy="91" r="6.5" class="dot sushi"/>
+<text x="366" y="94" class="num" text-anchor="middle">5</text>
+<circle cx="378" cy="92" r="6.5" class="dot set"/>
+<text x="378" y="95" class="num" text-anchor="middle">6</text>
+<circle cx="355" cy="93" r="6.5" class="dot sushi"/>
+<text x="355" y="96" class="num" text-anchor="middle">7</text>
+<circle cx="377" cy="100" r="6.5" class="dot set"/>
+<text x="377" y="103" class="num" text-anchor="middle">8</text>
+<circle cx="380" cy="103" r="6.5" class="dot set"/>
+<text x="380" y="106" class="num" text-anchor="middle">9</text>
+<circle cx="357" cy="130" r="6.5" class="dot set"/>
+<text x="357" y="133" class="num" text-anchor="middle">10</text>
+<circle cx="382" cy="136" r="6.5" class="dot pot"/>
+<text x="382" y="139" class="num" text-anchor="middle">11</text>
+<circle cx="370" cy="136" r="6.5" class="dot sushi"/>
+<text x="370" y="139" class="num" text-anchor="middle">12</text>
+<circle cx="385" cy="144" r="6.5" class="dot set"/>
+<text x="385" y="147" class="num" text-anchor="middle">13</text>
+<circle cx="377" cy="147" r="6.5" class="dot set"/>
+<text x="377" y="150" class="num" text-anchor="middle">14</text>
+<circle cx="340" cy="157" r="6.5" class="dot set"/>
+<text x="340" y="160" class="num" text-anchor="middle">15</text>
+<circle cx="311" cy="40" r="4" class="dot sushi"/>
+<text x="304" y="44" class="eat-label" text-anchor="end">Sushi Suzume</text>
+<circle cx="60" cy="46" r="4" class="dot set"/>
+<text x="67" y="50" class="eat-label" text-anchor="start">Ichiju Sansai</text>
+<circle cx="55" cy="57" r="4" class="dot tori"/>
+<text x="62" y="61" class="eat-label" text-anchor="start">Nana Chome</text>
+<circle cx="161" cy="59" r="4" class="dot beef"/>
+<text x="168" y="63" class="eat-label" text-anchor="start">Ushimatsu</text>
+<circle cx="317" cy="60" r="4" class="dot pot"/>
+<text x="310" y="64" class="eat-label" text-anchor="end">Sugino</text>
+<circle cx="145" cy="81" r="4" class="dot set"/>
+<text x="152" y="85" class="eat-label" text-anchor="start">Azabu Kogaiken</text>
+<circle cx="138" cy="100" r="4" class="dot set"/>
+<text x="145" y="104" class="eat-label" text-anchor="start">Komoto</text>
+<circle cx="198" cy="110" r="4" class="dot set"/>
+<text x="205" y="114" class="eat-label" text-anchor="start">Soba Tajima</text>
+<circle cx="133" cy="183" r="4" class="dot sushi"/>
+<text x="140" y="187" class="eat-label" text-anchor="start">Sushi Misaki</text>
+<circle cx="123" cy="199" r="4" class="dot sushi"/>
+<text x="130" y="203" class="eat-label" text-anchor="start">Sushi Dan</text>
+<circle cx="124" cy="200" r="4" class="dot pot"/>
+<text x="117" y="204" class="eat-label" text-anchor="end">Sukiyaki Juniten</text>
+<circle cx="113" cy="205" r="4" class="dot set"/>
+<text x="106" y="220" class="eat-label" text-anchor="end">MIYA</text>
+<circle cx="102" cy="208" r="4" class="dot sushi"/>
+<text x="95" y="234" class="eat-label" text-anchor="end">Wa Nogi</text>
+<circle cx="330" cy="216" r="4" class="dot tori"/>
+<text x="323" y="220" class="eat-label" text-anchor="end">Ishii Hina</text>
+<circle cx="80" cy="236" r="4" class="dot beef"/>
+<text x="87" y="251" class="eat-label" text-anchor="start">Niku Yakiya D-29</text>
+<circle cx="295" cy="283" r="4" class="dot beef"/>
+<text x="287" y="287" class="eat-label" text-anchor="end">Yakiniku Jumbo</text>
+<circle cx="228" cy="284" r="4" class="dot beef"/>
+<text x="220" y="288" class="eat-label" text-anchor="end">Kiraku Tei</text>
+<circle cx="330" cy="321" r="4" class="dot sushi"/>
+<text x="323" y="325" class="eat-label" text-anchor="end">Sushi Mukau</text>
+<circle cx="331" cy="321" r="4" class="dot pot"/>
+<text x="338" y="325" class="eat-label" text-anchor="start">Kotakino</text>
+<circle cx="234" cy="331" r="4" class="dot set"/>
+<text x="227" y="335" class="eat-label" text-anchor="end">Tonkatsu Ouryu</text>
+<circle cx="368" cy="333" r="4" class="dot set"/>
+<text x="361" y="337" class="eat-label" text-anchor="end">MUHO</text>
+<circle cx="123" cy="339" r="4" class="dot tori"/>
+<text x="116" y="343" class="eat-label" text-anchor="end">Shirogane Toritama</text>
+<circle cx="189" cy="342" r="4" class="dot set"/>
+<text x="196" y="346" class="eat-label" text-anchor="start">Edoya</text>
+<circle cx="113" cy="343" r="4" class="dot tori"/>
+<text x="120" y="347" class="eat-label" text-anchor="start">Mizuki</text>
+<circle cx="14" cy="472" r="3" class="dot set"/>
+<text x="21" y="475" class="key-label">1 Sarashina Horii</text>
+<circle cx="14" cy="483" r="3" class="dot sushi"/>
+<text x="21" y="486" class="key-label">2 Sushi Yoshikawa</text>
+<circle cx="14" cy="494" r="3" class="dot beef"/>
+<text x="21" y="497" class="key-label">3 KABUN</text>
+<circle cx="14" cy="505" r="3" class="dot set"/>
+<text x="21" y="508" class="key-label">4 Naniwaya</text>
+<circle cx="14" cy="516" r="3" class="dot sushi"/>
+<text x="21" y="519" class="key-label">5 Sugidama</text>
+<circle cx="14" cy="527" r="3" class="dot set"/>
+<text x="21" y="530" class="key-label">6 Fukushima Ya</text>
+<circle cx="14" cy="538" r="3" class="dot sushi"/>
+<text x="21" y="541" class="key-label">7 Tonari (standing)</text>
+<circle cx="14" cy="549" r="3" class="dot set"/>
+<text x="21" y="552" class="key-label">8 Takishita</text>
+<circle cx="132" cy="472" r="3" class="dot set"/>
+<text x="139" y="475" class="key-label">9 Anbai</text>
+<circle cx="132" cy="483" r="3" class="dot set"/>
+<text x="139" y="486" class="key-label">10 Fujiya Shokudo</text>
+<circle cx="132" cy="494" r="3" class="dot pot"/>
+<text x="139" y="497" class="key-label">11 Kabuto</text>
+<circle cx="132" cy="505" r="3" class="dot sushi"/>
+<text x="139" y="508" class="key-label">12 Sushi Ya Shota</text>
+<circle cx="132" cy="516" r="3" class="dot set"/>
+<text x="139" y="519" class="key-label">13 AMANOYA</text>
+<circle cx="132" cy="527" r="3" class="dot set"/>
+<text x="139" y="530" class="key-label">14 Kawakami An</text>
+<circle cx="132" cy="538" r="3" class="dot set"/>
+<text x="139" y="541" class="key-label">15 Tonkatsu Miyako</text>
+<path d="M320 281 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
+<text x="332" y="295" class="home-label">Airbnb</text>
+<text x="432" y="14" class="off-label" text-anchor="end">↑ Iruka Tokyo (ramen), 2.0 km</text>
+<text x="432" y="418" class="off-label" text-anchor="end">↓ Umataro, 2.4 km (Gotanda)</text>
+<text x="432" y="430" class="off-label" text-anchor="end">↓ Mukan (ramen), 2.4 km (Gotanda)</text>
+<text x="8" y="14" class="ring-label">N ↑</text>
+</svg>
+      <div class="map-key" aria-label="Map key">
+        <span style="--k: var(--mita)">sushi, omakase</span>
+        <span style="--k: var(--home)">wagyu, yakiniku</span>
+        <span style="--k: var(--oedo)">shabu-shabu, sukiyaki</span>
+        <span style="--k: var(--ginza)">yakitori</span>
+        <span style="--k: var(--accent)">set meals, noodles, casual</span>
+      </div>
+      <figcaption>Every place in this chapter, plotted from its real coordinates. Rings are straight-line distance from the Airbnb; multiply by about 1.3 for walking. Numbered dots are the Azabu-Juban cluster, listed in the key. The list below has a map pin for each place.</figcaption>
+    </figure>
+
+    <div class="budget" aria-label="Budget guide">
+      <div><span class="yen">¥1,000–2,500</span><span>set-meal lunch, ramen, soba, tonkatsu</span></div>
+      <div><span class="yen">¥4,000–6,000</span><span>casual sushi, yakitori, izakaya dinner</span></div>
+      <div><span class="yen">¥10,000–15,000</span><span>omakase, yakiniku, shabu-shabu course</span></div>
+    </div>
+
+    <div class="chips" id="chips-cat" role="group" aria-label="Cuisine filter">
+      <span class="lab">Cuisine</span>
+      <button type="button" data-cat="" aria-pressed="true">All</button>
+      <button type="button" data-cat="set noodle tempura" aria-pressed="false">Set meals &amp; noodles</button>
+      <button type="button" data-cat="sushi omakase" aria-pressed="false">Sushi</button>
+      <button type="button" data-cat="beef pot" aria-pressed="false">Wagyu &amp; hot pot</button>
+      <button type="button" data-cat="tori" aria-pressed="false">Yakitori</button>
+      <button type="button" data-cat="familiar" aria-pressed="false">Familiar</button>
+    </div>
+    <div class="chips" id="chips-tier" role="group" aria-label="Budget filter">
+      <span class="lab">Budget</span>
+      <button type="button" data-tier="" aria-pressed="true">Any</button>
+      <button type="button" data-tier="lunch" aria-pressed="false">Under ¥3,000</button>
+      <button type="button" data-tier="mid" aria-pressed="false">¥3,000–8,000</button>
+      <button type="button" data-tier="high" aria-pressed="false">Splurge</button>
+      <button type="button" id="open-today" aria-pressed="false">Open today</button>
+    </div>
+    <p class="count" id="eat-count">Showing all 42 places. Each one has a Tabelog link and a map pin.</p>
+    <div class="group" data-cat="set">
+    <h3>Set-meal lunches (teishoku), around ¥1,000–2,000</h3>
+    <p>A tray with a main, rice, miso soup and pickles. The best value meal in Japan and easy with older relatives. Most of these are weekday-lunch places with short hours.</p>
+    <ul class="eats">
+      <li data-tier="lunch" data-closed="3"><span class="score">3.71</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13004451/">Takishita</a><span class="pick">start here</span><span class="meta">Azabu-Juban, 145 m from the station · grilled fish and Japanese sets · closed Wednesday · <a href="https://www.google.com/maps/search/?api=1&query=35.65522,139.73596" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed="3"><span class="score">3.51</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13211807/">Tonkatsu Miyako</a><span class="meta">Azabu-Juban · pork cutlet sets and curry · closed Wednesday · <a href="https://www.google.com/maps/search/?api=1&query=35.65265,139.73389" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed="0,6"><span class="score">3.51</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13056496/">Ichiju Sansai</a><span class="meta">Hiroo · fish sets · weekdays only · <a href="https://www.google.com/maps/search/?api=1&query=35.65767,139.71841" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed=""><span class="score">3.48</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13013990/">Fukushima Ya</a><span class="meta">Azabu-Juban, 105 m · oden and set meals · open daily · <a href="https://www.google.com/maps/search/?api=1&query=35.65558,139.73603" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed="2"><span class="score">3.48</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13021903/">Anbai</a><span class="meta">Azabu-Juban · seafood sets · closed Tuesday · <a href="https://www.google.com/maps/search/?api=1&query=35.65508,139.73615" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed="0"><span class="score">3.42</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13013983/">Fujiya Shokudo</a><span class="meta">Azabu-Juban · old-style diner, lunch under ¥1,000 · closed Sunday and holidays · <a href="https://www.google.com/maps/search/?api=1&query=35.65390,139.73483" target="_blank" rel="noopener">map</a></span></span></li>
+    </ul>
+    </div>
+
+    <div class="group" data-cat="noodle">
+    <h3>Noodles and cheap classics, ¥1,000–2,000</h3>
+    <ul class="eats">
+      <li data-tier="lunch" data-closed="1"><span class="score">3.69</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1316/A131602/13249768/">Tonkatsu Ouryu</a><span class="pick">Tabelog 100</span><span class="meta">Shirokane-takanawa, 594 m · pork cutlet, lunch ¥1,000–1,999 · closed Monday · <a href="https://www.google.com/maps/search/?api=1&query=35.64486,139.72807" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed="1"><span class="score">3.80</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130701/13264260/">Iruka Tokyo</a><span class="pick">Tabelog 100</span><span class="meta">Roppongi · ramen, expect a queue · closed Monday · <a href="https://www.google.com/maps/search/?api=1&query=35.66477,139.73168" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed=""><span class="score">3.75</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1316/A131603/13279264/">Chuka Soba Mukan</a><span class="meta">Gotanda · clean, classic ramen · open daily · <a href="https://www.google.com/maps/search/?api=1&query=35.62689,139.72205" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed=""><span class="score">3.65</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13001226/">Sarashina Horii</a><span class="meta">Azabu-Juban · famous white soba house since 1789, lunch ¥2,000–2,999 · open daily · <a href="https://www.google.com/maps/search/?api=1&query=35.65681,139.73289" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed="0,1"><span class="score">3.69</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13020154/">Soba Tajima</a><span class="pick">Tabelog 100</span><span class="meta">Hiroo · soba, lunch ¥1,000–1,999 · closed Sunday and Monday · <a href="https://www.google.com/maps/search/?api=1&query=35.65478,139.72608" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed="4"><span class="score">3.48</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1316/A131602/13138217/">MUHO</a><span class="meta">Shirokane-takanawa, 239 m · soba, udon and tempura bowls, ¥1,000–1,999 · closed Thursday · <a href="https://www.google.com/maps/search/?api=1&query=35.64477,139.73547" target="_blank" rel="noopener">map</a></span></span></li>
+    </ul>
+    </div>
+
+    <div class="group" data-cat="sushi">
+    <h3>Casual sushi dinner, ¥3,000–6,000</h3>
+    <p>Counter or table, order by the piece or a set. No reservation needed at most of these.</p>
+    <ul class="eats">
+      <li data-tier="mid" data-closed=""><span class="score">3.33</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13285358/">Sushi Misaki</a><span class="meta">Hiroo, 48 m from the station · dinner ¥3,000–3,999 · open daily · <a href="https://www.google.com/maps/search/?api=1&query=35.65150,139.72244" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="mid" data-closed=""><span class="score">3.33</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13307666/">Sugidama</a><span class="meta">Azabu-Juban, 118 m · sushi izakaya, dinner ¥3,000–3,999 · <a href="https://www.google.com/maps/search/?api=1&query=35.65562,139.73536" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="mid" data-closed="0"><span class="score">3.32</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13047377/">MIYA</a><span class="meta">Hiroo · sushi and seafood bowls, dinner ¥4,000–4,999 · closed Sunday · <a href="https://www.google.com/maps/search/?api=1&query=35.65053,139.72138" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="mid" data-closed="0"><span class="score">3.51</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1316/A131603/13013973/">Sushiya no Umataro</a><span class="meta">Gotanda · dinner ¥5,000–5,999 · closed Sunday · <a href="https://www.google.com/maps/search/?api=1&query=35.62630,139.72564" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="mid" data-closed="3"><span class="score">3.52</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13248924/">Sushi Dan</a><span class="meta">Hiroo, 124 m · lunch ¥4,000–4,999, dinner ¥6,000–7,999 · closed Wednesday · <a href="https://www.google.com/maps/search/?api=1&query=35.65078,139.72191" target="_blank" rel="noopener">map</a></span></span></li>
+    </ul>
+    </div>
+
+    <div class="group" data-cat="omakase">
+    <h3>Omakase, ¥8,000–20,000</h3>
+    <p>The chef chooses, usually 15 to 20 pieces over about two hours at a counter of 8 to 10 seats. Book a week or more ahead. Tell them about allergies when booking, not at the counter.</p>
+    <ul class="eats">
+      <li data-tier="high" data-closed="0,1"><span class="score">3.72</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13241750/">Sushi Ya Shota</a><span class="meta">Azabu-Juban · ¥15,000–19,999 · closed Sunday and Monday · <a href="https://www.google.com/maps/search/?api=1&query=35.65362,139.73555" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high" data-closed="1"><span class="score">3.69</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13267404/">Tachigui Sushi Tonari</a><span class="meta">Azabu-Juban · standing counter, omakase quality at ¥8,000–9,999 · closed Monday · <a href="https://www.google.com/maps/search/?api=1&query=35.65554,139.73474" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high lunch" data-closed=""><span class="score">3.60</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13286370/">Wa Nogi</a><span class="meta">Hiroo · dinner ¥15,000–19,999, lunch sets ¥2,000–2,999 · closed public holidays · <a href="https://www.google.com/maps/search/?api=1&query=35.65039,139.72078" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high" data-closed=""><span class="score">3.57</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13267332/">Sushi Suzume</a><span class="meta">Azabu-Juban · ¥10,000–14,999 · <a href="https://www.google.com/maps/search/?api=1&query=35.65794,139.73229" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high" data-closed=""><span class="score">3.54</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1316/A131602/13270319/">Sushi Mukau</a><span class="pick">closest</span><span class="meta">Shirokane-takanawa, 2 min from exit 4 · 10-seat counter, ¥15,000–19,999 listed, diners report ¥20,000+ · open daily 17:00–23:00 · reservation only, 050-5890-7506 · <a href="https://www.google.com/maps/search/?api=1&query=35.64532,139.73335" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high" data-closed=""><span class="score">3.52</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13255943/">Sushi Yoshikawa</a><span class="meta">Azabu-Juban, 28 m from the station · ¥10,000–14,999 · <a href="https://www.google.com/maps/search/?api=1&query=35.65675,139.73589" target="_blank" rel="noopener">map</a></span></span></li>
+    </ul>
+    </div>
+
+    <div class="group" data-cat="beef">
+    <h3>Wagyu: yakiniku, ¥8,000–15,000</h3>
+    <p>Yakiniku is grill-it-yourself beef over charcoal at your table, ordered by cut. The easiest way to eat a lot of good wagyu without a tasting-menu price. Ask for <i>kalbi</i> (short rib), <i>harami</i> (skirt) and <i>tan</i> (tongue) to start.</p>
+    <ul class="eats">
+      <li data-tier="high" data-closed=""><span class="score hi">3.91</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13242515/">Ushimatsu</a><span class="pick">Tabelog 100</span><span class="meta">Hiroo · ¥10,000–14,999 · open daily · <a href="https://www.google.com/maps/search/?api=1&query=35.65706,139.72404" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high" data-closed="2"><span class="score">3.74</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13007145/">Kiraku Tei</a><span class="pick">Tabelog 100</span><span class="meta">Hiroo · ¥10,000–14,999 · closed Tuesday · <a href="https://www.google.com/maps/search/?api=1&query=35.64697,139.72770" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high mid" data-closed=""><span class="score">3.73</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1316/A131602/13026377/">Yakiniku Jumbo Shirokane</a><span class="pick">Tabelog 100</span><span class="meta">Shirokane-takanawa, 519 m · lunch ¥4,000–4,999, dinner ¥10,000–14,999 · open daily · <a href="https://www.google.com/maps/search/?api=1&query=35.64700,139.73142" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high" data-closed="1"><span class="score">3.68</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13269923/">Niku Yakiya D-29</a><span class="pick">Tabelog 100</span><span class="meta">Hiroo · yakiniku and steak, ¥10,000–14,999 · closed Monday · <a href="https://www.google.com/maps/search/?api=1&query=35.64911,139.71953" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high" data-closed=""><span class="score">3.59</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13275921/">KABUN</a><span class="meta">Azabu-Juban, 129 m · Korean-style, ¥8,000–9,999 · <a href="https://www.google.com/maps/search/?api=1&query=35.65646,139.73745" target="_blank" rel="noopener">map</a></span></span></li>
+    </ul>
+    </div>
+
+    <div class="group" data-cat="pot">
+    <h3>Shabu-shabu and sukiyaki, ¥8,000–15,000</h3>
+    <p>Both are hot pot cooked at the table, good for a group and gentle on anyone who finds raw fish or grilling a chore. Shabu-shabu swishes thin beef through light broth, eaten with ponzu or sesame sauce. Sukiyaki simmers it in sweet soy and is dipped in raw egg.</p>
+    <ul class="eats">
+      <li data-tier="high" data-closed=""><span class="score">3.57</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1316/A131602/13145984/">Kotakino</a><span class="pick">closest</span><span class="meta">Shirokane-takanawa, 275 m · beef tongue shabu-shabu, ¥10,000–14,999 · open daily · <a href="https://www.google.com/maps/search/?api=1&query=35.64529,139.73340" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high" data-closed=""><span class="score">3.55</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13298402/">Sukiyaki Juniten</a><span class="meta">Hiroo, 127 m · all-you-can-eat sukiyaki, ¥10,000–14,999 · open daily · <a href="https://www.google.com/maps/search/?api=1&query=35.65075,139.72196" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high" data-closed="0"><span class="score">3.54</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13195957/">Sugino</a><span class="meta">Azabu-Juban · oden and shabu-shabu, ¥8,000–9,999 · closed Sunday · <a href="https://www.google.com/maps/search/?api=1&query=35.65703,139.73265" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high lunch" data-closed=""><span class="score">3.45</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13162115/">Kabuto</a><span class="meta">Azabu-Juban · yakiniku, shabu-shabu and sukiyaki under one roof, ¥8,000–9,999, lunch ¥1,000–1,999 · <a href="https://www.google.com/maps/search/?api=1&query=35.65363,139.73624" target="_blank" rel="noopener">map</a></span></span></li>
+    </ul>
+    </div>
+
+    <div class="group" data-cat="tori">
+    <h3>Yakitori, the splurge version</h3>
+    <p>Grilled chicken skewers. Cheap izakaya versions are everywhere; these are the counter tasting-menu kind, and the ratings around Shirokane are the highest of any cuisine in the area.</p>
+    <ul class="eats">
+      <li data-tier="high" data-closed="0,6"><span class="score hi">4.20</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13200559/">Minami Aoyama Nana Chome</a><span class="pick">Award 2026</span><span class="meta">Hiroo · ¥15,000–19,999 · weekdays only · <a href="https://www.google.com/maps/search/?api=1&query=35.65715,139.71816" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high" data-closed="3,4"><span class="score hi">4.12</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1316/A131602/13303865/">Mizuki</a><span class="pick">Tabelog 100</span><span class="meta">Shirokanedai · ¥15,000–19,999 · closed Wednesday and Thursday · <a href="https://www.google.com/maps/search/?api=1&query=35.64431,139.72139" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="high" data-closed="0,1"><span class="score hi">4.09</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13271040/">Torisho Ishii Hina</a><span class="pick">Award 2026</span><span class="meta">Azabu-Juban · ¥15,000–19,999 · closed Sunday and Monday · <a href="https://www.google.com/maps/search/?api=1&query=35.65003,139.73334" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="mid" data-closed=""><span class="score">3.58</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1316/A131602/13005504/">Shirogane Toritama</a><span class="pick">Tabelog 100</span><span class="meta">the affordable one · ¥5,000–5,999 · open daily · <a href="https://www.google.com/maps/search/?api=1&query=35.64449,139.72191" target="_blank" rel="noopener">map</a></span></span></li>
+    </ul>
+    </div>
+
+    <div class="group" data-cat="tempura">
+    <h3>Tempura and soba together</h3>
+    <ul class="eats">
+      <li data-tier="high mid" data-closed="0"><span class="score">3.69</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13047414/">Komoto</a><span class="meta">Hiroo · soba and tempura, lunch ¥3,000–3,999, dinner ¥10,000–14,999 · closed Sunday · <a href="https://www.google.com/maps/search/?api=1&query=35.65521,139.72272" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed=""><span class="score">3.56</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13004546/">Azabu Kawakami An</a><span class="meta">Azabu-Juban · soba and tempura, lunch ¥2,000–2,999 · open daily · <a href="https://www.google.com/maps/search/?api=1&query=35.65314,139.73596" target="_blank" rel="noopener">map</a></span></span></li>
+    </ul>
+    </div>
+
+    <div class="group" data-cat="familiar">
+    <h3>If a relative wants something familiar</h3>
+    <ul class="eats">
+      <li data-tier="lunch" data-closed=""><span class="score">3.70</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130703/13184028/">Azabu Kogaiken</a><span class="pick">Tabelog 100</span><span class="meta">Hiroo · omelette rice and Japanese-style Western food, lunch ¥1,000–1,999 · open daily · <a href="https://www.google.com/maps/search/?api=1&query=35.65606,139.72314" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="mid" data-closed="2,3"><span class="score">3.67</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1316/A131602/13285741/">Restaurant Edoya</a><span class="meta">Shirokanedai · hamburger steak and omelette rice, dinner ¥5,000–5,999 · closed Tuesday and Wednesday · <a href="https://www.google.com/maps/search/?api=1&query=35.64435,139.72558" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed="2"><span class="score">3.74</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13014306/">AMANOYA</a><span class="pick">Tabelog 100</span><span class="meta">Azabu-Juban · old coffee house, sweets and okonomiyaki · closed Tuesday · <a href="https://www.google.com/maps/search/?api=1&query=35.65326,139.73637" target="_blank" rel="noopener">map</a></span></span></li>
+      <li data-tier="lunch" data-closed="2,3"><span class="score">3.78</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13002775/">Naniwaya Sohonten</a><span class="pick">Tabelog 100</span><span class="meta">Azabu-Juban, 90 m · taiyaki, the fish-shaped bean-paste pastry, since 1909 · closed Tuesday and Wednesday · <a href="https://www.google.com/maps/search/?api=1&query=35.65620,139.73512" target="_blank" rel="noopener">map</a></span></span></li>
+    </ul>
+    </div>
+  </section>
+
+  <section id="food">
+    <h2><span class="plate">¥</span>How dining works here</h2>
+    <h3>Getting a table</h3>
+    <ul class="points">
+      <li><b>Lunch is the bargain.</b> The same kitchen often charges half at lunch. Omakase counters that run ¥18,000 at night may do a ¥3,000 lunch set.</li>
+      <li><b>Small counters are reservation only</b> and book out a week or more ahead. Ask the Airbnb host to call, or use TableCheck or Omakase.in, which take bookings in English for many places.</li>
+      <li><b>No-shows are a serious offence.</b> Cancel by phone if plans change. Some counters charge the full course for a no-show.</li>
+      <li><b>Ramen, soba and set-meal shops don't take bookings.</b> Queue, and expect to be in and out in 30 minutes. Many have a ticket machine by the door: pay first, hand over the ticket.</li>
+      <li><b>Restaurants close between services,</b> roughly 14:30 to 17:30, and many close one weekday. Check the closed day before you set out.</li>
+      <li><b>Groups over four are hard</b> at counters. Book ahead, or pick yakiniku, shabu-shabu or izakaya, which seat tables.</li>
+    </ul>
+    <h3>At the table</h3>
+    <ul class="points">
+      <li><b>Izakaya add a cover charge,</b> called otoshi, with a small appetiser you didn't order. Around ¥300–800 a head. That's normal.</li>
+      <li><b>Don't tip.</b> It confuses people. The bill is the bill.</li>
+      <li><b>Say "sumimasen" to call staff.</b> Nobody will come otherwise. Many places have a call button on the table.</li>
+      <li><b>Omakase etiquette:</b> eat each piece in one bite as it's served, soy sauce is already applied, and ginger is a palate cleanser between pieces, not a topping. No perfume. Ask before taking photos.</li>
+      <li><b>Allergies and dietary limits</b> go in the booking, not to the chef mid-course. Vegetarian is hard at sushi and yakitori; shabu-shabu, tempura, soba and set-meal places cope better. Dashi broth almost always contains fish.</li>
+      <li><b>Slurping noodles is fine.</b> Blowing your nose at the table is not.</li>
+    </ul>
+    <h3>Paying</h3>
+    <ul class="points">
+      <li><b>Pay at the register by the door,</b> not at the table. Take the bill up when you're done.</li>
+      <li><b>Carry cash.</b> Small restaurants, ticket-machine shops, shrines and market stalls may not take cards. 7-Eleven ATMs accept foreign cards.</li>
+      <li><b>Bring your passport for tax-free shopping</b> at participating stores on larger purchases.</li>
+    </ul>
+  </section>
+
+  <section id="relatives">
+    <h2><span class="plate">家</span>Days with the relatives</h2>
+    <p>Tokyo is kind to slow walkers once you stop treating the train network as a sport. The rules below are for the days the older members of the family are along.</p>
+    <h3>Pace</h3>
+    <ul class="points">
+      <li><b>One anchor a day,</b> with a sit-down lunch in the middle and home by 16:00, before the evening rush. A museum and its café is a full day. Two neighbourhoods is too many.</li>
+      <li><b>Build in chairs.</b> Department stores have lounges on the upper floors, museums have cafés, parks have benches. Shinjuku Gyoen and the Teien garden are the gentlest walks on this list.</li>
+      <li><b>Mornings are better than afternoons</b> for crowds, weather and energy.</li>
+    </ul>
+    <h3>Trains and taxis</h3>
+    <ul class="points">
+      <li><b>Every station has an elevator route,</b> but it may be far from the platform you arrive on. Look for the elevator symbol on the station map at the ticket gate, or ask staff for the <i>erebētā</i>. Namboku line platforms have doors and the cars are new.</li>
+      <li><b>Avoid 7:30–9:30 and 17:30–19:30.</b> No seats, no space for a cane. Priority seats are at the car ends; people do give them up if asked.</li>
+      <li><b>Taxis are the right answer more often than you'd think.</b> The GO app works in English and takes cards; Uber also works here and sends ordinary taxis. Fares start around ¥500 and a ride from Shirokane to Ginza or Roppongi lands roughly in the ¥2,000–3,000 range. Doors open and close themselves, so don't touch them. Taxi ranks sit outside every department store and big hotel.</li>
+      <li><b>For the day trips, Hakone is the gentle one:</b> a reserved seat from Shinjuku, no changes, then the Open-Air Museum, which has slopes but paths everywhere and places to sit. Skip the ropeway queue. Nikko's shrines are steep stone steps; Kamakura's Great Buddha is flat and the tram is fun.</li>
+    </ul>
+    <h3>Eating with a group</h3>
+    <ul class="points">
+      <li><b>Pick table restaurants, not counters.</b> From the list in this guide: the yakiniku places (Ushimatsu, Kiraku Tei, Yakiniku Jumbo, Niku Yakiya D-29, KABUN), the shabu-shabu and sukiyaki places (Kotakino, Sukiyaki Juniten, Sugino, Kabuto), the set-meal lunches and the "familiar" group (Azabu Kogaiken, Edoya, AMANOYA). Omakase sushi and the tasting-menu yakitori are eight-seat counters with fixed courses, which is a lot to ask of someone who doesn't love raw fish.</li>
+      <li><b>Book for five or more,</b> even at lunch. Say the number and the time; the Airbnb host can call.</li>
+      <li><b>Shabu-shabu and sukiyaki are the crowd-pleasers:</b> cooked at the table, mild, and everyone chooses what to eat. Kotakino is a short walk from the Airbnb.</li>
+      <li><b>Chairs, not floor seating.</b> Some traditional rooms are tatami with low tables. Ask for a table seat, <i>tēburu seki</i>, when booking.</li>
+    </ul>
+    <h3>Practical</h3>
+    <ul class="points">
+      <li><b>Toilets are everywhere and clean:</b> every station, convenience store, department store and park. Western-style with heated seats is the norm.</li>
+      <li><b>Luggage goes by courier, not by hand.</b> Any convenience store or the Airbnb host can send bags to the airport or a hotel by <i>takkyubin</i> for a modest fee; allow two days for Narita. Station lockers big enough for a suitcase are scarce.</li>
+      <li><b>Pharmacies</b> with a green cross sign are on most streets, and see the Help section for the hospital nearest the Airbnb with English-speaking staff.</li>
+      <li><b>Bring prescriptions in their original packaging</b> with a copy of the script. Some common US medicines, including pseudoephedrine decongestants and ADHD stimulants, are restricted in Japan.</li>
+    </ul>
+  </section>
+
+  <section id="manners">
+    <h2><span class="plate">礼</span>Manners that matter</h2>
+    <ul class="points">
+      <li><b>No phone calls on trains,</b> and keep your voice low.</li>
+      <li><b>Eating while walking is frowned upon</b> in most places. Market streets are the exception.</li>
+      <li><b>Trash cans are rare.</b> Carry a small bag for rubbish.</li>
+      <li><b>Wear slip-on shoes and decent socks.</b> Temples, traditional inns and some restaurants ask you to take shoes off.</li>
+      <li><b>Ignore street touts</b> in Roppongi and Kabukicho. Some bars they lead you to run up huge bills.</li>
+    </ul>
+    <p>Late October is usually mild and good for walking. It is also the tail of typhoon season, so check train status before a day trip.</p>
+  </section>
+
+  <section id="help">
+    <h2><span class="plate">SOS</span>If something goes wrong</h2>
+    <div class="phones">
+      <div class="phone"><span class="num">110</span><span>Police</span></div>
+      <div class="phone"><span class="num">119</span><span>Ambulance or fire</span></div>
+      <div class="phone"><span class="num small">050-3816-2787</span><span>Japan Visitor Hotline, 24 hours, English. Tourist help and emergencies.</span></div>
+      <div class="phone"><span class="num small">03-3224-5000</span><span>US Embassy, 1-10-5 Akasaka. Same number after hours.</span></div>
+    </div>
+    <ul class="points">
+      <li><b>Nearest big hospital with English-speaking staff:</b> Japanese Red Cross Medical Center, 4-1-22 Hiroo, 03-3400-1311, a short taxi ride from the Airbnb. St. Luke's International Hospital in Tsukiji and the Tokyo Medical and Surgical Clinic near Shiba Park are the other two foreigners use. Hospitals want payment up front; cards work at the big ones, and your travel insurance reimburses.</li>
+      <li><b>Pharmacies:</b> Matsumoto Kiyoshi, Welcia and Sundrug are the chains. Over-the-counter medicine is behind the counter; staff help with a translation app. Prescriptions need a Japanese doctor.</li>
+      <li><b>Earthquakes.</b> Phones blare an alert a few seconds ahead. Stay where you are, away from glass and shelves; don't run outside. Trains stop and restart on their own. The JNTO Safety Tips app gives alerts in English.</li>
+      <li><b>Lost something?</b> Ask station staff, or go to the nearest police box, a <i>kōban</i>, which also give directions. Things come back here.</li>
+      <li><b>Lost card or cash.</b> 7-Eleven and post office ATMs take foreign cards. Call your bank's number on the card; Japan's country code is +81.</li>
+      <li><b>Typhoon.</b> Late October is the tail of the season. If one is forecast, operators announce suspensions a day ahead; check the status links under Getting around and don't plan a day trip for that day.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Prepared 17 October 2026, updated 18 October. Restaurant ratings, prices and closed days were read from Tabelog on 18 October 2026 JST. Travel minutes to the shopping districts were read from Yahoo Transit the same day. Sample day-trip trains were read from Yahoo Transit on 18 October for 21 October. Museum closed days, exhibition dates, Disney prices and the phone numbers were checked against web sources on 18 October. Shop, district and museum descriptions are general knowledge, not live lookups. Confirm opening hours, prices and ticket availability before you go. Station numbers follow Tokyo Metro and Toei signage.</p>
+  </footer>
+</div>
+<script>
+(function () {
+  // Theme toggle. Stored per device; falls back to the system setting.
+  var root = document.documentElement, btn = document.getElementById('theme');
+  function apply(t) {
+    if (t) root.setAttribute('data-theme', t); else root.removeAttribute('data-theme');
+    var dark = t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches);
+    btn.textContent = dark ? 'Light mode' : 'Dark mode';
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('fg-theme'); } catch (e) {}
+  apply(saved);
+  btn.addEventListener('click', function () {
+    var dark = root.getAttribute('data-theme') === 'dark' || (!root.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = dark ? 'light' : 'dark';
+    apply(next);
+    try { localStorage.setItem('fg-theme', next); } catch (e) {}
+  });
+
+  // Restaurant filters.
+  var cat = '', tier = '', openToday = false;
+  var items = Array.prototype.slice.call(document.querySelectorAll('#eat ul.eats li'));
+  var groups = Array.prototype.slice.call(document.querySelectorAll('#eat .group'));
+  var count = document.getElementById('eat-count');
+  var jst = new Date(Date.now() + (9 * 60 + new Date().getTimezoneOffset()) * 60000);
+  var today = jst.getDay();
+  var names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  function run() {
+    var shown = 0;
+    groups.forEach(function (g) {
+      var gcat = g.getAttribute('data-cat'), any = false;
+      var catOk = !cat || cat.split(' ').indexOf(gcat) >= 0;
+      g.querySelectorAll('li').forEach(function (li) {
+        var ok = catOk;
+        if (ok && tier) ok = (li.getAttribute('data-tier') || '').split(' ').indexOf(tier) >= 0;
+        if (ok && openToday) ok = (li.getAttribute('data-closed') || '').split(',').indexOf(String(today)) < 0;
+        li.hidden = !ok;
+        if (ok) { any = true; shown++; }
+      });
+      g.hidden = !any;
+    });
+    count.textContent = (shown === items.length ? 'Showing all ' + shown + ' places.' : 'Showing ' + shown + ' of ' + items.length + ' places.') +
+      (openToday ? ' Hiding places closed on ' + names[today] + ' (Tokyo time).' : '') + ' Each one has a Tabelog link and a map pin.';
+  }
+  function wire(id, attr, set) {
+    var box = document.getElementById(id);
+    box.querySelectorAll('button[' + attr + ']').forEach(function (b) {
+      b.addEventListener('click', function () {
+        box.querySelectorAll('button[' + attr + ']').forEach(function (o) { o.setAttribute('aria-pressed', 'false'); });
+        b.setAttribute('aria-pressed', 'true');
+        set(b.getAttribute(attr));
+        run();
+      });
+    });
+  }
+  wire('chips-cat', 'data-cat', function (v) { cat = v; });
+  wire('chips-tier', 'data-tier', function (v) { tier = v; });
+  var ot = document.getElementById('open-today');
+  ot.addEventListener('click', function () {
+    openToday = !openToday;
+    ot.setAttribute('aria-pressed', openToday ? 'true' : 'false');
+    run();
+  });
+  run();
+})();
+</script>
+
+</body>
+</html>
