@@ -58,16 +58,45 @@
   .lede { margin: 0; color: var(--muted); max-width: 34rem; }
 
   nav.jump { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg);
-    border-block: 1px solid var(--rule); margin-inline: -18px; padding: .55rem 18px; overflow-x: auto; }
-  nav.jump ul { list-style: none; margin: 0; padding: 0; display: flex; gap: .45rem; white-space: nowrap; }
-  nav.jump a { display: inline-block; font: 600 .8rem/1 var(--mono); color: var(--ink); text-decoration: none;
-    border: 1px solid var(--rule); border-radius: 999px; padding: .5rem .8rem; background: var(--surface); }
-  nav.jump a:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    border-block: 1px solid var(--rule); margin-inline: -18px; padding: .45rem 18px; }
+  nav.jump .bar { display: flex; align-items: center; gap: .4rem; }
+  nav.jump button { font: 600 .8rem/1 var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 999px; padding: .55rem .75rem; cursor: pointer; }
+  nav.jump #toc-btn { flex: 1; min-width: 0; display: flex; align-items: center; gap: .45rem; text-align: left; }
+  nav.jump #toc-btn .ico { font-size: .95rem; line-height: 1; }
+  nav.jump #toc-btn .cur { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-weight: 500; }
+  nav.jump #toc-btn .cur:not(:empty)::before { content: "· "; }
+  nav.jump #toc-btn[aria-expanded="true"] { background: var(--sign); color: var(--sign-ink); border-color: var(--sign); }
+  nav.jump #toc-btn[aria-expanded="true"] .cur { color: var(--sign-ink); opacity: .75; }
+  nav.jump .step { flex: none; width: 2.4rem; padding-inline: 0; font-size: 1.15rem; line-height: .8; }
+  nav.jump .step[disabled] { opacity: .35; cursor: default; }
+  nav.jump .panel { position: absolute; left: 0; right: 0; top: 100%; background: var(--bg); border-bottom: 1px solid var(--rule);
+    padding: .65rem 18px .9rem; box-shadow: 0 14px 28px rgba(0, 0, 0, .14); max-height: calc(100vh - 4.5rem); overflow: auto; }
+  nav.jump .panel[hidden] { display: none; }
+  nav.jump .panel ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; }
+  @media (min-width: 560px) { nav.jump .panel ol { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  nav.jump .panel a { display: flex; align-items: center; gap: .5rem; font: 600 .84rem/1.2 var(--body); color: var(--ink); text-decoration: none;
+    border: 1px solid var(--rule); border-radius: 8px; padding: .5rem .6rem; background: var(--surface); min-height: 2.6rem; }
+  nav.jump .panel a .plate { font-size: .62rem; padding: .3rem .4rem; }
+  nav.jump .panel a[aria-current="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+  nav.jump .panel .row { display: flex; gap: .45rem; margin-top: .65rem; flex-wrap: wrap; align-items: center; }
+  nav.jump .panel .row a.tool { font: 600 .78rem/1 var(--mono); color: var(--ink); text-decoration: none; border: 1px solid var(--rule);
+    border-radius: 999px; padding: .55rem .75rem; background: var(--surface); }
+  nav.jump a:focus-visible, nav.jump button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  section { padding-block: 1.9rem .4rem; scroll-margin-top: 3.6rem; }
-  h2 { display: flex; align-items: center; gap: .6rem; font: 700 1.45rem/1.2 var(--display); margin: 0 0 .9rem; text-wrap: balance; }
-  h2 .plate { font: 600 .7rem/1 var(--mono); letter-spacing: .1em; background: var(--sign); color: var(--sign-ink);
+  section { padding-block: 1.9rem .4rem; scroll-margin-top: 3.4rem; }
+  h2 { display: flex; align-items: center; gap: .6rem; font: 700 1.45rem/1.2 var(--display); margin: 0 0 .9rem; text-wrap: balance; cursor: pointer; }
+  h2 .h2-text { flex: 1; }
+  .plate { font: 600 .7rem/1 var(--mono); letter-spacing: .1em; background: var(--sign); color: var(--sign-ink);
     padding: .38rem .5rem; border-radius: 4px; flex: none; }
+  button.fold { flex: none; width: 2rem; height: 2rem; border-radius: 50%; border: 1px solid var(--rule); background: var(--surface);
+    cursor: pointer; position: relative; padding: 0; }
+  button.fold::before { content: ""; position: absolute; left: 50%; top: 50%; width: .5rem; height: .5rem; border-right: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink); transform: translate(-50%, -72%) rotate(45deg); transition: transform .15s; }
+  section[data-folded] button.fold::before { transform: translate(-50%, -30%) rotate(-135deg); }
+  section[data-folded] .body { display: none; }
+  section[data-folded] { padding-block: .9rem .2rem; border-bottom: 1px solid var(--rule); }
+  section[data-folded] h2 { margin-bottom: 0; }
   h3 { font: 700 1.05rem/1.3 var(--display); margin: 1.4rem 0 .5rem; }
   p { margin: 0 0 .85rem; }
   a { color: var(--accent); }
@@ -214,7 +243,8 @@
 
   @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
   @media print {
-    nav.jump, .chips, .toolbar, .count { display: none; }
+    nav.jump, .chips, .toolbar, .count, button.fold { display: none; }
+    section[data-folded] .body { display: block; }
     ul.eats li[hidden] { display: grid; }
     .group[hidden] { display: block; }
     body { font-size: 11.5pt; }
@@ -231,10 +261,11 @@
     <span class="eyebrow">October 2026 · base in Shirokane, Minato</span>
     <h1>Tokyo Field Guide<span class="ja">東京 · 初めての方へ</span></h1>
     <p class="lede">The layout of the city, your corner of it, day trips, museums and sculpture, amusement parks, where to eat and shop, the days with older relatives, and the mistakes first-timers make.</p>
-    <p class="updated">Last updated <time datetime="2026-10-19">19 Oct 2026, 05:39 JST</time> · <a href="#changes">what changed</a></p>
+    <p class="updated">Last updated <time datetime="2026-10-19">19 Oct 2026, 07:30 JST</time> · <a href="#changes">what changed</a></p>
     <details class="changes" id="changes">
       <summary>What changed</summary>
       <ul class="points">
+        <li><b>19 Oct, late morning.</b> New navigation: a Contents button in the sticky bar that names the section you are in and opens a grid of all thirteen, previous and next arrows, and every chapter folds from its heading (Fold all turns the page into a table of contents; folds are remembered on your phone).</li>
         <li><b>19 Oct, mid-morning.</b> All six maps redrawn on OpenStreetMap geometry: real Yamanote track, Tokyo Bay shoreline, rivers, parks, the Mita, Namboku and Oedo lines with a key, road names around the base, and the Kanto coastline on the day-trip map. Labels now have a halo so they read over the lines.</li>
         <li><b>19 Oct, morning.</b> Vintage watches card in Shopping: Fire Kids and Jack Road at Nakano Broadway, Watch CTI in Ginza for Grand Seiko and King Seiko, Komehyo, the Seiko Museum, and what to ask before buying.</li>
         <li><b>19 Oct, early.</b> Breakfast sets that open by 7:00–8:30 (Shinpachi, Tsukiji market, Katsuo Shokudo) added to Where to eat, with navigate links.</li>
@@ -248,25 +279,37 @@
   </header>
 
   <nav class="jump" aria-label="Sections">
-    <ul>
-      <li><a href="#shape">The loop</a></li>
-      <li><a href="#base">Your base</a></li>
-      <li><a href="#trips">Day trips</a></li>
-      <li><a href="#museums">Museums</a></li>
-      <li><a href="#parks">Parks</a></li>
-      <li><a href="#shop">Shopping</a></li>
-      <li><a href="#moving">Getting around</a></li>
-      <li><a href="#booking">Hours &amp; booking</a></li>
-      <li><a href="#eat">Where to eat</a></li>
-      <li><a href="#food">Dining rules</a></li>
-      <li><a href="#relatives">Relatives</a></li>
-      <li><a href="#manners">Manners</a></li>
-      <li><a href="#help">Help</a></li>
-    </ul>
+    <div class="bar">
+      <button type="button" id="toc-btn" aria-expanded="false" aria-controls="toc-panel"><span class="ico" aria-hidden="true">☰</span> Contents <span class="cur" id="toc-cur"></span></button>
+      <button type="button" class="step" id="toc-prev" aria-label="Previous section">‹</button>
+      <button type="button" class="step" id="toc-next" aria-label="Next section">›</button>
+    </div>
+    <div class="panel" id="toc-panel" hidden>
+      <ol>
+        <li><a href="#shape" aria-current="false"><span class="plate">JY</span>The loop</a></li>
+        <li><a href="#base" aria-current="false"><span class="plate">N03</span>Your base</a></li>
+        <li><a href="#trips" aria-current="false"><span class="plate">OH</span>Day trips</a></li>
+        <li><a href="#museums" aria-current="false"><span class="plate">美</span>Museums</a></li>
+        <li><a href="#parks" aria-current="false"><span class="plate">遊</span>Parks</a></li>
+        <li><a href="#shop" aria-current="false"><span class="plate">買</span>Shopping</a></li>
+        <li><a href="#moving" aria-current="false"><span class="plate">IC</span>Getting around</a></li>
+        <li><a href="#booking" aria-current="false"><span class="plate">10:00</span>Hours &amp; booking</a></li>
+        <li><a href="#eat" aria-current="false"><span class="plate">食</span>Where to eat</a></li>
+        <li><a href="#food" aria-current="false"><span class="plate">¥</span>Dining rules</a></li>
+        <li><a href="#relatives" aria-current="false"><span class="plate">家</span>Relatives</a></li>
+        <li><a href="#manners" aria-current="false"><span class="plate">礼</span>Manners</a></li>
+        <li><a href="#help" aria-current="false"><span class="plate">SOS</span>Help</a></li>
+      </ol>
+      <div class="row">
+        <button type="button" id="fold-all" aria-pressed="false">Fold all</button>
+        <a href="#changes" class="tool">What changed</a>
+      </div>
+    </div>
   </nav>
 
   <section id="shape">
-    <h2><span class="plate">JY</span>The shape of the city</h2>
+    <h2><span class="plate">JY</span><span class="h2-text">The shape of the city</span><button class="fold" type="button" aria-expanded="true" aria-controls="shape-body" aria-label="Collapse The shape of the city"></button></h2>
+    <div class="body" id="shape-body">
     <p>Tokyo looks endless on a map. Almost everything a visitor wants sits on or near one rail loop, the JR Yamanote line. It has about 30 stations and takes roughly an hour to go all the way around.</p>
 
     <figure class="map">
@@ -1140,10 +1183,12 @@
       <li style="--line: var(--accent)"><b>The bay, southeast.</b> Toyosu has teamLab Planets and the fish market. Tsukiji's outer market is the better place to eat. Odaiba is a short ride from either.</li>
       <li><b>"Tokyo" is 23 city wards plus suburbs and islands.</b> Very little of what you came for is outside the wards, apart from day trips.</li>
     </ul>
+    </div>
   </section>
 
   <section id="base">
-    <h2><span class="plate">N03</span>Your corner: Shirokane</h2>
+    <h2><span class="plate">N03</span><span class="h2-text">Your corner: Shirokane</span><button class="fold" type="button" aria-expanded="true" aria-controls="base-body" aria-label="Collapse Your corner: Shirokane"></button></h2>
+    <div class="body" id="base-body">
     <p>Shirokane is quiet, upscale and residential, in the southern middle of Minato ward. Expect few tourists, good restaurants and calm evenings. Your station is Shirokane-takanawa <span class="stn" style="--line: var(--namboku)"><b>N</b>03</span> <span class="stn" style="--line: var(--mita)"><b>I</b>03</span>, about a 7-minute walk.</p>
 
     <div class="lines">
@@ -2017,10 +2062,12 @@
       <li><b>Tokyo Metropolitan Teien Art Museum.</b> <a class="nav" href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=Tokyo%20Metropolitan%20Teien%20Art%20Museum" target="_blank" rel="noopener" aria-label="Directions to Tokyo Metropolitan Teien Art Museum in Google Maps">Maps ↗</a> An Art Deco mansion with gardens, near Shirokanedai. Good with older relatives.</li>
       <li><b>Roppongi Hills.</b> <a class="nav" href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=Roppongi%20Hills%2C%20Tokyo" target="_blank" rel="noopener" aria-label="Directions to Roppongi Hills, Tokyo in Google Maps">Maps ↗</a> Louise Bourgeois's giant spider sculpture <i>Maman</i> stands outside, and the Mori Art Museum is upstairs.</li>
     </ul>
+    </div>
   </section>
 
   <section id="trips">
-    <h2><span class="plate">OH</span>Day trips for your interests</h2>
+    <h2><span class="plate">OH</span><span class="h2-text">Day trips for your interests</span><button class="fold" type="button" aria-expanded="true" aria-controls="trips-body" aria-label="Collapse Day trips for your interests"></button></h2>
+    <div class="body" id="trips-body">
     <p>Each name opens a live route. Sample trains below were read from Yahoo Transit on 18 October for Wednesday 21 October; the pattern holds on other days but check the day before. Late October is leaf season, so the first train out beats the crowds everywhere on this list.</p>
     <figure class="map">
 <svg viewBox="0 0 440 470" role="img" aria-labelledby="reg-title reg-desc">
@@ -2569,10 +2616,12 @@
         <span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B2%B3%E5%8F%A3%E6%B9%96" target="_blank" rel="noopener">Shinjuku to Kawaguchiko</a> <a class="nav" href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=Kawaguchiko%20Station" target="_blank" rel="noopener" aria-label="Directions to Kawaguchiko Station in Google Maps">Maps ↗</a></span></div>
     </div>
     <p>Tokyo Disney Resort is under <a href="#parks">Amusement parks</a>. Without leaving the city, the National Museum of Western Art in Ueno has major Rodin bronzes in its front courtyard; see <a href="#museums">Museums</a>.</p>
+    </div>
   </section>
 
   <section id="museums">
-    <h2><span class="plate">美</span>Museums and sculpture</h2>
+    <h2><span class="plate">美</span><span class="h2-text">Museums and sculpture</span><button class="fold" type="button" aria-expanded="true" aria-controls="museums-body" aria-label="Collapse Museums and sculpture"></button></h2>
+    <div class="body" id="museums-body">
     <p>The trap is the closed day. Most museums close on Monday, the Roppongi contemporary ones close on Tuesday instead, and a few close between exhibitions. On this trip the Mondays are 19 and 26 October and the Tuesdays are 20 and 27. Minutes are door-to-door from the Airbnb; tap a name for a live route.</p>
 
     <figure class="map">
@@ -3469,10 +3518,12 @@
       <li><b>Big museums are cheap,</b> usually ¥1,000 to ¥2,000. teamLab is the exception at ¥3,400 and up.</li>
       <li><b>Friday and Saturday evenings</b> are when the Ueno museums stay open late and the crowds thin.</li>
     </ul>
+    </div>
   </section>
 
   <section id="parks">
-    <h2><span class="plate">遊</span>Amusement parks</h2>
+    <h2><span class="plate">遊</span><span class="h2-text">Amusement parks</span><button class="fold" type="button" aria-expanded="true" aria-controls="parks-body" aria-label="Collapse Amusement parks"></button></h2>
+    <div class="body" id="parks-body">
     <p>Tokyo Disney Resort is the main event and it is in Halloween mode for your whole stay, which runs to 31 October. Minutes are door-to-door from the Airbnb.</p>
     <div class="shops">
       <div style="--k: var(--oedo)"><h4>Tokyo Disney Resort, 45 minutes</h4>
@@ -3488,10 +3539,12 @@
         <p>The local alternative, on the Odakyu line to the west with a gondola from the station to the gate. Coasters and a big illumination show that starts in late October. Only if Disney is sold out or you want a second park day.</p>
         <span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%AA%AD%E5%A3%B2%E3%83%A9%E3%83%B3%E3%83%89%E5%89%8D" target="_blank" rel="noopener">Home to Yomiuriland-mae</a> <a class="nav" href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=Yomiuriland-mae%20Station" target="_blank" rel="noopener" aria-label="Directions to Yomiuriland-mae Station in Google Maps">Maps ↗</a></span></div>
     </div>
+    </div>
   </section>
 
   <section id="shop">
-    <h2><span class="plate">買</span>Shopping</h2>
+    <h2><span class="plate">買</span><span class="h2-text">Shopping</span><button class="fold" type="button" aria-expanded="true" aria-controls="shop-body" aria-label="Collapse Shopping"></button></h2>
+    <div class="body" id="shop-body">
     <p>Tokyo shopping is organised by district, and each district does one thing well. Pick the kind of shopping first, then the area. Minutes are door-to-door from the Airbnb by train, read from Yahoo Transit for a weekday late morning. Tap any name for a live route.</p>
 
     <figure class="map">
@@ -4392,10 +4445,12 @@
       <li><b>Post offices ship abroad</b> and sell the boxes. Heavy ceramics are cheaper to post than to carry.</li>
       <li><b>Knives and anything sharp go in checked bags.</b> Big electronics are often cheaper at home once you add the voltage question; small things like earphones and cameras are the good buys.</li>
     </ul>
+    </div>
   </section>
 
   <section id="moving">
-    <h2><span class="plate">IC</span>Getting around</h2>
+    <h2><span class="plate">IC</span><span class="h2-text">Getting around</span><button class="fold" type="button" aria-expanded="true" aria-controls="moving-body" aria-label="Collapse Getting around"></button></h2>
+    <div class="body" id="moving-body">
     <ul class="points">
       <li><b>Pick your exit before you arrive.</b> Big stations have dozens of exits, and the wrong one can add 10 minutes outside. Route apps list the exit number.</li>
       <li><b>JR, Tokyo Metro and Toei are separate companies.</b> One IC card pays for all of them. Changing between companies sometimes means passing through orange transfer gates.</li>
@@ -4413,19 +4468,23 @@
       <li><b>Big suitcases need a reserved space on the Shinkansen.</b> Book the oversized-baggage seat when you buy the ticket.</li>
       <li><b>Skip the nationwide Japan Rail Pass.</b> It rarely pays off for a Tokyo base with day trips.</li>
     </ul>
+    </div>
   </section>
 
   <section id="booking">
-    <h2><span class="plate">10:00</span>Hours and booking</h2>
+    <h2><span class="plate">10:00</span><span class="h2-text">Hours and booking</span><button class="fold" type="button" aria-expanded="true" aria-controls="booking-body" aria-label="Collapse Hours and booking"></button></h2>
+    <div class="body" id="booking-body">
     <ul class="points">
       <li><b>Many museums close on Mondays.</b> On this trip that's 19 and 26 October. When a Monday is a public holiday, the closure usually moves to Tuesday.</li>
       <li><b>Book popular places ahead.</b> Disney tickets are dated. teamLab entry is timed. The Ghibli Museum sells a month in advance, so October is probably gone.</li>
       <li><b>Shops open around 10 or 11.</b> Many restaurants close between lunch and dinner, roughly 14:30–17:30.</li>
     </ul>
+    </div>
   </section>
 
   <section id="eat">
-    <h2><span class="plate">食</span>Where to eat near the base</h2>
+    <h2><span class="plate">食</span><span class="h2-text">Where to eat near the base</span><button class="fold" type="button" aria-expanded="true" aria-controls="eat-body" aria-label="Collapse Where to eat near the base"></button></h2>
+    <div class="body" id="eat-body">
     <p>These come from Tabelog, Japan's restaurant guide. Its scores run low: 3.5 is very good and anything over 4.0 is rare. Prices are Tabelog's average spend per person, before drinks. Everything here is within one or two stops of Shirokane-takanawa, most of it walkable, except the conveyor-belt sushi and the breakfast places, which live at the big stations and the fish market.</p>
 
     <figure class="map">
@@ -5055,10 +5114,12 @@
       <li data-tier="lunch" data-closed="2,3"><span class="score">3.78</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13002775/">Naniwaya Sohonten</a><span class="pick">Tabelog 100</span><span class="meta">Azabu-Juban, 90 m · taiyaki, the fish-shaped bean-paste pastry, since 1909 · closed Tuesday and Wednesday · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.65620,139.73512" target="_blank" rel="noopener">navigate</a></span></span></li>
     </ul>
     </div>
+    </div>
   </section>
 
   <section id="food">
-    <h2><span class="plate">¥</span>How dining works here</h2>
+    <h2><span class="plate">¥</span><span class="h2-text">How dining works here</span><button class="fold" type="button" aria-expanded="true" aria-controls="food-body" aria-label="Collapse How dining works here"></button></h2>
+    <div class="body" id="food-body">
     <h3>Getting a table</h3>
     <ul class="points">
       <li><b>Lunch is the bargain.</b> The same kitchen often charges half at lunch. Omakase counters that run ¥18,000 at night may do a ¥3,000 lunch set.</li>
@@ -5083,10 +5144,12 @@
       <li><b>Carry cash.</b> Small restaurants, ticket-machine shops, shrines and market stalls may not take cards. 7-Eleven ATMs accept foreign cards.</li>
       <li><b>Bring your passport for tax-free shopping</b> at participating stores on larger purchases.</li>
     </ul>
+    </div>
   </section>
 
   <section id="relatives">
-    <h2><span class="plate">家</span>Days with the relatives</h2>
+    <h2><span class="plate">家</span><span class="h2-text">Days with the relatives</span><button class="fold" type="button" aria-expanded="true" aria-controls="relatives-body" aria-label="Collapse Days with the relatives"></button></h2>
+    <div class="body" id="relatives-body">
     <p>Tokyo is kind to slow walkers once you stop treating the train network as a sport. The rules below are for the days the older members of the family are along.</p>
     <h3>Pace</h3>
     <ul class="points">
@@ -5115,10 +5178,12 @@
       <li><b>Pharmacies</b> with a green cross sign are on most streets, and see the Help section for the hospital nearest the Airbnb with English-speaking staff.</li>
       <li><b>Bring prescriptions in their original packaging</b> with a copy of the script. Some common US medicines, including pseudoephedrine decongestants and ADHD stimulants, are restricted in Japan.</li>
     </ul>
+    </div>
   </section>
 
   <section id="manners">
-    <h2><span class="plate">礼</span>Manners that matter</h2>
+    <h2><span class="plate">礼</span><span class="h2-text">Manners that matter</span><button class="fold" type="button" aria-expanded="true" aria-controls="manners-body" aria-label="Collapse Manners that matter"></button></h2>
+    <div class="body" id="manners-body">
     <ul class="points">
       <li><b>No phone calls on trains,</b> and keep your voice low.</li>
       <li><b>Eating while walking is frowned upon</b> in most places. Market streets are the exception.</li>
@@ -5127,10 +5192,12 @@
       <li><b>Ignore street touts</b> in Roppongi and Kabukicho. Some bars they lead you to run up huge bills.</li>
     </ul>
     <p>Late October is usually mild and good for walking. It is also the tail of typhoon season, so check train status before a day trip.</p>
+    </div>
   </section>
 
   <section id="help">
-    <h2><span class="plate">SOS</span>If something goes wrong</h2>
+    <h2><span class="plate">SOS</span><span class="h2-text">If something goes wrong</span><button class="fold" type="button" aria-expanded="true" aria-controls="help-body" aria-label="Collapse If something goes wrong"></button></h2>
+    <div class="body" id="help-body">
     <div class="phones">
       <div class="phone"><span class="num">110</span><span>Police</span></div>
       <div class="phone"><span class="num">119</span><span>Ambulance or fire</span></div>
@@ -5145,6 +5212,7 @@
       <li><b>Lost card or cash.</b> 7-Eleven and post office ATMs take foreign cards. Call your bank's number on the card; Japan's country code is +81.</li>
       <li><b>Typhoon.</b> Late October is the tail of the season. If one is forecast, operators announce suspensions a day ahead; check the status links under Getting around and don't plan a day trip for that day.</li>
     </ul>
+    </div>
   </section>
 
   <footer>
@@ -5152,6 +5220,79 @@
   </footer>
 </div>
 <script>
+(function () {
+  var secs = [].slice.call(document.querySelectorAll('.wrap > section[id]'));
+  var btn = document.getElementById('toc-btn'), panel = document.getElementById('toc-panel'), cur = document.getElementById('toc-cur');
+  var prev = document.getElementById('toc-prev'), next = document.getElementById('toc-next'), foldAll = document.getElementById('fold-all');
+  var links = [].slice.call(panel.querySelectorAll('ol a'));
+  var names = links.map(function (a) { var pl = a.querySelector('.plate'); return a.textContent.replace(pl ? pl.textContent : '', '').trim(); });
+  var folds = {};
+  try { folds = JSON.parse(localStorage.getItem('fg-folds') || '{}') || {}; } catch (e) { folds = {}; }
+  function allFolded() { return secs.every(function (x) { return x.hasAttribute('data-folded'); }); }
+  function setFold(sec, folded, save) {
+    if (folded) sec.setAttribute('data-folded', ''); else sec.removeAttribute('data-folded');
+    var b = sec.querySelector('button.fold');
+    b.setAttribute('aria-expanded', folded ? 'false' : 'true');
+    b.setAttribute('aria-label', (folded ? 'Expand ' : 'Collapse ') + sec.querySelector('.h2-text').textContent);
+    folds[sec.id] = folded;
+    if (save !== false) { try { localStorage.setItem('fg-folds', JSON.stringify(folds)); } catch (e) {} }
+    var all = allFolded();
+    foldAll.textContent = all ? 'Unfold all' : 'Fold all';
+    foldAll.setAttribute('aria-pressed', all ? 'true' : 'false');
+  }
+  secs.forEach(function (sec) {
+    if (folds[sec.id]) setFold(sec, true, false);
+    sec.querySelector('h2').addEventListener('click', function (e) {
+      if (e.target.closest('a')) return;
+      setFold(sec, !sec.hasAttribute('data-folded'));
+    });
+  });
+  foldAll.addEventListener('click', function () { var all = allFolded(); secs.forEach(function (x) { setFold(x, !all); }); });
+  function unfoldHash() {
+    var id = location.hash.slice(1); if (!id) return;
+    var el = document.getElementById(id), sec = el && el.closest('section');
+    if (sec && sec.hasAttribute('data-folded')) setFold(sec, false);
+  }
+  window.addEventListener('hashchange', unfoldHash);
+  unfoldHash();
+  var current = -1;
+  function setCurrent(i) {
+    if (i === current) return;
+    current = i;
+    cur.textContent = i >= 0 ? names[i] : '';
+    links.forEach(function (a, j) { a.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    prev.disabled = i <= 0;
+    next.disabled = i >= secs.length - 1;
+  }
+  function onScroll() {
+    var line = 64, i = -1;
+    for (var k = 0; k < secs.length; k++) { if (secs[k].getBoundingClientRect().top <= line) i = k; }
+    setCurrent(i);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+  function openPanel(open) {
+    panel.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var c = links[current >= 0 ? current : 0]; if (c) c.focus(); }
+  }
+  function go(i) {
+    var sec = secs[i]; if (!sec) return;
+    openPanel(false);
+    if (sec.hasAttribute('data-folded')) setFold(sec, false);
+    try { history.pushState(null, '', '#' + sec.id); } catch (e) {}
+    sec.scrollIntoView({ block: 'start' });
+    setTimeout(onScroll, 50);
+  }
+  prev.addEventListener('click', function () { go(current - 1); });
+  next.addEventListener('click', function () { go(current + 1); });
+  btn.addEventListener('click', function () { openPanel(panel.hidden); });
+  links.forEach(function (a, j) { a.addEventListener('click', function (e) { e.preventDefault(); go(j); }); });
+  panel.querySelector('a.tool').addEventListener('click', function () { openPanel(false); });
+  document.addEventListener('click', function (e) { if (!panel.hidden && !panel.contains(e.target) && !btn.contains(e.target)) openPanel(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) { openPanel(false); btn.focus(); } });
+})();
 (function () {
   // Theme toggle. Stored per device; falls back to the system setting.
   var root = document.documentElement, btn = document.getElementById('theme');
