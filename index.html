@@ -216,10 +216,11 @@
     <span class="eyebrow">October 2026 · base in Shirokane, Minato</span>
     <h1>Tokyo Field Guide<span class="ja">東京 · 初めての方へ</span></h1>
     <p class="lede">The layout of the city, your corner of it, day trips, museums and sculpture, amusement parks, where to eat and shop, the days with older relatives, and the mistakes first-timers make.</p>
-    <p class="updated">Last updated <time datetime="2026-10-18">18 Oct 2026, 18:43 JST</time> · <a href="#changes">what changed</a></p>
+    <p class="updated">Last updated <time datetime="2026-10-19">19 Oct 2026, 03:48 JST</time> · <a href="#changes">what changed</a></p>
     <details class="changes" id="changes">
       <summary>What changed</summary>
       <ul class="points">
+        <li><b>19 Oct, early.</b> Breakfast sets that open by 7:00–8:30 (Shinpachi, Tsukiji market, Katsuo Shokudo) added to Where to eat, with navigate links.</li>
         <li><b>18 Oct, evening.</b> The time, shopping and museum maps are now true-scale city maps like the loop map, each place at its real position with minutes in the label. Himawari Zushi in Shinjuku marked as tried.</li>
         <li><b>18 Oct, afternoon.</b> Maps redrawn from real coordinates: the city map is now to scale with the true Yamanote loop, the minute-rings use true compass bearings, and the day trips have a regional map. Conveyor-belt sushi added to Where to eat. This change list.</li>
         <li><b>18 Oct, morning.</b> Google Maps directions links everywhere. New chapters: Museums and sculpture, Amusement parks, Days with the relatives, day-trip playbooks, expanded Help. Shopping chapter with the camera stores.</li>
@@ -677,7 +678,7 @@
 
   <section id="eat">
     <h2><span class="plate">食</span>Where to eat near the base</h2>
-    <p>These come from Tabelog, Japan's restaurant guide. Its scores run low: 3.5 is very good and anything over 4.0 is rare. Prices are Tabelog's average spend per person, before drinks. Everything here is within one or two stops of Shirokane-takanawa, most of it walkable, except the conveyor-belt sushi, which lives at the big stations.</p>
+    <p>These come from Tabelog, Japan's restaurant guide. Its scores run low: 3.5 is very good and anything over 4.0 is rare. Prices are Tabelog's average spend per person, before drinks. Everything here is within one or two stops of Shirokane-takanawa, most of it walkable, except the conveyor-belt sushi and the breakfast places, which live at the big stations and the fish market.</p>
 
     <figure class="map">
 <svg viewBox="0 0 440 560" role="img" aria-labelledby="eats-title eats-desc">
@@ -829,7 +830,7 @@
     <div class="chips" id="chips-cat" role="group" aria-label="Cuisine filter">
       <span class="lab">Cuisine</span>
       <button type="button" data-cat="" aria-pressed="true">All</button>
-      <button type="button" data-cat="set noodle tempura" aria-pressed="false">Set meals &amp; noodles</button>
+      <button type="button" data-cat="breakfast set noodle tempura" aria-pressed="false">Set meals &amp; noodles</button>
       <button type="button" data-cat="sushi omakase kaiten" aria-pressed="false">Sushi</button>
       <button type="button" data-cat="beef pot" aria-pressed="false">Wagyu &amp; hot pot</button>
       <button type="button" data-cat="tori" aria-pressed="false">Yakitori</button>
@@ -843,7 +844,22 @@
       <button type="button" data-tier="high" aria-pressed="false">Splurge</button>
       <button type="button" id="open-today" aria-pressed="false">Open today</button>
     </div>
-    <p class="count" id="eat-count">Showing all 52 places. Each one has a Tabelog link and a map pin.</p>
+    <p class="count" id="eat-count">Showing all 61 places. Each one has a Tabelog link and a map pin.</p>
+    <div class="group" data-cat="breakfast">
+    <h3>Breakfast sets, open by 7:00–8:30, ¥700–2,000</h3>
+    <p>Nearly every set-meal place in Tokyo opens at 11:00. These are the exceptions: grilled fish, rice and miso soup from early morning, checked against each shop's posted hours on Tabelog. The chains carry Tabelog's "hours may change" note, so glance at the page before you go.</p>
+    <ul class="eats">
+      <li data-tier="lunch" data-closed=""><span class="score">3.31</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1314/A131402/13193244/">Shinpachi Shokudo, Tamachi</a><span class="pick">closest, 7:00</span><span class="meta">Tamachi 174 m · 7:00–23:00 daily · under ¥999 · Grilled-fish teishoku chain, under ¥1,000. One stop north on the Mita line, about 15 minutes door to door. The same chain has 7:00 branches in Shibuya and Nishi-Gotanda; the Shinjuku south-east exit branch runs 4:00 to 3:00. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.64693,139.74645" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch" data-closed=""><span class="score">3.24</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1307/A130702/13297218/">Azabu Ami Shiro</a><span class="meta">Azabu Juban 233 m · 7:30–22:30 daily · ¥2,000–¥2,999 · Charcoal-grill izakaya that serves breakfast; the walkable option. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.65445,139.73641" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch" data-closed=""><span class="score">3.48</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1303/A130302/13277728/">Fu Teishokuya, Ebisu</a><span class="meta">Ebisu 223 m · 7:30–15:00 weekdays, 7:30–21:30 weekends · ¥1,000–¥1,999 · Organic Japanese sets. Mita line to Meguro, one Yamanote stop, 14 minutes. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.64492,139.71198" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch" data-closed=""><span class="score">3.46</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1314/A131403/13126227/">Shinagawa Hioki</a><span class="meta">Shinagawa 94 m · 7:00–22:30 weekdays, 7:00–21:00 weekends · ¥1,000–¥1,999 · Fish sets and rice bowls inside Ecute Shinagawa South, 15 minutes. Good before a Shinkansen. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.62791,139.73900" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch" data-closed="0"><span class="score">3.58</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1313/A131301/13220295/">Tadokoro Foods eat-in, Tsukiji</a><span class="pick">the market trip, 6:30</span><span class="meta">Tsukijishijo 267 m · 6:30–14:00, closed Sunday and some Wednesdays · under ¥999 · Tsukiji is 24 minutes: Namboku one stop to Azabu-Juban, then the Oedo line to Tsukijishijo. Under ¥1,000. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.66562,139.76970" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch" data-closed="0"><span class="score">3.57</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1313/A131301/13024450/">Chosei An, Tsukiji</a><span class="meta">Tsukiji 324 m · 7:00–14:30 Mon, Tue, Thu, Fri; 7:00–14:00 Sat; closed Sunday · ¥2,000–¥2,999 · Soba and seafood sets. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.66531,139.77151" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch" data-closed="0"><span class="score">3.48</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1313/A131301/13205798/">Oda Yasu, Tsukiji Uogashi</a><span class="meta">Tsukiji 375 m · 7:00–14:00, closed Sunday, holidays and market closure days · ¥1,000–¥1,999 · Fried fish and croquette sets. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.66491,139.77118" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch" data-closed="0"><span class="score">3.49</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1313/A131301/13040870/">Toto Grill, Tsukiji</a><span class="meta">Tsukiji 447 m · 8:00 weekdays, 7:00 Saturday, closed Sunday and holidays · under ¥999 · Grilled fish and seafood plates. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.66410,139.77183" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch" data-closed="3,4"><span class="score">3.67</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1303/A130301/13237611/">Katsuo Shokudo, Shibuya</a><span class="pick">the famous one</span><span class="meta">Shibuya 548 m · 8:30–13:00, closed Wednesday and Thursday · ¥2,000–¥2,999 · The katsuobushi breakfast: rice, miso soup and a mountain of fresh-shaved bonito flakes. 17 minutes from the base. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.65412,139.70211" target="_blank" rel="noopener">navigate</a></span></span></li>
+    </ul>
+    </div>
     <div class="group" data-cat="set">
     <h3>Set-meal lunches (teishoku), around ¥1,000–2,000</h3>
     <p>A tray with a main, rice, miso soup and pickles. The best value meal in Japan and easy with older relatives. Most of these are weekday-lunch places with short hours.</p>
