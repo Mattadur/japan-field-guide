@@ -145,6 +145,11 @@
   footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .85rem; }
 
   .toolbar { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .updated { margin: 0; font: 600 .78rem/1.4 var(--mono); color: var(--muted); }
+  .updated time { color: var(--ink); }
+  details.changes { font-size: .92rem; border: 1px solid var(--rule); border-radius: 8px; padding: .5rem .85rem; background: var(--surface); }
+  details.changes summary { cursor: pointer; font: 600 .78rem/1.4 var(--mono); color: var(--muted); }
+  details.changes ul { margin-top: .5rem; }
   .tool, .chips button { font: 600 .78rem/1 var(--mono); color: var(--ink); background: var(--surface);
     border: 1px solid var(--rule); border-radius: 999px; padding: .5rem .8rem; cursor: pointer; text-decoration: none; }
   .chips { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: 0 0 .6rem; }
@@ -169,6 +174,17 @@
   .pill { display: inline-block; font: 600 .68rem/1 var(--mono); letter-spacing: .04em; color: var(--home); border: 1px solid var(--home); border-radius: 999px; padding: .2rem .45rem; margin: 0 .2rem; vertical-align: .1em; white-space: nowrap; }
   .phones .phone .num.small { font-size: .92rem; line-height: 1.3; letter-spacing: -.01em; }
   figure.map .lead { stroke: var(--muted); stroke-width: .7; opacity: .7; }
+  figure.map .bay { fill: var(--rule); opacity: .5; stroke: none; }
+  figure.map .palace { fill: var(--map-loop); opacity: .25; stroke: none; }
+  figure.map .loop { fill: none; stroke: var(--map-loop); stroke-width: 5; stroke-linejoin: round; }
+  figure.map .loop.thin { stroke-width: 2; }
+  figure.map circle.stn { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+  figure.map .tick { stroke: var(--muted); stroke-width: 1; }
+  figure.map .compass { font: 700 10px var(--body); fill: var(--muted); }
+  figure.map .grat { stroke: var(--rule); stroke-width: .6; stroke-dasharray: 3 3; }
+  figure.map .scale { stroke: var(--ink); stroke-width: 1.2; }
+  figure.map .peak { fill: var(--muted); }
+  figure.map .dot.ref { fill: var(--muted); }
   table.trips td a { color: var(--ink); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--rule); }
   .shops { display: grid; gap: .8rem; margin: .4rem 0 1.2rem; }
   .shops > div { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--k, var(--rule)); border-radius: 8px; padding: .8rem .95rem; }
@@ -200,6 +216,15 @@
     <span class="eyebrow">October 2026 · base in Shirokane, Minato</span>
     <h1>Tokyo Field Guide<span class="ja">東京 · 初めての方へ</span></h1>
     <p class="lede">The layout of the city, your corner of it, day trips, museums and sculpture, amusement parks, where to eat and shop, the days with older relatives, and the mistakes first-timers make.</p>
+    <p class="updated">Last updated <time datetime="2026-10-18">18 Oct 2026, 15:48 JST</time> · <a href="#changes">what changed</a></p>
+    <details class="changes" id="changes">
+      <summary>What changed</summary>
+      <ul class="points">
+        <li><b>18 Oct, afternoon.</b> Maps redrawn from real coordinates: the city map is now to scale with the true Yamanote loop, the minute-rings use true compass bearings, and the day trips have a regional map. Conveyor-belt sushi added to Where to eat. This change list.</li>
+        <li><b>18 Oct, morning.</b> Google Maps directions links everywhere. New chapters: Museums and sculpture, Amusement parks, Days with the relatives, day-trip playbooks, expanded Help. Shopping chapter with the camera stores.</li>
+        <li><b>17 Oct.</b> First version: the loop, your base, day trips, getting around, where to eat near the base, dining rules, manners, help.</li>
+      </ul>
+    </details>
     <div class="toolbar"><button class="tool" id="theme" type="button" aria-pressed="false">Dark mode</button></div>
   </header>
 
@@ -226,50 +251,58 @@
     <p>Tokyo looks endless on a map. Almost everything a visitor wants sits on or near one rail loop, the JR Yamanote line. It has about 30 stations and takes roughly an hour to go all the way around.</p>
 
     <figure class="map">
-      <svg viewBox="0 0 420 320" role="img" aria-labelledby="map-title map-desc">
-        <title id="map-title">Schematic map of the Yamanote loop</title>
-        <desc id="map-desc">The green loop with major stations around it. Asakusa and Skytree sit outside to the northeast, Toyosu and Odaiba on the bay to the southeast. Your base in Shirokane is inside the loop near its southern edge.</desc>
-        <path d="M352 205 Q392 250 420 262 L420 320 L300 320 Q330 290 352 205 Z" fill="var(--rule)" opacity=".55"/>
-        <text x="408" y="312" text-anchor="end" class="svg-muted">Tokyo Bay</text>
-        <ellipse cx="245" cy="149" rx="20" ry="15" fill="var(--map-loop)" opacity=".25"/>
-        <ellipse cx="190" cy="160" rx="112" ry="128" fill="none" stroke="var(--map-loop)" stroke-width="7"/>
-        <g fill="var(--surface)" stroke="var(--ink)" stroke-width="2">
-          <circle cx="115" cy="65" r="5"/><circle cx="243" cy="47" r="5"/><circle cx="273" cy="74" r="5"/>
-          <circle cx="297" cy="120" r="5"/><circle cx="302" cy="171" r="6"/><circle cx="289" cy="220" r="5"/>
-          <circle cx="228" cy="280" r="6"/><circle cx="143" cy="276" r="5"/><circle cx="97" cy="232" r="6"/>
-          <circle cx="83" cy="200" r="5"/><circle cx="78" cy="156" r="6"/>
-        </g>
-        <g class="svg-label">
-          <text x="106" y="58" text-anchor="end">Ikebukuro</text>
-          <text x="249" y="39">Nippori</text>
-          <text x="284" y="70">Ueno</text>
-          <text x="310" y="124">Akihabara</text>
-          <text x="316" y="176">Tokyo</text>
-          <text x="301" y="234">Shimbashi</text>
-          <text x="236" y="300">Shinagawa</text>
-          <text x="137" y="296" text-anchor="end">Meguro</text>
-          <text x="86" y="246" text-anchor="end">Shibuya</text>
-          <text x="70" y="208" text-anchor="end">Harajuku</text>
-          <text x="64" y="160" text-anchor="end">Shinjuku</text>
-        </g>
-        <g fill="var(--muted)">
-          <circle cx="328" cy="62" r="4"/><circle cx="372" cy="80" r="4"/>
-          <circle cx="350" cy="250" r="4"/><circle cx="322" cy="284" r="4"/>
-          <circle cx="180" cy="213" r="3.5"/><circle cx="273" cy="198" r="3.5"/>
-        </g>
-        <g class="svg-label">
-          <text x="336" y="66">Asakusa</text>
-          <text x="372" y="97" text-anchor="middle">Skytree</text>
-          <text x="358" y="254">Toyosu</text>
-          <text x="330" y="288">Odaiba</text>
-          <text x="172" y="210" text-anchor="end">Roppongi</text>
-          <text x="266" y="202" text-anchor="end">Ginza</text>
-        </g>
-        <text x="245" y="139" text-anchor="middle" class="svg-muted">Imperial Palace</text>
-        <path d="M196 241 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" fill="var(--home)"/>
-        <text x="206" y="250" class="svg-home">Your base</text>
-      </svg>
-      <figcaption>Schematic, not to scale. North is up.</figcaption>
+      <svg viewBox="0 0 440 430" role="img" aria-labelledby="map-title map-desc">
+<title id="map-title">Central Tokyo to scale: the Yamanote loop, the base and the main destinations</title>
+<desc id="map-desc">A true-scale map of central Tokyo. The Yamanote loop is drawn from its real station positions, the Imperial Palace sits inside its eastern side, Tokyo Bay is to the southeast, and the base in Shirokane is inside the loop near its southern edge. Each destination is labelled with door-to-door minutes from the base and links to a live route search.</desc>
+<polygon points="307,622 256,559 225,458 194,370 215,319 225,289 250,269 276,294 307,306 338,294 369,319 420,306 471,344 512,395 512,622" class="bay"/>
+<text x="379" y="414" class="svg-muted" text-anchor="middle">Tokyo Bay (approx.)</text>
+<ellipse cx="206" cy="209" rx="29" ry="25" class="palace"/>
+<text x="206" y="201" class="svg-muted" text-anchor="middle">Imperial</text>
+<text x="206" y="213" class="svg-muted" text-anchor="middle">Palace</text>
+<polygon points="238.9,215.1 231.4,230.9 224.8,255.1 219.1,281.0 199.9,304.6 185.5,330.7 184.3,347.7 160.6,371.1 150.6,353.8 134.5,338.0 119.9,301.5 105.8,273.5 107.2,242.9 106.5,208.3 103.2,192.3 102.7,164.5 110.1,135.9 115.4,114.3 124.8,96.9 160.8,87.9 183.0,83.5 199.0,75.5 228.6,73.5 238.8,86.6 247.6,96.2 261.8,113.0 259.0,133.9 255.1,150.2 254.4,170.7 247.5,188.5" class="loop"/>
+<circle cx="239" cy="215" r="4" class="stn"/>
+<circle cx="225" cy="255" r="4" class="stn"/>
+<circle cx="184" cy="348" r="4" class="stn"/>
+<circle cx="135" cy="338" r="4" class="stn"/>
+<circle cx="106" cy="274" r="4" class="stn"/>
+<circle cx="107" cy="243" r="4" class="stn"/>
+<circle cx="103" cy="192" r="4" class="stn"/>
+<circle cx="125" cy="97" r="4" class="stn"/>
+<circle cx="259" cy="134" r="4" class="stn"/>
+<circle cx="254" cy="171" r="4" class="stn"/>
+<text x="218" y="270" class="stn-label" text-anchor="end">Shimbashi</text>
+<text x="132" y="101" class="stn-label" text-anchor="start">Ikebukuro</text>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Ueno"><circle cx="260" cy="132" r="4" class="dot dest"/><text x="253" y="136" class="eat-label" text-anchor="end">Ueno · 35</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A7%8B%E8%91%89%E5%8E%9F" target="_blank" rel="noopener" aria-label="Live route to Akihabara"><circle cx="256" cy="175" r="4" class="dot dest"/><text x="249" y="179" class="eat-label" text-anchor="end">Akihabara · 35</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B5%85%E8%8D%89" target="_blank" rel="noopener" aria-label="Live route to Asakusa"><circle cx="302" cy="123" r="4" class="dot dest"/><text x="309" y="127" class="eat-label" text-anchor="start">Asakusa · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener" aria-label="Live route to Tokyo Station"><circle cx="240" cy="209" r="4" class="dot dest"/><text x="247" y="213" class="eat-label" text-anchor="start">Tokyo Station · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8A%80%E5%BA%A7" target="_blank" rel="noopener" aria-label="Live route to Ginza"><circle cx="229" cy="236" r="4" class="dot dest"/><text x="236" y="240" class="eat-label" text-anchor="start">Ginza · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AF%89%E5%9C%B0" target="_blank" rel="noopener" aria-label="Live route to Tsukiji"><circle cx="251" cy="248" r="4" class="dot dest"/><text x="244" y="252" class="eat-label" text-anchor="end">Tsukiji · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E8%B1%8A%E6%B4%B2" target="_blank" rel="noopener" aria-label="Live route to Toyosu / teamLab"><circle cx="287" cy="297" r="4" class="dot dest"/><text x="294" y="301" class="eat-label" text-anchor="start">Toyosu / teamLab · 45</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8F%B0%E5%A0%B4" target="_blank" rel="noopener" aria-label="Live route to Odaiba"><circle cx="248" cy="355" r="4" class="dot dest"/><text x="255" y="359" class="eat-label" text-anchor="start">Odaiba · 45</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%93%81%E5%B7%9D" target="_blank" rel="noopener" aria-label="Live route to Shinagawa"><circle cx="180" cy="351" r="4" class="dot dest"/><text x="173" y="355" class="eat-label" text-anchor="end">Shinagawa · 15</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%9B%AE%E9%BB%92" target="_blank" rel="noopener" aria-label="Live route to Meguro"><circle cx="134" cy="334" r="4" class="dot dest"/><text x="141" y="338" class="eat-label" text-anchor="start">Meguro · 12</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%BA%83%E5%B0%BE" target="_blank" rel="noopener" aria-label="Live route to Hiroo"><circle cx="147" cy="286" r="4" class="dot dest"/><text x="140" y="290" class="eat-label" text-anchor="end">Hiroo · 18</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B8%8B%E8%B0%B7" target="_blank" rel="noopener" aria-label="Live route to Shibuya"><circle cx="104" cy="270" r="4" class="dot dest"/><text x="97" y="274" class="eat-label" text-anchor="end">Shibuya · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8E%9F%E5%AE%BF" target="_blank" rel="noopener" aria-label="Live route to Harajuku"><circle cx="107" cy="242" r="4" class="dot dest"/><text x="100" y="246" class="eat-label" text-anchor="end">Harajuku · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E5%AE%BF" target="_blank" rel="noopener" aria-label="Live route to Shinjuku"><circle cx="100" cy="196" r="4" class="dot dest"/><text x="107" y="200" class="eat-label" text-anchor="start">Shinjuku · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8" target="_blank" rel="noopener" aria-label="Live route to Roppongi"><circle cx="162" cy="254" r="4" class="dot dest"/><text x="155" y="258" class="eat-label" text-anchor="end">Roppongi · 15</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%BA%BB%E5%B8%83%E5%8D%81%E7%95%AA" target="_blank" rel="noopener" aria-label="Live route to Azabu-Juban"><circle cx="178" cy="280" r="4" class="dot dest"/><text x="185" y="284" class="eat-label" text-anchor="start">Azabu-Juban · 12</text></a>
+<path d="M169 293 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
+<text x="181" y="307" class="home-label">Your base</text>
+<text x="432" y="14" class="off-label" text-anchor="end">→ Narita Airport · 61 km · 110 min</text>
+<text x="432" y="26" class="off-label" text-anchor="end">→ Disney Resort · 14 km · 55 min</text>
+<text x="432" y="38" class="off-label" text-anchor="end">↓ Haneda Airport · 12 km · 40 min</text>
+<text x="8" y="398" class="off-label">↑ Nikko · 123 km · 160 min</text>
+<text x="8" y="410" class="off-label">↙ Hakone · 73 km · 120 min</text>
+<text x="8" y="422" class="off-label">↙ Kamakura · 40 km · 75 min</text>
+<line x1="12" y1="370" x2="125" y2="370" class="scale"/>
+<line x1="12" y1="366" x2="12" y2="374" class="scale"/>
+<line x1="125" y1="366" x2="125" y2="374" class="scale"/>
+<text x="69" y="364" class="ring-label" text-anchor="middle">5 km</text>
+<text x="8" y="14" class="ring-label">N ↑ · to scale · numbers are minutes from the base</text>
+</svg>
+      <figcaption>To scale, north up. The loop is drawn from the real station positions; the bay outline is approximate. Numbers are door-to-door minutes from the base; tap a dot for a live route. Day trips and airports are pointed to from the edges with their true direction and distance.</figcaption>
     </figure>
 
     <ul class="points">
@@ -292,45 +325,53 @@
     </div>
 
     <figure class="map">
-<svg viewBox="0 0 440 480" role="img" aria-labelledby="time-title time-desc">
+<svg viewBox="0 0 440 460" role="img" aria-labelledby="time-title time-desc">
 <title id="time-title">How far things are from the base, in minutes</title>
-<desc id="time-desc">Destinations arranged by compass direction, with distance from the centre showing typical door-to-door travel time by train. Rings at 15, 30, 60, 120 and 180 minutes. Each dot links to a live route search.</desc>
-<circle cx="220.0" cy="244.0" r="46" class="ring"/>
-<text x="224" y="209" class="ring-label">15 min</text>
-<circle cx="220.0" cy="244.0" r="86" class="ring"/>
-<text x="224" y="169" class="ring-label">30 min</text>
-<circle cx="220.0" cy="244.0" r="126" class="ring"/>
-<text x="224" y="129" class="ring-label">60 min</text>
-<circle cx="220.0" cy="244.0" r="162" class="ring"/>
-<text x="224" y="93" class="ring-label">120 min</text>
-<circle cx="220.0" cy="244.0" r="192" class="ring"/>
-<text x="224" y="63" class="ring-label">180 min</text>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E6%AD%A6%E6%97%A5%E5%85%89" target="_blank" rel="noopener" aria-label="Live route to Nikko"><circle cx="220" cy="62" r="3.5" class="dot dest"/><text x="220" y="55" class="eat-label" text-anchor="middle">Nikko · 160</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Ueno"><circle cx="233" cy="152" r="3.5" class="dot dest"/><text x="234" y="145" class="eat-label" text-anchor="middle">Ueno · 35</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A7%8B%E8%91%89%E5%8E%9F" target="_blank" rel="noopener" aria-label="Live route to Akihabara"><circle cx="272" cy="167" r="3.5" class="dot dest"/><text x="277" y="164" class="eat-label" text-anchor="start">Akihabara · 35</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B5%85%E8%8D%89" target="_blank" rel="noopener" aria-label="Live route to Asakusa"><circle cx="282" cy="184" r="3.5" class="dot dest"/><text x="288" y="182" class="eat-label" text-anchor="start">Asakusa · 30</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A9%BA%E6%B8%AF%E7%AC%AC%EF%BC%92%E3%83%93%E3%83%AB" target="_blank" rel="noopener" aria-label="Live route to Narita Airport"><circle cx="352" cy="161" r="3.5" class="dot dest"/><text x="360" y="161" class="eat-label" text-anchor="start">Narita Airport · 110</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener" aria-label="Live route to Tokyo Station"><circle cx="285" cy="212" r="3.5" class="dot dest"/><text x="293" y="212" class="eat-label" text-anchor="start">Tokyo Station · 25</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8A%80%E5%BA%A7" target="_blank" rel="noopener" aria-label="Live route to Ginza"><circle cx="292" cy="231" r="3.5" class="dot dest"/><text x="300" y="234" class="eat-label" text-anchor="start">Ginza · 25</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AF%89%E5%9C%B0" target="_blank" rel="noopener" aria-label="Live route to Tsukiji"><circle cx="292" cy="252" r="3.5" class="dot dest"/><text x="301" y="257" class="eat-label" text-anchor="start">Tsukiji · 25</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%88%9E%E6%B5%9C" target="_blank" rel="noopener" aria-label="Live route to Disney Resort"><circle cx="336" cy="273" r="3.5" class="dot dest"/><text x="345" y="279" class="eat-label" text-anchor="start">Disney Resort · 55</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E8%B1%8A%E6%B4%B2" target="_blank" rel="noopener" aria-label="Live route to Toyosu / teamLab"><circle cx="315" cy="290" r="3.5" class="dot dest"/><text x="323" y="298" class="eat-label" text-anchor="start">Toyosu / teamLab · 45</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8F%B0%E5%A0%B4" target="_blank" rel="noopener" aria-label="Live route to Odaiba"><circle cx="299" cy="315" r="3.5" class="dot dest"/><text x="305" y="325" class="eat-label" text-anchor="start">Odaiba · 45</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%BE%BD%E7%94%B0%E7%A9%BA%E6%B8%AF%E7%AC%AC%EF%BC%93%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB" target="_blank" rel="noopener" aria-label="Live route to Haneda Airport"><circle cx="257" cy="336" r="3.5" class="dot dest"/><text x="261" y="348" class="eat-label" text-anchor="start">Haneda Airport · 40</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%93%81%E5%B7%9D" target="_blank" rel="noopener" aria-label="Live route to Shinagawa"><circle cx="228" cy="289" r="3.5" class="dot dest"/><text x="230" y="302" class="eat-label" text-anchor="middle">Shinagawa · 15</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8E%8C%E5%80%89" target="_blank" rel="noopener" aria-label="Live route to Kamakura"><circle cx="183" cy="374" r="3.5" class="dot dest"/><text x="180" y="386" class="eat-label" text-anchor="end">Kamakura · 75</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%9B%AE%E9%BB%92" target="_blank" rel="noopener" aria-label="Live route to Meguro"><circle cx="195" cy="271" r="3.5" class="dot dest"/><text x="189" y="282" class="eat-label" text-anchor="end">Meguro · 12</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AE%B1%E6%A0%B9%E6%B9%AF%E6%9C%AC" target="_blank" rel="noopener" aria-label="Live route to Hakone"><circle cx="70" cy="305" r="3.5" class="dot dest"/><text x="61" y="312" class="eat-label" text-anchor="end">Hakone · 120</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%BA%83%E5%B0%BE" target="_blank" rel="noopener" aria-label="Live route to Hiroo"><circle cx="166" cy="248" r="3.5" class="dot dest"/><text x="157" y="252" class="eat-label" text-anchor="end">Hiroo · 18</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B8%8B%E8%B0%B7" target="_blank" rel="noopener" aria-label="Live route to Shibuya"><circle cx="149" cy="226" r="3.5" class="dot dest"/><text x="141" y="228" class="eat-label" text-anchor="end">Shibuya · 25</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8E%9F%E5%AE%BF" target="_blank" rel="noopener" aria-label="Live route to Harajuku"><circle cx="146" cy="201" r="3.5" class="dot dest"/><text x="138" y="200" class="eat-label" text-anchor="end">Harajuku · 30</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E5%AE%BF" target="_blank" rel="noopener" aria-label="Live route to Shinjuku"><circle cx="167" cy="176" r="3.5" class="dot dest"/><text x="162" y="173" class="eat-label" text-anchor="end">Shinjuku · 30</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8" target="_blank" rel="noopener" aria-label="Live route to Roppongi"><circle cx="207" cy="200" r="3.5" class="dot dest"/><text x="205" y="195" class="eat-label" text-anchor="end">Roppongi · 15</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%BA%BB%E5%B8%83%E5%8D%81%E7%95%AA" target="_blank" rel="noopener" aria-label="Live route to Azabu-Juban"><circle cx="235" cy="210" r="3.5" class="dot dest"/><text x="239" y="206" class="eat-label" text-anchor="start">Azabu-Juban · 12</text></a>
-<path d="M220 235 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
-<text x="8" y="14" class="ring-label">N ↑ · numbers are minutes · tap a dot for a live route</text>
+<desc id="time-desc">Destinations placed at their true compass bearing from the Airbnb, with distance from the centre showing typical door-to-door travel time by train. Rings at 15, 30, 60, 120 and 180 minutes. Each dot links to a live route search.</desc>
+<circle cx="220.0" cy="234.0" r="44" class="ring"/>
+<text x="224" y="274" class="ring-label">15 min</text>
+<circle cx="220.0" cy="234.0" r="84" class="ring"/>
+<text x="224" y="314" class="ring-label">30 min</text>
+<circle cx="220.0" cy="234.0" r="124" class="ring"/>
+<text x="224" y="354" class="ring-label">60 min</text>
+<circle cx="220.0" cy="234.0" r="160" class="ring"/>
+<text x="224" y="390" class="ring-label">120 min</text>
+<circle cx="220.0" cy="234.0" r="192" class="ring"/>
+<text x="224" y="422" class="ring-label">180 min</text>
+<line x1="220" y1="42" x2="220" y2="36" class="tick"/>
+<text x="220" y="32" class="compass" text-anchor="middle">N</text>
+<line x1="412" y1="234" x2="418" y2="234" class="tick"/>
+<text x="426" y="238" class="compass" text-anchor="middle">E</text>
+<line x1="220" y1="426" x2="220" y2="432" class="tick"/>
+<text x="220" y="444" class="compass" text-anchor="middle">S</text>
+<line x1="28" y1="234" x2="22" y2="234" class="tick"/>
+<text x="14" y="238" class="compass" text-anchor="middle">W</text>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E6%AD%A6%E6%97%A5%E5%85%89" target="_blank" rel="noopener" aria-label="Live route to Nikko"><line x1="205" y1="53" x2="200" y2="43" class="lead"/><circle cx="205" cy="53" r="4" class="dot dest"/><text x="198" y="46" class="eat-label" text-anchor="end">Nikko · 160</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Ueno"><line x1="263" y1="154" x2="265" y2="136" class="lead"/><circle cx="263" cy="154" r="4" class="dot dest"/><text x="267" y="139" class="eat-label" text-anchor="start">Ueno · 35</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A7%8B%E8%91%89%E5%8E%9F" target="_blank" rel="noopener" aria-label="Live route to Akihabara"><line x1="271" y1="159" x2="268" y2="142" class="lead"/><circle cx="271" cy="159" r="4" class="dot dest"/><text x="266" y="145" class="eat-label" text-anchor="end">Akihabara · 35</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B5%85%E8%8D%89" target="_blank" rel="noopener" aria-label="Live route to Asakusa"><line x1="270" y1="167" x2="273" y2="182" class="lead"/><circle cx="270" cy="167" r="4" class="dot dest"/><text x="275" y="185" class="eat-label" text-anchor="start">Asakusa · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A9%BA%E6%B8%AF%E7%AC%AC%EF%BC%92%E3%83%93%E3%83%AB" target="_blank" rel="noopener" aria-label="Live route to Narita Airport"><line x1="370" y1="198" x2="363" y2="208" class="lead"/><circle cx="370" cy="198" r="4" class="dot dest"/><text x="361" y="211" class="eat-label" text-anchor="end">Narita Airport · 110</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener" aria-label="Live route to Tokyo Station"><line x1="263" y1="178" x2="259" y2="127" class="lead"/><circle cx="263" cy="178" r="4" class="dot dest"/><text x="257" y="130" class="eat-label" text-anchor="end">Tokyo Station · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8A%80%E5%BA%A7" target="_blank" rel="noopener" aria-label="Live route to Ginza"><line x1="267" y1="182" x2="271" y2="121" class="lead"/><circle cx="267" cy="182" r="4" class="dot dest"/><text x="273" y="124" class="eat-label" text-anchor="start">Ginza · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AF%89%E5%9C%B0" target="_blank" rel="noopener" aria-label="Live route to Tsukiji"><line x1="279" y1="195" x2="284" y2="169" class="lead"/><circle cx="279" cy="195" r="4" class="dot dest"/><text x="286" y="172" class="eat-label" text-anchor="start">Tsukiji · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%88%9E%E6%B5%9C" target="_blank" rel="noopener" aria-label="Live route to Disney Resort"><line x1="337" y1="244" x2="330" y2="257" class="lead"/><circle cx="337" cy="244" r="4" class="dot dest"/><text x="328" y="260" class="eat-label" text-anchor="end">Disney Resort · 55</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E8%B1%8A%E6%B4%B2" target="_blank" rel="noopener" aria-label="Live route to Toyosu / teamLab"><line x1="324" y1="229" x2="317" y2="340" class="lead"/><circle cx="324" cy="229" r="4" class="dot dest"/><text x="315" y="343" class="eat-label" text-anchor="end">Toyosu / teamLab · 45</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8F%B0%E5%A0%B4" target="_blank" rel="noopener" aria-label="Live route to Odaiba"><circle cx="307" cy="291" r="4" class="dot dest"/><text x="314" y="300" class="eat-label" text-anchor="start">Odaiba · 45</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%BE%BD%E7%94%B0%E7%A9%BA%E6%B8%AF%E7%AC%AC%EF%BC%93%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB" target="_blank" rel="noopener" aria-label="Live route to Haneda Airport"><line x1="247" y1="328" x2="247" y2="370" class="lead"/><circle cx="247" cy="328" r="4" class="dot dest"/><text x="249" y="373" class="eat-label" text-anchor="start">Haneda Airport · 40</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%93%81%E5%B7%9D" target="_blank" rel="noopener" aria-label="Live route to Shinagawa"><line x1="229" y1="277" x2="229" y2="298" class="lead"/><circle cx="229" cy="277" r="4" class="dot dest"/><text x="227" y="301" class="eat-label" text-anchor="end">Shinagawa · 15</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8E%8C%E5%80%89" target="_blank" rel="noopener" aria-label="Live route to Kamakura"><line x1="165" y1="355" x2="163" y2="375" class="lead"/><circle cx="165" cy="355" r="4" class="dot dest"/><text x="161" y="378" class="eat-label" text-anchor="end">Kamakura · 75</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%9B%AE%E9%BB%92" target="_blank" rel="noopener" aria-label="Live route to Meguro"><line x1="194" y1="258" x2="189" y2="265" class="lead"/><circle cx="194" cy="258" r="4" class="dot dest"/><text x="187" y="268" class="eat-label" text-anchor="end">Meguro · 12</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AE%B1%E6%A0%B9%E6%B9%AF%E6%9C%AC" target="_blank" rel="noopener" aria-label="Live route to Hakone"><circle cx="96" cy="335" r="4" class="dot dest"/><text x="89" y="344" class="eat-label" text-anchor="end">Hakone · 120</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%BA%83%E5%B0%BE" target="_blank" rel="noopener" aria-label="Live route to Hiroo"><line x1="178" y1="203" x2="173" y2="188" class="lead"/><circle cx="178" cy="203" r="4" class="dot dest"/><text x="171" y="191" class="eat-label" text-anchor="end">Hiroo · 18</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B8%8B%E8%B0%B7" target="_blank" rel="noopener" aria-label="Live route to Shibuya"><circle cx="157" cy="203" r="4" class="dot dest"/><text x="149" y="203" class="eat-label" text-anchor="end">Shibuya · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8E%9F%E5%AE%BF" target="_blank" rel="noopener" aria-label="Live route to Harajuku"><line x1="160" y1="176" x2="155" y2="170" class="lead"/><circle cx="160" cy="176" r="4" class="dot dest"/><text x="153" y="173" class="eat-label" text-anchor="end">Harajuku · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E5%AE%BF" target="_blank" rel="noopener" aria-label="Live route to Shinjuku"><line x1="174" y1="164" x2="171" y2="146" class="lead"/><circle cx="174" cy="164" r="4" class="dot dest"/><text x="169" y="149" class="eat-label" text-anchor="end">Shinjuku · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8" target="_blank" rel="noopener" aria-label="Live route to Roppongi"><line x1="213" y1="191" x2="208" y2="115" class="lead"/><circle cx="213" cy="191" r="4" class="dot dest"/><text x="206" y="118" class="eat-label" text-anchor="end">Roppongi · 15</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%BA%BB%E5%B8%83%E5%8D%81%E7%95%AA" target="_blank" rel="noopener" aria-label="Live route to Azabu-Juban"><line x1="232" y1="201" x2="233" y2="106" class="lead"/><circle cx="232" cy="201" r="4" class="dot dest"/><text x="235" y="109" class="eat-label" text-anchor="start">Azabu-Juban · 12</text></a>
+<path d="M220 225 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
+<text x="8" y="454" class="ring-label">true bearings · numbers are minutes</text>
 </svg>
-      <figcaption>Door-to-door minutes from the Airbnb by train, laid out by compass direction. Typical daytime times from route lookups and general knowledge. Tap any dot for a live route from Shirokane-takanawa in Yahoo Transit.</figcaption>
+      <figcaption>Each place sits at its true compass bearing from the Airbnb; distance from the centre is door-to-door minutes by train, not kilometres. Typical daytime times from route lookups and general knowledge. Tap any dot for a live route from Shirokane-takanawa.</figcaption>
     </figure>
 
     <h3>Easy outings nearby</h3>
@@ -344,6 +385,40 @@
   <section id="trips">
     <h2><span class="plate">OH</span>Day trips for your interests</h2>
     <p>Each name opens a live route. Sample trains below were read from Yahoo Transit on 18 October for Wednesday 21 October; the pattern holds on other days but check the day before. Late October is leaf season, so the first train out beats the crowds everywhere on this list.</p>
+    <figure class="map">
+<svg viewBox="0 0 440 470" role="img" aria-labelledby="reg-title reg-desc">
+<title id="reg-title">The day trips, airports and Mount Fuji around Tokyo, to scale</title>
+<desc id="reg-desc">A true-scale regional map. Tokyo is in the centre with the Yamanote loop as a small outline. Nikko is far to the north, Narita Airport to the east, Haneda and Disney on the bay to the south-east, Kamakura south-west on the coast, Hakone and Odawara to the south-west, and Mount Fuji and Kawaguchiko to the west. Labels carry door-to-door minutes from the base.</desc>
+<line x1="14" y1="355" x2="423" y2="355" class="grat"/>
+<line x1="14" y1="229" x2="423" y2="229" class="grat"/>
+<line x1="14" y1="102" x2="423" y2="102" class="grat"/>
+<line x1="106" y1="456" x2="106" y2="14" class="grat"/>
+<line x1="208" y1="456" x2="208" y2="14" class="grat"/>
+<line x1="310" y1="456" x2="310" y2="14" class="grat"/>
+<line x1="413" y1="456" x2="413" y2="14" class="grat"/>
+<polygon points="262.7,309.2 261.9,310.8 261.3,313.2 260.7,315.8 258.8,318.2 257.4,320.8 257.2,322.5 254.9,324.8 253.9,323.1 252.3,321.5 250.8,317.9 249.4,315.0 249.6,312.0 249.5,308.5 249.2,306.9 249.1,304.1 249.9,301.3 250.4,299.1 251.3,297.4 254.9,296.5 257.1,296.0 258.7,295.2 261.7,295.0 262.7,296.3 263.6,297.3 265.0,299.0 264.7,301.1 264.3,302.7 264.2,304.8 263.6,306.5" class="loop thin"/>
+<circle cx="233" cy="40" r="4" class="dot dest"/><text x="226" y="44" class="eat-label" text-anchor="end">Nikko · 160</text>
+<circle cx="390" cy="286" r="4" class="dot dest"/><text x="383" y="290" class="eat-label" text-anchor="end">Narita Airport · 110</text>
+<circle cx="263" cy="344" r="4" class="dot dest"/><text x="256" y="348" class="eat-label" text-anchor="end">Haneda Airport · 40</text>
+<circle cx="287" cy="321" r="4" class="dot dest"/><text x="294" y="325" class="eat-label" text-anchor="start">Disney Resort · 55</text>
+<circle cx="218" cy="401" r="4" class="dot dest"/><text x="225" y="405" class="eat-label" text-anchor="start">Kamakura · 75</text>
+<line x1="127" y1="422" x2="122" y2="434" class="lead"/><circle cx="127" cy="422" r="4" class="dot dest"/><text x="120" y="437" class="eat-label" text-anchor="end">Hakone-Yumoto · 120</text>
+<circle cx="54" cy="352" r="4" class="dot dest"/><text x="61" y="356" class="eat-label" text-anchor="start">Kawaguchiko · 150</text>
+<path d="M51 383 l7 12 h-14 z" class="peak"/>
+<text x="58" y="394" class="eat-label" text-anchor="start">Mount Fuji</text>
+<circle cx="233" cy="364" r="3.5" class="dot ref"/><text x="226" y="368" class="eat-label" text-anchor="end">Yokohama</text>
+<circle cx="138" cy="417" r="3.5" class="dot ref"/><text x="145" y="421" class="eat-label" text-anchor="start">Odawara</text>
+<line x1="117" y1="420" x2="122" y2="443" class="lead"/><circle cx="117" cy="420" r="4" class="dot garden"/><text x="124" y="446" class="eat-label" text-anchor="start">Hakone Open-Air Museum</text>
+<path d="M256 309 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
+<text x="245" y="322" class="home-label" text-anchor="end">Tokyo · base</text>
+<line x1="313" y1="30" x2="426" y2="30" class="scale"/>
+<line x1="313" y1="26" x2="313" y2="34" class="scale"/>
+<line x1="426" y1="26" x2="426" y2="34" class="scale"/>
+<text x="369" y="24" class="ring-label" text-anchor="middle">50 km</text>
+<text x="8" y="14" class="ring-label">N ↑ · to scale · numbers are minutes from the base</text>
+</svg>
+      <figcaption>The region to scale, north up, with Tokyo in the centre. Nikko is two and a half hours north, Hakone and Fuji west and south-west, Kamakura on the coast, Narita far to the east. Grid lines are half a degree, about 55 km north to south.</figcaption>
+    </figure>
     <div class="shops">
       <div style="--k: var(--accent)"><h4>Hakone, for the sculpture park and hot springs</h4>
         <p><b>Getting there.</b> The Odakyu Romancecar runs from Shinjuku to Hakone-Yumoto in about 75 to 85 minutes, all reserved seats, roughly two an hour from early morning. Book the seat on Odakyu's e-Romancecar site or at the Shinjuku counter the day before; the seat charge is on top of the fare. Shinjuku is 30 minutes from the Airbnb, so leaving home at 7:00 gets you into Hakone before 9:30.</p>
@@ -370,31 +445,39 @@
     <p>The trap is the closed day. Most museums close on Monday, the Roppongi contemporary ones close on Tuesday instead, and a few close between exhibitions. On this trip the Mondays are 19 and 26 October and the Tuesdays are 20 and 27. Minutes are door-to-door from the Airbnb; tap a name for a live route.</p>
 
     <figure class="map">
-<svg viewBox="0 0 440 430" role="img" aria-labelledby="mus-title mus-desc">
+<svg viewBox="0 0 440 440" role="img" aria-labelledby="mus-title mus-desc">
 <title id="mus-title">Museums by travel time from the base</title>
-<desc id="mus-desc">Museums arranged by compass direction, with distance from the centre showing door-to-door minutes by train. Rings at 15, 30, 60 and 120 minutes. Colour shows the kind of museum. Each dot links to a live route search.</desc>
-<circle cx="220.0" cy="221.0" r="50" class="ring"/>
-<text x="224" y="182" class="ring-label">15 min</text>
-<circle cx="220.0" cy="221.0" r="100" class="ring"/>
-<text x="224" y="132" class="ring-label">30 min</text>
-<circle cx="220.0" cy="221.0" r="150" class="ring"/>
-<text x="224" y="82" class="ring-label">60 min</text>
-<circle cx="220.0" cy="221.0" r="192" class="ring"/>
-<text x="224" y="40" class="ring-label">120 min</text>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%99%BD%E9%87%91%E5%8F%B0" target="_blank" rel="noopener" aria-label="Live route to Teien Art Museum"><circle cx="206" cy="259" r="4" class="dot garden"/><text x="213" y="263" class="eat-label" text-anchor="start">Teien Art Museum · 12</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8%E4%B8%80%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener" aria-label="Live route to Mori Art Museum / Maman"><circle cx="212" cy="162" r="4" class="dot modern"/><text x="219" y="166" class="eat-label" text-anchor="start">Mori Art Museum / Maman · 18</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8%E4%B8%80%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener" aria-label="Live route to teamLab Borderless"><line x1="233" y1="149" x2="238" y2="194" class="lead"/><circle cx="233" cy="149" r="4" class="dot digital"/><text x="240" y="197" class="eat-label" text-anchor="start">teamLab Borderless · 22</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B9%83%E6%9C%A8%E5%9D%82" target="_blank" rel="noopener" aria-label="Live route to 21_21 Design Sight"><line x1="183" y1="128" x2="178" y2="173" class="lead"/><circle cx="183" cy="128" r="4" class="dot modern"/><text x="176" y="176" class="eat-label" text-anchor="end">21_21 Design Sight · 30</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B9%83%E6%9C%A8%E5%9D%82" target="_blank" rel="noopener" aria-label="Live route to National Art Center"><circle cx="162" cy="135" r="4" class="dot modern"/><text x="155" y="139" class="eat-label" text-anchor="end">National Art Center · 32</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%A1%A8%E5%8F%82%E9%81%93" target="_blank" rel="noopener" aria-label="Live route to Nezu Museum"><circle cx="139" cy="157" r="4" class="dot garden"/><text x="132" y="161" class="eat-label" text-anchor="end">Nezu Museum · 32</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%89%9B%E8%BE%BC%E6%9F%B3%E7%94%BA" target="_blank" rel="noopener" aria-label="Live route to Kusama Museum"><circle cx="188" cy="100" r="4" class="dot modern"/><text x="181" y="104" class="eat-label" text-anchor="end">Kusama Museum · 45</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Tokyo National Museum"><circle cx="254" cy="101" r="4" class="dot classic"/><text x="261" y="105" class="eat-label" text-anchor="start">Tokyo National Museum · 45</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Western Art (Rodin)"><circle cx="273" cy="113" r="4" class="dot classic"/><text x="266" y="117" class="eat-label" text-anchor="end">Western Art (Rodin) · 42</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener" aria-label="Live route to Artizon Museum"><circle cx="309" cy="146" r="4" class="dot classic"/><text x="316" y="150" class="eat-label" text-anchor="start">Artizon Museum · 40</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E8%B1%8A%E6%B4%B2" target="_blank" rel="noopener" aria-label="Live route to teamLab Planets"><circle cx="347" cy="272" r="4" class="dot digital"/><text x="340" y="276" class="eat-label" text-anchor="end">teamLab Planets · 52</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AE%B1%E6%A0%B9%E6%B9%AF%E6%9C%AC" target="_blank" rel="noopener" aria-label="Live route to Hakone Open-Air"><circle cx="42" cy="293" r="4" class="dot garden"/><text x="49" y="297" class="eat-label" text-anchor="start">Hakone Open-Air · 120</text></a>
-<path d="M220 212 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
-<text x="8" y="14" class="ring-label">N ↑ · numbers are minutes · tap a dot for a live route</text>
+<desc id="mus-desc">Museums placed at their true compass bearing from the Airbnb, with distance from the centre showing door-to-door minutes by train. Rings at 15, 30, 60 and 120 minutes. Colour shows the kind of museum. Each dot links to a live route search.</desc>
+<circle cx="220.0" cy="224.0" r="50" class="ring"/>
+<text x="224" y="270" class="ring-label">15 min</text>
+<circle cx="220.0" cy="224.0" r="100" class="ring"/>
+<text x="224" y="320" class="ring-label">30 min</text>
+<circle cx="220.0" cy="224.0" r="150" class="ring"/>
+<text x="224" y="370" class="ring-label">60 min</text>
+<circle cx="220.0" cy="224.0" r="192" class="ring"/>
+<text x="224" y="412" class="ring-label">120 min</text>
+<line x1="220" y1="32" x2="220" y2="26" class="tick"/>
+<text x="220" y="22" class="compass" text-anchor="middle">N</text>
+<line x1="412" y1="224" x2="418" y2="224" class="tick"/>
+<text x="426" y="228" class="compass" text-anchor="middle">E</text>
+<line x1="220" y1="416" x2="220" y2="422" class="tick"/>
+<text x="220" y="434" class="compass" text-anchor="middle">S</text>
+<line x1="28" y1="224" x2="22" y2="224" class="tick"/>
+<text x="14" y="228" class="compass" text-anchor="middle">W</text>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%99%BD%E9%87%91%E5%8F%B0" target="_blank" rel="noopener" aria-label="Live route to Teien Art Museum"><line x1="190" y1="251" x2="186" y2="258" class="lead"/><circle cx="190" cy="251" r="4" class="dot garden"/><text x="184" y="261" class="eat-label" text-anchor="end">Teien Art Museum · 12</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8%E4%B8%80%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener" aria-label="Live route to Mori Art Museum / Maman"><line x1="206" y1="166" x2="206" y2="180" class="lead"/><circle cx="206" cy="166" r="4" class="dot modern"/><text x="204" y="183" class="eat-label" text-anchor="end">Mori Art Museum / Maman · 18</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8%E4%B8%80%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener" aria-label="Live route to teamLab Borderless"><line x1="250" y1="157" x2="251" y2="172" class="lead"/><circle cx="250" cy="157" r="4" class="dot digital"/><text x="253" y="175" class="eat-label" text-anchor="start">teamLab Borderless · 22</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B9%83%E6%9C%A8%E5%9D%82" target="_blank" rel="noopener" aria-label="Live route to 21_21 Design Sight"><line x1="212" y1="124" x2="217" y2="92" class="lead"/><circle cx="212" cy="124" r="4" class="dot modern"/><text x="219" y="95" class="eat-label" text-anchor="start">21_21 Design Sight · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B9%83%E6%9C%A8%E5%9D%82" target="_blank" rel="noopener" aria-label="Live route to National Art Center"><line x1="192" y1="124" x2="192" y2="106" class="lead"/><circle cx="192" cy="124" r="4" class="dot modern"/><text x="190" y="109" class="eat-label" text-anchor="end">National Art Center · 32</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%A1%A8%E5%8F%82%E9%81%93" target="_blank" rel="noopener" aria-label="Live route to Nezu Museum"><line x1="155" y1="144" x2="151" y2="127" class="lead"/><circle cx="155" cy="144" r="4" class="dot garden"/><text x="149" y="130" class="eat-label" text-anchor="end">Nezu Museum · 32</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%89%9B%E8%BE%BC%E6%9F%B3%E7%94%BA" target="_blank" rel="noopener" aria-label="Live route to Kusama Museum"><line x1="209" y1="100" x2="204" y2="90" class="lead"/><circle cx="209" cy="100" r="4" class="dot modern"/><text x="202" y="93" class="eat-label" text-anchor="end">Kusama Museum · 45</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Tokyo National Museum"><line x1="275" y1="112" x2="276" y2="71" class="lead"/><circle cx="275" cy="112" r="4" class="dot classic"/><text x="278" y="74" class="eat-label" text-anchor="start">Tokyo National Museum · 45</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8A%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Western Art (Rodin)"><line x1="274" y1="117" x2="272" y2="77" class="lead"/><circle cx="274" cy="117" r="4" class="dot classic"/><text x="270" y="80" class="eat-label" text-anchor="end">Western Art (Rodin) · 42</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener" aria-label="Live route to Artizon Museum"><line x1="302" y1="141" x2="307" y2="136" class="lead"/><circle cx="302" cy="141" r="4" class="dot classic"/><text x="309" y="139" class="eat-label" text-anchor="start">Artizon Museum · 40</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E8%B1%8A%E6%B4%B2" target="_blank" rel="noopener" aria-label="Live route to teamLab Planets"><circle cx="357" cy="218" r="4" class="dot digital"/><text x="348" y="221" class="eat-label" text-anchor="end">teamLab Planets · 52</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AE%B1%E6%A0%B9%E6%B9%AF%E6%9C%AC" target="_blank" rel="noopener" aria-label="Live route to Hakone Open-Air"><circle cx="65" cy="337" r="4" class="dot garden"/><text x="72" y="346" class="eat-label" text-anchor="start">Hakone Open-Air · 120</text></a>
+<path d="M220 215 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
+<text x="8" y="434" class="ring-label">true bearings · numbers are minutes</text>
 </svg>
       <div class="map-key" aria-label="Map key">
         <span style="--k: var(--mita)">modern and contemporary</span>
@@ -402,7 +485,7 @@
         <span style="--k: var(--oedo)">teamLab</span>
         <span style="--k: var(--accent)">gardens and sculpture outdoors</span>
       </div>
-      <figcaption>Museums by travel time from the Airbnb. Hakone's sculpture park sits on the outer ring at two hours. Roppongi's cluster is inside the 30-minute ring.</figcaption>
+      <figcaption>Museums at their true bearing from the Airbnb; distance from the centre is minutes door to door. The Roppongi cluster really is due north of you; Hakone's sculpture park sits on the outer ring, two hours to the south-west.</figcaption>
     </figure>
 
     <h3>Closed days at a glance</h3>
@@ -465,37 +548,45 @@
     <p>Tokyo shopping is organised by district, and each district does one thing well. Pick the kind of shopping first, then the area. Minutes are door-to-door from the Airbnb by train, read from Yahoo Transit for a weekday late morning. Tap any name for a live route.</p>
 
     <figure class="map">
-<svg viewBox="0 0 440 430" role="img" aria-labelledby="shop-title shop-desc">
+<svg viewBox="0 0 440 440" role="img" aria-labelledby="shop-title shop-desc">
 <title id="shop-title">Shopping districts by travel time from the base</title>
-<desc id="shop-desc">Shopping areas arranged by compass direction, with distance from the centre showing door-to-door minutes by train. Rings at 15, 30 and 60 minutes. Colour shows the kind of shopping. Each dot links to a live route search.</desc>
-<circle cx="220.0" cy="221.0" r="62" class="ring"/>
-<text x="224" y="170" class="ring-label">15 min</text>
-<circle cx="220.0" cy="221.0" r="122" class="ring"/>
-<text x="224" y="110" class="ring-label">30 min</text>
-<circle cx="220.0" cy="221.0" r="192" class="ring"/>
-<text x="224" y="40" class="ring-label">60 min</text>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%BA%BB%E5%B8%83%E5%8D%81%E7%95%AA" target="_blank" rel="noopener" aria-label="Live route to Azabu-Juban"><line x1="239" y1="175" x2="244" y2="198" class="lead"/><circle cx="239" cy="175" r="4" class="dot near"/><text x="246" y="201" class="eat-label" text-anchor="start">Azabu-Juban · 12</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8" target="_blank" rel="noopener" aria-label="Live route to Roppongi"><line x1="216" y1="159" x2="211" y2="171" class="lead"/><circle cx="216" cy="159" r="4" class="dot near"/><text x="209" y="174" class="eat-label" text-anchor="end">Roppongi · 15</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%BA%83%E5%B0%BE" target="_blank" rel="noopener" aria-label="Live route to Hiroo"><circle cx="156" cy="184" r="4" class="dot near"/><text x="163" y="188" class="eat-label" text-anchor="start">Hiroo · 18</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A5%9E%E4%BF%9D%E7%94%BA" target="_blank" rel="noopener" aria-label="Live route to Jimbocho books"><line x1="243" y1="130" x2="248" y2="230" class="lead"/><circle cx="243" cy="130" r="4" class="dot vint"/><text x="250" y="233" class="eat-label" text-anchor="start">Jimbocho books · 23</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A7%8B%E8%91%89%E5%8E%9F" target="_blank" rel="noopener" aria-label="Live route to Akihabara"><line x1="280" y1="99" x2="285" y2="166" class="lead"/><circle cx="280" cy="99" r="4" class="dot geek"/><text x="287" y="169" class="eat-label" text-anchor="start">Akihabara · 36</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%94%B0%E5%8E%9F%E7%94%BA" target="_blank" rel="noopener" aria-label="Live route to Kappabashi"><circle cx="307" cy="102" r="4" class="dot craft"/><text x="314" y="106" class="eat-label" text-anchor="start">Kappabashi · 41</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%94%B5%E5%89%8D" target="_blank" rel="noopener" aria-label="Live route to Kuramae"><circle cx="313" cy="131" r="4" class="dot craft"/><text x="320" y="135" class="eat-label" text-anchor="start">Kuramae · 33</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener" aria-label="Live route to Tokyo Station"><circle cx="327" cy="149" r="4" class="dot fash"/><text x="320" y="153" class="eat-label" text-anchor="end">Tokyo Station · 33</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8A%80%E5%BA%A7" target="_blank" rel="noopener" aria-label="Live route to Ginza"><circle cx="315" cy="183" r="4" class="dot fash"/><text x="308" y="187" class="eat-label" text-anchor="end">Ginza · 25</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AF%89%E5%9C%B0" target="_blank" rel="noopener" aria-label="Live route to Tsukiji"><circle cx="346" cy="212" r="4" class="dot craft"/><text x="339" y="216" class="eat-label" text-anchor="end">Tsukiji · 32</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B1%A0%E8%A2%8B" target="_blank" rel="noopener" aria-label="Live route to Ikebukuro"><circle cx="187" cy="89" r="4" class="dot geek"/><text x="194" y="93" class="eat-label" text-anchor="start">Ikebukuro · 36</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E5%AE%BF%E4%B8%89%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener" aria-label="Live route to Shinjuku"><line x1="167" y1="111" x2="162" y2="145" class="lead"/><circle cx="167" cy="111" r="4" class="dot fash"/><text x="160" y="148" class="eat-label" text-anchor="end">Shinjuku · 30</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%AD%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Nakano Broadway"><circle cx="128" cy="111" r="4" class="dot geek"/><text x="121" y="115" class="eat-label" text-anchor="end">Nakano Broadway · 39</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%A1%A8%E5%8F%82%E9%81%93" target="_blank" rel="noopener" aria-label="Live route to Omotesando"><circle cx="155" cy="132" r="4" class="dot fash"/><text x="148" y="136" class="eat-label" text-anchor="end">Omotesando · 27</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8E%9F%E5%AE%BF" target="_blank" rel="noopener" aria-label="Live route to Harajuku"><circle cx="140" cy="158" r="4" class="dot vint"/><text x="133" y="162" class="eat-label" text-anchor="end">Harajuku · 25</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%90%89%E7%A5%A5%E5%AF%BA" target="_blank" rel="noopener" aria-label="Live route to Kichijoji"><line x1="68" y1="147" x2="73" y2="214" class="lead"/><circle cx="68" cy="147" r="4" class="dot vint"/><text x="75" y="217" class="eat-label" text-anchor="start">Kichijoji · 50</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B8%8B%E8%B0%B7" target="_blank" rel="noopener" aria-label="Live route to Shibuya"><line x1="131" y1="192" x2="126" y2="248" class="lead"/><circle cx="131" cy="192" r="4" class="dot fash"/><text x="124" y="251" class="eat-label" text-anchor="end">Shibuya · 23</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8B%E5%8C%97%E6%B2%A2" target="_blank" rel="noopener" aria-label="Live route to Shimokitazawa"><line x1="81" y1="197" x2="86" y2="275" class="lead"/><circle cx="81" cy="197" r="4" class="dot vint"/><text x="88" y="278" class="eat-label" text-anchor="start">Shimokitazawa · 38</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%BB%A3%E5%AE%98%E5%B1%B1" target="_blank" rel="noopener" aria-label="Live route to Daikanyama"><circle cx="86" cy="226" r="4" class="dot fash"/><text x="93" y="230" class="eat-label" text-anchor="start">Daikanyama · 35</text></a>
-<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%AD%E7%9B%AE%E9%BB%92" target="_blank" rel="noopener" aria-label="Live route to Nakameguro"><circle cx="102" cy="259" r="4" class="dot vint"/><text x="109" y="263" class="eat-label" text-anchor="start">Nakameguro · 31</text></a>
-<path d="M220 212 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
-<text x="8" y="14" class="ring-label">N ↑ · numbers are minutes · tap a dot for a live route</text>
+<desc id="shop-desc">Shopping areas placed at their true compass bearing from the Airbnb, with distance from the centre showing door-to-door minutes by train. Rings at 15, 30 and 60 minutes. Colour shows the kind of shopping. Each dot links to a live route search.</desc>
+<circle cx="220.0" cy="224.0" r="62" class="ring"/>
+<text x="224" y="282" class="ring-label">15 min</text>
+<circle cx="220.0" cy="224.0" r="122" class="ring"/>
+<text x="224" y="342" class="ring-label">30 min</text>
+<circle cx="220.0" cy="224.0" r="192" class="ring"/>
+<text x="224" y="412" class="ring-label">60 min</text>
+<line x1="220" y1="32" x2="220" y2="26" class="tick"/>
+<text x="220" y="22" class="compass" text-anchor="middle">N</text>
+<line x1="412" y1="224" x2="418" y2="224" class="tick"/>
+<text x="426" y="228" class="compass" text-anchor="middle">E</text>
+<line x1="220" y1="416" x2="220" y2="422" class="tick"/>
+<text x="220" y="434" class="compass" text-anchor="middle">S</text>
+<line x1="28" y1="224" x2="22" y2="224" class="tick"/>
+<text x="14" y="228" class="compass" text-anchor="middle">W</text>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%BA%BB%E5%B8%83%E5%8D%81%E7%95%AA" target="_blank" rel="noopener" aria-label="Live route to Azabu-Juban"><line x1="237" y1="178" x2="239" y2="192" class="lead"/><circle cx="237" cy="178" r="4" class="dot near"/><text x="241" y="195" class="eat-label" text-anchor="start">Azabu-Juban · 12</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%85%AD%E6%9C%AC%E6%9C%A8" target="_blank" rel="noopener" aria-label="Live route to Roppongi"><line x1="206" y1="164" x2="206" y2="123" class="lead"/><circle cx="206" cy="164" r="4" class="dot near"/><text x="208" y="126" class="eat-label" text-anchor="start">Roppongi · 15</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%BA%83%E5%B0%BE" target="_blank" rel="noopener" aria-label="Live route to Hiroo"><circle cx="160" cy="180" r="4" class="dot near"/><text x="168" y="179" class="eat-label" text-anchor="start">Hiroo · 18</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A5%9E%E4%BF%9D%E7%94%BA" target="_blank" rel="noopener" aria-label="Live route to Jimbocho books"><line x1="257" y1="138" x2="255" y2="152" class="lead"/><circle cx="257" cy="138" r="4" class="dot vint"/><text x="253" y="155" class="eat-label" text-anchor="end">Jimbocho books · 23</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%A7%8B%E8%91%89%E5%8E%9F" target="_blank" rel="noopener" aria-label="Live route to Akihabara"><line x1="297" y1="112" x2="294" y2="94" class="lead"/><circle cx="297" cy="112" r="4" class="dot geek"/><text x="292" y="97" class="eat-label" text-anchor="end">Akihabara · 36</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%94%B0%E5%8E%9F%E7%94%BA" target="_blank" rel="noopener" aria-label="Live route to Kappabashi"><line x1="303" y1="102" x2="306" y2="85" class="lead"/><circle cx="303" cy="102" r="4" class="dot craft"/><text x="308" y="88" class="eat-label" text-anchor="start">Kappabashi · 41</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%94%B5%E5%89%8D" target="_blank" rel="noopener" aria-label="Live route to Kuramae"><line x1="304" y1="126" x2="307" y2="109" class="lead"/><circle cx="304" cy="126" r="4" class="dot craft"/><text x="309" y="112" class="eat-label" text-anchor="start">Kuramae · 33</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%9D%B1%E4%BA%AC" target="_blank" rel="noopener" aria-label="Live route to Tokyo Station"><line x1="298" y1="121" x2="294" y2="82" class="lead"/><circle cx="298" cy="121" r="4" class="dot fash"/><text x="292" y="85" class="eat-label" text-anchor="end">Tokyo Station · 33</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E9%8A%80%E5%BA%A7" target="_blank" rel="noopener" aria-label="Live route to Ginza"><line x1="288" y1="148" x2="292" y2="143" class="lead"/><circle cx="288" cy="148" r="4" class="dot fash"/><text x="294" y="146" class="eat-label" text-anchor="start">Ginza · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E7%AF%89%E5%9C%B0" target="_blank" rel="noopener" aria-label="Live route to Tsukiji"><line x1="326" y1="154" x2="331" y2="161" class="lead"/><circle cx="326" cy="154" r="4" class="dot craft"/><text x="333" y="164" class="eat-label" text-anchor="start">Tsukiji · 32</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B1%A0%E8%A2%8B" target="_blank" rel="noopener" aria-label="Live route to Ikebukuro"><line x1="189" y1="92" x2="189" y2="73" class="lead"/><circle cx="189" cy="92" r="4" class="dot geek"/><text x="187" y="76" class="eat-label" text-anchor="end">Ikebukuro · 36</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%96%B0%E5%AE%BF%E4%B8%89%E4%B8%81%E7%9B%AE" target="_blank" rel="noopener" aria-label="Live route to Shinjuku"><line x1="153" y1="122" x2="150" y2="105" class="lead"/><circle cx="153" cy="122" r="4" class="dot fash"/><text x="148" y="108" class="eat-label" text-anchor="end">Shinjuku · 30</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%AD%E9%87%8E" target="_blank" rel="noopener" aria-label="Live route to Nakano Broadway"><line x1="126" y1="116" x2="122" y2="133" class="lead"/><circle cx="126" cy="116" r="4" class="dot geek"/><text x="120" y="136" class="eat-label" text-anchor="end">Nakano Broadway · 39</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E8%A1%A8%E5%8F%82%E9%81%93" target="_blank" rel="noopener" aria-label="Live route to Omotesando"><line x1="147" y1="142" x2="143" y2="169" class="lead"/><circle cx="147" cy="142" r="4" class="dot fash"/><text x="141" y="172" class="eat-label" text-anchor="end">Omotesando · 27</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%8E%9F%E5%AE%BF" target="_blank" rel="noopener" aria-label="Live route to Harajuku"><line x1="147" y1="153" x2="142" y2="148" class="lead"/><circle cx="147" cy="153" r="4" class="dot vint"/><text x="140" y="151" class="eat-label" text-anchor="end">Harajuku · 25</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E5%90%89%E7%A5%A5%E5%AF%BA" target="_blank" rel="noopener" aria-label="Live route to Kichijoji"><line x1="66" y1="155" x2="72" y2="86" class="lead"/><circle cx="66" cy="155" r="4" class="dot vint"/><text x="74" y="89" class="eat-label" text-anchor="start">Kichijoji · 50</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B8%8B%E8%B0%B7" target="_blank" rel="noopener" aria-label="Live route to Shibuya"><line x1="136" y1="182" x2="130" y2="201" class="lead"/><circle cx="136" cy="182" r="4" class="dot fash"/><text x="128" y="204" class="eat-label" text-anchor="end">Shibuya · 23</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%8B%E5%8C%97%E6%B2%A2" target="_blank" rel="noopener" aria-label="Live route to Shimokitazawa"><line x1="84" y1="187" x2="91" y2="219" class="lead"/><circle cx="84" cy="187" r="4" class="dot vint"/><text x="93" y="222" class="eat-label" text-anchor="start">Shimokitazawa · 38</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%BB%A3%E5%AE%98%E5%B1%B1" target="_blank" rel="noopener" aria-label="Live route to Daikanyama"><line x1="87" y1="216" x2="94" y2="250" class="lead"/><circle cx="87" cy="216" r="4" class="dot fash"/><text x="96" y="253" class="eat-label" text-anchor="start">Daikanyama · 35</text></a>
+<a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E4%B8%AD%E7%9B%AE%E9%BB%92" target="_blank" rel="noopener" aria-label="Live route to Nakameguro"><circle cx="96" cy="237" r="4" class="dot vint"/><text x="87" y="242" class="eat-label" text-anchor="end">Nakameguro · 31</text></a>
+<path d="M220 215 l3.2 6.6 7.2 1 -5.2 5 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.2 -5 7.2 -1 z" class="home"/>
+<text x="8" y="434" class="ring-label">true bearings · numbers are minutes</text>
 </svg>
       <div class="map-key" aria-label="Map key">
         <span style="--k: var(--mita)">department stores, fashion</span>
@@ -504,7 +595,7 @@
         <span style="--k: var(--ginza)">vintage, books, backstreets</span>
         <span style="--k: var(--accent)">near the base</span>
       </div>
-      <figcaption>Shopping districts by travel time from the Airbnb, laid out by compass direction. Rings are 15, 30 and 60 minutes door to door.</figcaption>
+      <figcaption>Shopping districts at their true bearing from the Airbnb; distance from the centre is minutes door to door. Rings at 15, 30 and 60 minutes.</figcaption>
     </figure>
 
     <h3>Near the base, no planning needed</h3>
@@ -573,7 +664,7 @@
 
   <section id="eat">
     <h2><span class="plate">食</span>Where to eat near the base</h2>
-    <p>These come from Tabelog, Japan's restaurant guide. Its scores run low: 3.5 is very good and anything over 4.0 is rare. Prices are Tabelog's average spend per person, before drinks. Everything here is within one or two stops of Shirokane-takanawa, most of it walkable.</p>
+    <p>These come from Tabelog, Japan's restaurant guide. Its scores run low: 3.5 is very good and anything over 4.0 is rare. Prices are Tabelog's average spend per person, before drinks. Everything here is within one or two stops of Shirokane-takanawa, most of it walkable, except the conveyor-belt sushi, which lives at the big stations.</p>
 
     <figure class="map">
 <svg viewBox="0 0 440 560" role="img" aria-labelledby="eats-title eats-desc">
@@ -726,7 +817,7 @@
       <span class="lab">Cuisine</span>
       <button type="button" data-cat="" aria-pressed="true">All</button>
       <button type="button" data-cat="set noodle tempura" aria-pressed="false">Set meals &amp; noodles</button>
-      <button type="button" data-cat="sushi omakase" aria-pressed="false">Sushi</button>
+      <button type="button" data-cat="sushi omakase kaiten" aria-pressed="false">Sushi</button>
       <button type="button" data-cat="beef pot" aria-pressed="false">Wagyu &amp; hot pot</button>
       <button type="button" data-cat="tori" aria-pressed="false">Yakitori</button>
       <button type="button" data-cat="familiar" aria-pressed="false">Familiar</button>
@@ -739,7 +830,7 @@
       <button type="button" data-tier="high" aria-pressed="false">Splurge</button>
       <button type="button" id="open-today" aria-pressed="false">Open today</button>
     </div>
-    <p class="count" id="eat-count">Showing all 42 places. Each one has a Tabelog link and a map pin.</p>
+    <p class="count" id="eat-count">Showing all 52 places. Each one has a Tabelog link and a map pin.</p>
     <div class="group" data-cat="set">
     <h3>Set-meal lunches (teishoku), around ¥1,000–2,000</h3>
     <p>A tray with a main, rice, miso soup and pickles. The best value meal in Japan and easy with older relatives. Most of these are weekday-lunch places with short hours.</p>
@@ -777,6 +868,22 @@
     </ul>
     </div>
 
+    <div class="group" data-cat="kaiten">
+    <h3>Conveyor-belt sushi, ¥1,500–4,000, no booking</h3>
+    <p>Kaitenzushi: plates circle past on a belt, or you order from the tablet and a lane delivers it. Colour-coded plates set the price, green-tea powder and a hot-water tap sit at every seat, and you're in and out in twenty-five minutes. The best ones are at the big stations rather than near the base, which makes them the right lunch on a day out. None take reservations; the famous ones queue at noon, so eat at 11:30 or 14:00.</p>
+    <ul class="eats">
+      <li data-tier="lunch mid" data-closed=""><span class="score">3.48</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1316/A131601/13004540/">Katsumidori Meguro</a><span class="pick">best value</span><span class="meta">Meguro 114 m · lunch ¥1,000–¥1,999, dinner ¥2,000–¥2,999 · The chain Tokyo people queue for: big fish for the price, plates from about ¥150. At Meguro station, 12 minutes from the base, so the closest conveyor belt to you. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.63293,139.71600" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch mid" data-closed=""><span class="score">3.51</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1314/A131403/13294124/">Toriton, Atre Shinagawa</a><span class="meta">Shinagawa 171 m · lunch ¥3,000–¥3,999 · A Hokkaido chain with a Tokyo cult; thick cuts of northern fish. In the Atre building at Shinagawa station, handy before a Shinkansen or on the way back from Kamakura. Expect a queue at lunch. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.62872,139.74050" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch mid" data-closed=""><span class="score">3.55</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1302/A130201/13153777/">Nemuro Hanamaru, KITTE</a><span class="meta">Tokyo 279 m · lunch ¥2,000–¥2,999 · The other Hokkaido name, in the KITTE building beside Tokyo Station. Take a ticket from the machine and shop while you wait; the wait is often an hour. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.67937,139.76502" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch mid" data-closed=""><span class="score">3.49</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1302/A130201/13249372/">Haneda Ichiba, Gransta</a><span class="meta">Tokyo 125 m · lunch ¥3,000–¥3,999, dinner ¥4,000–¥4,999 · Inside Tokyo Station's ticket gates, fish trucked in from Haneda's market. The fastest proper meal on a Disney or Shinkansen day. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.68098,139.76594" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch mid" data-closed=""><span class="score">3.49</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1306/A130602/13264172/">Kaiten Sushi Ginza Onodera</a><span class="pick">the fancy one</span><span class="meta">Omote Sando 236 m · lunch ¥4,000–¥4,999 · Conveyor belt from the group behind one of Ginza's famous counters, in Omotesando. Dearer, better fish, still no booking and still a belt. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.66581,139.71003" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch mid" data-closed=""><span class="score">3.48</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1303/A130301/13294625/">Ginza Onodera Musuko, Shibuya</a><span class="meta">Shibuya 154 m · lunch ¥4,000–¥4,999 · The same group's younger Shibuya branch, near the station. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.65808,139.70013" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch mid" data-closed=""><span class="score">3.46</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1304/A130401/13004192/">Numazuko, Shinjuku</a><span class="meta">Shinjuku Sanchome 166 m · lunch ¥2,000–¥2,999 · A small, famous shop by Shinjuku-sanchome with fish from Numazu port. Queue, eat, leave; it moves fast. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.69039,139.70316" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch mid" data-closed=""><span class="score">3.43</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1311/A131101/13211079/">Edokko, Ueno</a><span class="meta">Keisei Ueno 135 m · lunch ¥1,000–¥1,999, dinner ¥2,000–¥2,999 · Cheap and quick by Keisei Ueno, useful after the museums. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.71123,139.77511" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch mid" data-closed=""><span class="score">3.45</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1311/A131102/13075573/">Hinatomaru, Asakusa</a><span class="meta">Asakusa 214 m · lunch ¥2,000–¥2,999, dinner ¥4,000–¥4,999 · Near Sensō-ji; a sit-down break on an Asakusa or Kappabashi day. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.71185,139.79590" target="_blank" rel="noopener">navigate</a></span></span></li>
+      <li data-tier="lunch mid" data-closed="2"><span class="score">3.43</span><span class="who"><a href="https://tabelog.com/en/tokyo/A1304/A130401/13056705/">Himawari Zushi, Shinjuku</a><span class="meta">Shinjuku 275 m · lunch ¥1,000–¥1,999, dinner ¥2,000–¥2,999 · closed Tuesday · Old-school Shinjuku belt with a loyal lunch crowd. · <a href="https://www.google.com/maps/dir/?api=1&amp;travelmode=transit&amp;destination=35.68899,139.69751" target="_blank" rel="noopener">navigate</a></span></span></li>
+    </ul>
+    </div>
     <div class="group" data-cat="omakase">
     <h3>Omakase, ¥8,000–20,000</h3>
     <p>The chef chooses, usually 15 to 20 pieces over about two hours at a counter of 8 to 10 seats. Book a week or more ahead. Tell them about allergies when booking, not at the counter.</p>
@@ -934,7 +1041,7 @@
   </section>
 
   <footer>
-    <p>Prepared 17 October 2026, updated 18 October. Restaurant ratings, prices and closed days were read from Tabelog on 18 October 2026 JST. Travel minutes to the shopping districts were read from Yahoo Transit the same day. Sample day-trip trains were read from Yahoo Transit on 18 October for 21 October. Museum closed days, exhibition dates, Disney prices and the phone numbers were checked against web sources on 18 October. Shop, district and museum descriptions are general knowledge, not live lookups. Confirm opening hours, prices and ticket availability before you go. Station numbers follow Tokyo Metro and Toei signage.</p>
+    <p>Prepared 17 October 2026, last updated 18 October; see the change list at the top. Restaurant ratings, prices and closed days were read from Tabelog on 18 October 2026 JST. Travel minutes to the shopping districts were read from Yahoo Transit the same day. Sample day-trip trains were read from Yahoo Transit on 18 October for 21 October. Museum closed days, exhibition dates, Disney prices and the phone numbers were checked against web sources on 18 October. Shop, district and museum descriptions are general knowledge, not live lookups. Confirm opening hours, prices and ticket availability before you go. Station numbers follow Tokyo Metro and Toei signage.</p>
   </footer>
 </div>
 <script>
