@@ -240,6 +240,39 @@
   a.nav { display: inline-block; font: 600 .68rem/1 var(--mono); color: var(--accent); text-decoration: none;
     border: 1px solid var(--rule); border-radius: 999px; padding: .22rem .5rem; margin-left: .15rem; vertical-align: .1em; white-space: nowrap; background: var(--surface); }
   .museum-list a.nav, ul.points a.nav { margin-left: .3rem; }
+  /* plan:css */
+  .planner { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: .9rem 1rem; margin: .6rem 0 1.2rem; }
+  .pl-row { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: end; margin: 0 0 .7rem; }
+  .pl-row label { display: flex; flex-direction: column; gap: .25rem; font: 600 .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .planner input, .planner select { font: 500 .95rem/1.3 var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--rule); border-radius: 6px; padding: .4rem .5rem; max-width: 100%; }
+  .planner select { max-width: 20rem; }
+  .pl-stops { list-style: none; margin: 0 0 .8rem; padding: 0; display: grid; gap: .4rem; }
+  .pl-stops li { display: grid; grid-template-columns: 1.4rem 1fr auto auto; gap: .4rem .6rem; align-items: center; border: 1px solid var(--rule); border-left: 4px solid var(--k, var(--rule)); border-radius: 6px; padding: .45rem .6rem; background: var(--bg); }
+  .pl-stops .n { font: 700 .8rem/1 var(--mono); color: var(--muted); }
+  .pl-stops .nm { font-weight: 600; }
+  .pl-stops .nm small { display: block; font: 500 .72rem/1.3 var(--mono); color: var(--muted); }
+  .pl-stops .dw { display: flex; align-items: center; gap: .3rem; font: 600 .68rem/1 var(--mono); color: var(--muted); }
+  .pl-stops .dw input { width: 3.6rem; padding: .25rem .35rem; font-size: .85rem; }
+  .pl-stops .ops { display: flex; gap: .2rem; }
+  .pl-stops .ops button { font: 600 .8rem/1 var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 5px; padding: .3rem .45rem; cursor: pointer; }
+  .pl-empty { color: var(--muted); font-size: .9rem; margin: 0 0 .8rem; }
+  .pl-hint { font-size: .85rem; color: var(--muted); margin: 0 0 .7rem; }
+  .pl-out { margin-top: .9rem; }
+  .pl-out table { width: 100%; border-collapse: collapse; font-size: .92rem; table-layout: fixed; }
+  .pl-out col.c1 { width: 24%; } .pl-out col.c2 { width: 32%; } .pl-out col.c3 { width: 26%; } .pl-out col.c4 { width: 18%; }
+  .pl-out th, .pl-out td { text-align: left; vertical-align: top; padding: .45rem .5rem; border-top: 1px solid var(--rule); }
+  .pl-out th { font: 600 .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-top: 0; }
+  .pl-out td.t { font: 600 .8rem/1.4 var(--mono); }
+  .pl-out tr.leg td { color: var(--muted); font-size: .85rem; }
+  .pl-out tr.leg td.t { color: var(--muted); font-weight: 500; }
+  .pl-out .links a { display: inline-block; font: 600 .72rem/1.4 var(--mono); color: var(--accent); text-decoration: none; margin: 0 .5rem .2rem 0; }
+  .pl-warn { display: inline-block; font: 600 .68rem/1.3 var(--mono); color: var(--home); border: 1px solid var(--home); border-radius: 999px; padding: .15rem .45rem; margin: .15rem .25rem 0 0; }
+  .pl-ok { display: inline-block; font: 600 .68rem/1.3 var(--mono); color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: .15rem .45rem; margin: .15rem .25rem 0 0; }
+  .pl-est { font: 500 .7rem/1 var(--mono); color: var(--muted); }
+  .pl-sum { font-size: .9rem; color: var(--muted); margin: .6rem 0 0; }
+  @media (max-width: 600px) { .pl-stops li { grid-template-columns: 1.2rem 1fr; } .pl-stops .dw, .pl-stops .ops { grid-column: 2; } }
+  @media print { .planner .pl-row, .planner .pl-stops .ops, .planner .pl-hint, .planner .toolbar { display: none; } .pl-stops input { border: 0; } }
+  /* /plan:css */
   @media print { a.nav { display: none; } }
 
   @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
@@ -262,10 +295,11 @@
     <span class="eyebrow">October 2026 · base in Shirokane, Minato</span>
     <h1>Tokyo Field Guide<span class="ja">東京 · 初めての方へ</span></h1>
     <p class="lede">The layout of the city, your corner of it, day trips, museums and sculpture, amusement parks, where to eat and shop, accessibility, massage and baths, and the mistakes first-timers make.</p>
-    <p class="updated">Last updated <time datetime="2026-10-20">20 Oct 2026, 05:15 JST</time> · <a href="#changes">what changed</a></p>
+    <p class="updated">Last updated <time datetime="2026-10-20">20 Oct 2026, 11:44 JST</time> · <a href="#changes">what changed</a></p>
     <details class="changes" id="changes">
       <summary>What changed</summary>
       <ul class="points">
+        <li><b>20 Oct, midday.</b> New chapter Plan a day: pick museums, districts, parks and day trips, pick lunch and dinner from Where to eat (listed nearest your stops, with on-the-way and detour tags), set how long you stay, and the page lays the day out with times, closed-day and opening-hour warnings, a Yahoo Transit link and Google Maps directions on every leg, shortest-order and copy-as-text buttons. Saved on your phone.</li>
         <li><b>20 Oct, early.</b> Mizutani Camera in Ueno confirmed and added to the used-camera and vintage-watch cards, with its hours and closed days.</li>
         <li><b>19 Oct, evening.</b> Shopping expanded for collectors: Pokémon cards (the four Pokémon Centers and how their lotteries work, then Hareruya2, Card Rush, Fukufuku Toreka, magi, Radio Kaikan and Mandarake's Card-kan for singles and old cards), figures and vintage toys (Nakano Broadway floor by floor, Mandarake Complex, Radio Kaikan), retro games (Super Potato, Trader, Retro Game Camp, and what runs on a console at home), and vintage clothing by neighbourhood (Harajuku, Shimokitazawa, Koenji). Koenji joins the shopping map.</li>
         <li><b>19 Oct, afternoon.</b> Seating on every restaurant row: seat count, counter or tables, sunken floor or tatami, private rooms, wheelchair access and whether they take reservations, read from each place's Tabelog page (59 of 61 list a seat count). A Seating filter joins the cuisine and budget chips.</li>
@@ -295,6 +329,7 @@
         <li><a href="#shape" aria-current="false"><span class="plate">JY</span>The loop</a></li>
         <li><a href="#base" aria-current="false"><span class="plate">N03</span>Your base</a></li>
         <li><a href="#trips" aria-current="false"><span class="plate">OH</span>Day trips</a></li>
+        <li><a href="#plan" aria-current="false"><span class="plate">計</span>Plan a day</a></li>
         <li><a href="#museums" aria-current="false"><span class="plate">美</span>Museums</a></li>
         <li><a href="#parks" aria-current="false"><span class="plate">遊</span>Parks</a></li>
         <li><a href="#shop" aria-current="false"><span class="plate">買</span>Shopping</a></li>
@@ -2623,6 +2658,32 @@
         <span class="go"><a href="https://transit.yahoo.co.jp/search/result?from=%E7%99%BD%E9%87%91%E9%AB%98%E8%BC%AA&to=%E6%B2%B3%E5%8F%A3%E6%B9%96" target="_blank" rel="noopener">Shinjuku to Kawaguchiko</a> <a class="nav" href="https://www.google.com/maps/search/?api=1&amp;query=Kawaguchiko%20Station" target="_blank" rel="noopener" aria-label="Open Kawaguchiko Station in Google Maps">Maps ↗</a></span></div>
     </div>
     <p>Tokyo Disney Resort is under <a href="#parks">Amusement parks</a>. Without leaving the city, the National Museum of Western Art in Ueno has major Rodin bronzes in its front courtyard; see <a href="#museums">Museums</a>.</p>
+    </div>
+  </section>
+
+  <section id="plan">
+    <h2><span class="plate">計</span><span class="h2-text">Plan a day</span><button class="fold" type="button" aria-expanded="true" aria-controls="plan-body" aria-label="Collapse Plan a day"></button></h2>
+    <div class="body" id="plan-body">
+    <p>Pick the places, pick where to eat, and this lays the day out in order with times. Travel times from the base are the Yahoo Transit readings used everywhere in this guide; times between stops are estimates from distance, marked <i>est.</i>, with a live Yahoo link and Google Maps directions on every leg for the exact train. Closed days and opening hours come from the chapters above. The plan is saved on this phone.</p>
+    <div class="planner" id="planner">
+      <div class="pl-row">
+        <label>Date <input type="date" id="pl-date"></label>
+        <label>Leave at <input type="time" id="pl-start" value="09:30" step="300"></label>
+        <label>Add a stop <select id="pl-add" aria-label="Add a stop"><option value="">Choose…</option><optgroup label="Museums"><option value="p0">Teien Art Museum · 12 min</option><option value="p1">Mori Art Museum · 18 min</option><option value="p2">teamLab Borderless · 22 min</option><option value="p3">21_21 Design Sight · 30 min</option><option value="p4">National Art Center · 32 min</option><option value="p5">Nezu Museum · 32 min</option><option value="p9">Artizon Museum · 40 min</option><option value="p8">Western Art (Rodin) · 42 min</option><option value="p6">Yayoi Kusama Museum · 45 min</option><option value="p7">Tokyo National Museum · 45 min</option><option value="p10">teamLab Planets · 52 min</option><option value="p11">Hakone Open-Air Museum · 120 min</option></optgroup><optgroup label="Parks and day trips"><option value="p13">Tokyo Dome City · 25 min</option><option value="p12">Tokyo Disney Resort · 45 min</option><option value="p14">Yomiuriland · 60 min</option></optgroup><optgroup label="Day trips"><option value="p40">Kamakura · 75 min</option><option value="p42">Hakone · 120 min</option><option value="p35">Nikko · 160 min</option></optgroup><optgroup label="Shopping"><option value="p15">Azabu-Juban · 12 min</option><option value="p16">Hiroo · 18 min</option><option value="p17">Jimbocho books · 23 min</option><option value="p31">Shibuya · 23 min</option><option value="p22">Ginza · 25 min</option><option value="p29">Harajuku · 25 min</option><option value="p28">Omotesando · 27 min</option><option value="p25">Shinjuku · 30 min</option><option value="p34">Nakameguro · 31 min</option><option value="p23">Tsukiji · 32 min</option><option value="p20">Kuramae · 33 min</option><option value="p21">Tokyo Station · 33 min</option><option value="p33">Daikanyama · 35 min</option><option value="p18">Akihabara · 36 min</option><option value="p24">Ikebukuro · 36 min</option><option value="p32">Shimokitazawa · 38 min</option><option value="p26">Nakano Broadway · 39 min</option><option value="p19">Kappabashi · 41 min</option><option value="p27">Koenji · 41 min</option><option value="p30">Kichijoji · 50 min</option></optgroup><optgroup label="Areas"><option value="p41">Meguro · 12 min</option><option value="p39">Shinagawa · 15 min</option><option value="p43">Roppongi · 15 min</option><option value="p37">Asakusa · 30 min</option><option value="p36">Ueno · 35 min</option><option value="p38">Odaiba · 45 min</option></optgroup></select></label>
+      </div>
+      <ol class="pl-stops" id="pl-stops" aria-label="Stops in order"></ol>
+      <div class="pl-row">
+        <label>Lunch <select id="pl-lunch" aria-label="Lunch"></select></label>
+        <label>Dinner <select id="pl-dinner" aria-label="Dinner"></select></label>
+      </div>
+      <p class="pl-hint">Restaurants are listed nearest your stops first: <b>on the way</b> is within a 10-minute walk of a stop, <b>short detour</b> within about 20.</p>
+      <div class="toolbar">
+        <button type="button" class="tool" id="pl-order">Shortest order</button>
+        <button type="button" class="tool" id="pl-copy">Copy as text</button>
+        <button type="button" class="tool" id="pl-clear">Clear</button>
+      </div>
+      <div class="pl-out" id="pl-out" aria-live="polite"></div>
+    </div>
     </div>
   </section>
 
@@ -5279,9 +5340,10 @@
   </section>
 
   <footer>
-    <p>Prepared 17 October 2026, last updated 20 October; see the change list at the top. Restaurant ratings, prices and closed days were read from Tabelog on 18 October 2026 JST; seat counts, seating types, private rooms and wheelchair access from each restaurant's Tabelog page on 19 October. Travel minutes to the shopping districts were read from Yahoo Transit the same day. Sample day-trip trains were read from Yahoo Transit on 18 October for 21 October. Museum closed days, exhibition dates, Disney prices and the phone numbers were checked against web sources on 18 October. Shop, district and museum descriptions are general knowledge, not live lookups; the vintage watch shops' hours and stock categories were read from each shop's own website on 19 October. Pokémon Center hours and the card-set lottery notices come from the official store pages; the Akihabara card shops', Mandarake's, Super Potato's, Trader's, Radio Kaikan's, BerBerJin's and Flamingo's hours and floors were read from their own sites or listings on 19 October; pack prices are list prices from the official card database as quoted by a July 2026 guide; the remaining collector and vintage shop descriptions are general knowledge and 2026 shop guides. Minutes to Koenji were read from Yahoo Transit on 19 October. Mizutani Camera's hours come from its Google Business listing, last updated by the shop itself about twelve weeks before 20 October. Confirm opening hours, prices and ticket availability before you go. Station numbers follow Tokyo Metro and Toei signage. Massage and bath hours, prices and tattoo rules were read from each business's own website or listing on 19 October 2026; accessibility facts come from Toei's and Tokyo Metro's own pages and Uber's Assist page the same day. Map geometry (coastline, rivers, parks, roads, rail) is © OpenStreetMap contributors, ODbL, read through Overpass on 19 October; the maps are drawn by the guide's own scripts, not tiles.</p>
+    <p>Prepared 17 October 2026, last updated 20 October; the Plan a day chapter uses the minutes, closed days and hours already in this guide, estimates the legs between stops from straight-line distance (about 4 minutes per kilometre by train plus 8 for the platforms, 80 metres a minute on foot) and never looks anything up live; see the change list at the top. Restaurant ratings, prices and closed days were read from Tabelog on 18 October 2026 JST; seat counts, seating types, private rooms and wheelchair access from each restaurant's Tabelog page on 19 October. Travel minutes to the shopping districts were read from Yahoo Transit the same day. Sample day-trip trains were read from Yahoo Transit on 18 October for 21 October. Museum closed days, exhibition dates, Disney prices and the phone numbers were checked against web sources on 18 October. Shop, district and museum descriptions are general knowledge, not live lookups; the vintage watch shops' hours and stock categories were read from each shop's own website on 19 October. Pokémon Center hours and the card-set lottery notices come from the official store pages; the Akihabara card shops', Mandarake's, Super Potato's, Trader's, Radio Kaikan's, BerBerJin's and Flamingo's hours and floors were read from their own sites or listings on 19 October; pack prices are list prices from the official card database as quoted by a July 2026 guide; the remaining collector and vintage shop descriptions are general knowledge and 2026 shop guides. Minutes to Koenji were read from Yahoo Transit on 19 October. Mizutani Camera's hours come from its Google Business listing, last updated by the shop itself about twelve weeks before 20 October. Confirm opening hours, prices and ticket availability before you go. Station numbers follow Tokyo Metro and Toei signage. Massage and bath hours, prices and tattoo rules were read from each business's own website or listing on 19 October 2026; accessibility facts come from Toei's and Tokyo Metro's own pages and Uber's Assist page the same day. Map geometry (coastline, rivers, parks, roads, rail) is © OpenStreetMap contributors, ODbL, read through Overpass on 19 October; the maps are drawn by the guide's own scripts, not tiles.</p>
   </footer>
 </div>
+<script id="plan-data" type="application/json">{"home":{"ja":"白金高輪","en":"Shirokane-takanawa","lat":35.6429531,"lon":139.734168,"walk":7,"label":"Airbnb"},"trip":{},"places":[{"id":"p0","name":"Teien Art Museum","min":12,"ja":"白金台","lat":35.6368429,"lon":139.7192776,"cat":"museum","dwell":120,"closed":[1],"note":null,"hours":[[600,1080]]},{"id":"p1","name":"Mori Art Museum","min":18,"ja":"六本木一丁目","lat":35.6611582,"lon":139.7285343,"cat":"museum","dwell":120,"closed":[2],"note":"Tue, and between shows","hours":[]},{"id":"p2","name":"teamLab Borderless","min":22,"ja":"六本木一丁目","lat":35.6614747,"lon":139.7408267,"cat":"museum","dwell":120,"closed":[],"note":"a few days a month","hours":[]},{"id":"p3","name":"21_21 Design Sight","min":30,"ja":"乃木坂","lat":35.6658408,"lon":139.7309232,"cat":"museum","dwell":120,"closed":[2],"note":null,"hours":[]},{"id":"p4","name":"National Art Center","min":32,"ja":"乃木坂","lat":35.6653369,"lon":139.7264411,"cat":"museum","dwell":120,"closed":[2],"note":null,"hours":[]},{"id":"p5","name":"Nezu Museum","min":32,"ja":"表参道","lat":35.6622429,"lon":139.7172555,"cat":"museum","dwell":120,"closed":[1],"note":null,"hours":[[600,1020]]},{"id":"p6","name":"Yayoi Kusama Museum","min":45,"ja":"牛込柳町","lat":35.7032011,"lon":139.7264837,"cat":"museum","dwell":120,"closed":[1,2,3],"note":null,"hours":[]},{"id":"p7","name":"Tokyo National Museum","min":45,"ja":"上野","lat":35.7190448,"lon":139.7759676,"cat":"museum","dwell":120,"closed":[1],"note":null,"hours":[[570,1020]]},{"id":"p8","name":"Western Art (Rodin)","min":42,"ja":"上野","lat":35.7155512,"lon":139.7759424,"cat":"museum","dwell":120,"closed":[1],"note":null,"hours":[]},{"id":"p9","name":"Artizon Museum","min":40,"ja":"東京","lat":35.678749,"lon":139.7721285,"cat":"museum","dwell":120,"closed":[1],"note":null,"hours":[]},{"id":"p10","name":"teamLab Planets","min":52,"ja":"新豊洲","lat":35.6487821,"lon":139.7901603,"cat":"museum","dwell":120,"closed":[],"note":"rarely","hours":[]},{"id":"p11","name":"Hakone Open-Air Museum","min":120,"ja":"箱根湯本","lat":35.2442838,"lon":139.0520834,"cat":"museum","dwell":120,"closed":[],"note":"never","hours":[[540,1020]]},{"id":"p12","name":"Tokyo Disney Resort","min":45,"ja":"舞浜","lat":35.636259,"lon":139.8836057,"cat":"park","dwell":540},{"id":"p13","name":"Tokyo Dome City","min":25,"ja":"水道橋","lat":35.7043862,"lon":139.7542216,"cat":"park","dwell":180},{"id":"p14","name":"Yomiuriland","min":60,"ja":"読売ランド前","lat":35.6252459,"lon":139.5187982,"cat":"park","dwell":300},{"id":"p15","name":"Azabu-Juban","min":12,"ja":"麻布十番","lat":35.6553864,"lon":139.736804,"cat":"shopping","dwell":90},{"id":"p16","name":"Hiroo","min":18,"ja":"広尾","lat":35.6531408,"lon":139.7220507,"cat":"shopping","dwell":90},{"id":"p17","name":"Jimbocho books","min":23,"ja":"神保町","lat":35.695008,"lon":139.7582694,"cat":"shopping","dwell":90},{"id":"p18","name":"Akihabara","min":36,"ja":"秋葉原","lat":35.6971596,"lon":139.7751585,"cat":"shopping","dwell":90},{"id":"p19","name":"Kappabashi","min":41,"ja":"田原町","lat":35.713061,"lon":139.7884976,"cat":"shopping","dwell":90},{"id":"p20","name":"Kuramae","min":33,"ja":"蔵前","lat":35.704857,"lon":139.7937441,"cat":"shopping","dwell":90},{"id":"p21","name":"Tokyo Station","min":33,"ja":"東京","lat":35.6835475,"lon":139.7670724,"cat":"shopping","dwell":90},{"id":"p22","name":"Ginza","min":25,"ja":"銀座","lat":35.673029,"lon":139.7620929,"cat":"shopping","dwell":90},{"id":"p23","name":"Tsukiji","min":32,"ja":"築地","lat":35.6680848,"lon":139.7725918,"cat":"shopping","dwell":90},{"id":"p24","name":"Ikebukuro","min":36,"ja":"池袋","lat":35.7312289,"lon":139.7084087,"cat":"shopping","dwell":90},{"id":"p25","name":"Shinjuku","min":30,"ja":"新宿三丁目","lat":35.6887259,"lon":139.6987623,"cat":"shopping","dwell":90},{"id":"p26","name":"Nakano Broadway","min":39,"ja":"中野","lat":35.7089746,"lon":139.6657822,"cat":"shopping","dwell":90},{"id":"p27","name":"Koenji","min":41,"ja":"高円寺","lat":35.7053388,"lon":139.650004,"cat":"shopping","dwell":90},{"id":"p28","name":"Omotesando","min":27,"ja":"表参道","lat":35.6651609,"lon":139.7125432,"cat":"shopping","dwell":90},{"id":"p29","name":"Harajuku","min":25,"ja":"原宿","lat":35.6705019,"lon":139.7024144,"cat":"shopping","dwell":90},{"id":"p30","name":"Kichijoji","min":50,"ja":"吉祥寺","lat":35.7023021,"lon":139.5803283,"cat":"shopping","dwell":90},{"id":"p31","name":"Shibuya","min":23,"ja":"渋谷","lat":35.6595331,"lon":139.7009491,"cat":"shopping","dwell":90},{"id":"p32","name":"Shimokitazawa","min":38,"ja":"下北沢","lat":35.6612659,"lon":139.6669207,"cat":"shopping","dwell":90},{"id":"p33","name":"Daikanyama","min":35,"ja":"代官山","lat":35.6481206,"lon":139.7032158,"cat":"shopping","dwell":90},{"id":"p34","name":"Nakameguro","min":31,"ja":"中目黒","lat":35.6439085,"lon":139.6993701,"cat":"shopping","dwell":90},{"id":"p35","name":"Nikko","min":160,"ja":"東武日光","lat":36.7478743,"lon":139.6194559,"cat":"daytrip","dwell":360},{"id":"p36","name":"Ueno","min":35,"ja":"上野","lat":35.7140413,"lon":139.7771164,"cat":"area","dwell":90},{"id":"p37","name":"Asakusa","min":30,"ja":"浅草","lat":35.7175966,"lon":139.7975626,"cat":"area","dwell":90},{"id":"p38","name":"Odaiba","min":45,"ja":"台場","lat":35.6258854,"lon":139.7714067,"cat":"area","dwell":90},{"id":"p39","name":"Shinagawa","min":15,"ja":"品川","lat":35.6274838,"lon":139.7377655,"cat":"area","dwell":90},{"id":"p40","name":"Kamakura","min":75,"ja":"鎌倉","lat":35.3191831,"lon":139.5504271,"cat":"daytrip","dwell":300},{"id":"p41","name":"Meguro","min":12,"ja":"目黒","lat":35.6340669,"lon":139.7157332,"cat":"area","dwell":90},{"id":"p42","name":"Hakone","min":120,"ja":"箱根湯本","lat":35.2333709,"lon":139.1036639,"cat":"daytrip","dwell":360},{"id":"p43","name":"Roppongi","min":15,"ja":"六本木","lat":35.6659247,"lon":139.7291509,"cat":"area","dwell":90}],"eats":[{"id":"e13193244","name":"Shinpachi Shokudo, Tamachi","url":"https://tabelog.com/en/tokyo/A1314/A131402/13193244/","cat":"Breakfast sets, open by 7:00–8:30, ¥700–2,000","lat":35.64693,"lon":139.74645,"tier":"lunch","closed":[],"hours":[[420,1380]],"price":"under ¥999","pick":"closest, 7:00","score":"3.31","blurb":"Grilled-fish teishoku chain, under ¥1,000. One stop north on the Mita line, about 15 minutes door to door. The same chain has 7:00 branches ","ja":"田町","walk_m":167},{"id":"e13297218","name":"Azabu Ami Shiro","url":"https://tabelog.com/en/tokyo/A1307/A130702/13297218/","cat":"Breakfast sets, open by 7:00–8:30, ¥700–2,000","lat":35.65445,"lon":139.73641,"tier":"lunch","closed":[],"hours":[[450,1350]],"price":"¥2,000–¥2,999","pick":null,"score":"3.24","blurb":"Charcoal-grill izakaya that serves breakfast; the walkable option.","ja":"麻布十番","walk_m":110},{"id":"e13277728","name":"Fu Teishokuya, Ebisu","url":"https://tabelog.com/en/tokyo/A1303/A130302/13277728/","cat":"Breakfast sets, open by 7:00–8:30, ¥700–2,000","lat":35.64492,"lon":139.71198,"tier":"lunch","closed":[],"hours":[[450,900],[450,1290]],"price":"¥1,000–¥1,999","pick":null,"score":"3.48","blurb":"Organic Japanese sets. Mita line to Meguro, one Yamanote stop, 14 minutes.","ja":"恵比寿","walk_m":378},{"id":"e13126227","name":"Shinagawa Hioki","url":"https://tabelog.com/en/tokyo/A1314/A131403/13126227/","cat":"Breakfast sets, open by 7:00–8:30, ¥700–2,000","lat":35.62791,"lon":139.739,"tier":"lunch","closed":[],"hours":[[420,1350],[420,1260]],"price":"¥1,000–¥1,999","pick":null,"score":"3.46","blurb":"Fish sets and rice bowls inside Ecute Shinagawa South, 15 minutes. Good before a Shinkansen.","ja":"品川","walk_m":121},{"id":"e13220295","name":"Tadokoro Foods eat-in, Tsukiji","url":"https://tabelog.com/en/tokyo/A1313/A131301/13220295/","cat":"Breakfast sets, open by 7:00–8:30, ¥700–2,000","lat":35.66562,"lon":139.7697,"tier":"lunch","closed":[0],"hours":[[390,840]],"price":"under ¥999","pick":"the market trip, 6:30","score":"3.58","blurb":"Tsukiji is 24 minutes: Namboku one stop to Azabu-Juban, then the Oedo line to Tsukijishijo. Under ¥1,000.","ja":"築地市場","walk_m":267},{"id":"e13024450","name":"Chosei An, Tsukiji","url":"https://tabelog.com/en/tokyo/A1313/A131301/13024450/","cat":"Breakfast sets, open by 7:00–8:30, ¥700–2,000","lat":35.66531,"lon":139.77151,"tier":"lunch","closed":[0],"hours":[[420,870],[420,840]],"price":"¥2,000–¥2,999","pick":null,"score":"3.57","blurb":"Soba and seafood sets.","ja":"築地","walk_m":323},{"id":"e13205798","name":"Oda Yasu, Tsukiji Uogashi","url":"https://tabelog.com/en/tokyo/A1313/A131301/13205798/","cat":"Breakfast sets, open by 7:00–8:30, ¥700–2,000","lat":35.66491,"lon":139.77118,"tier":"lunch","closed":[0],"hours":[[420,840]],"price":"¥1,000–¥1,999","pick":null,"score":"3.48","blurb":"Fried fish and croquette sets.","ja":"築地","walk_m":375},{"id":"e13040870","name":"Toto Grill, Tsukiji","url":"https://tabelog.com/en/tokyo/A1313/A131301/13040870/","cat":"Breakfast sets, open by 7:00–8:30, ¥700–2,000","lat":35.6641,"lon":139.77183,"tier":"lunch","closed":[0],"hours":[],"price":"under ¥999","pick":null,"score":"3.49","blurb":"Google Maps","ja":"築地","walk_m":448},{"id":"e13237611","name":"Katsuo Shokudo, Shibuya","url":"https://tabelog.com/en/tokyo/A1303/A130301/13237611/","cat":"Breakfast sets, open by 7:00–8:30, ¥700–2,000","lat":35.65412,"lon":139.70211,"tier":"lunch","closed":[3,4],"hours":[[510,780]],"price":"¥2,000–¥2,999","pick":"the famous one","score":"3.67","blurb":"The katsuobushi breakfast: rice, miso soup and a mountain of fresh-shaved bonito flakes. 17 minutes from the base.","ja":"渋谷","walk_m":610},{"id":"e13004451","name":"Takishita","url":"https://tabelog.com/en/tokyo/A1307/A130702/13004451/","cat":"Set-meal lunches (teishoku), around ¥1,000–2,000","lat":35.65522,"lon":139.73596,"tier":"lunch","closed":[3],"hours":[],"price":null,"pick":"start here","score":"3.71","blurb":"closed Wednesday","ja":"麻布十番","walk_m":78},{"id":"e13211807","name":"Tonkatsu Miyako","url":"https://tabelog.com/en/tokyo/A1307/A130702/13211807/","cat":"Set-meal lunches (teishoku), around ¥1,000–2,000","lat":35.65265,"lon":139.73389,"tier":"lunch","closed":[3],"hours":[],"price":null,"pick":null,"score":"3.51","blurb":"closed Wednesday","ja":"麻布十番","walk_m":402},{"id":"e13056496","name":"Ichiju Sansai","url":"https://tabelog.com/en/tokyo/A1307/A130703/13056496/","cat":"Set-meal lunches (teishoku), around ¥1,000–2,000","lat":35.65767,"lon":139.71841,"tier":"lunch","closed":[0,6],"hours":[],"price":null,"pick":null,"score":"3.51","blurb":"weekdays only","ja":"広尾","walk_m":601},{"id":"e13013990","name":"Fukushima Ya","url":"https://tabelog.com/en/tokyo/A1307/A130702/13013990/","cat":"Set-meal lunches (teishoku), around ¥1,000–2,000","lat":35.65558,"lon":139.73603,"tier":"lunch","closed":[],"hours":[],"price":null,"pick":null,"score":"3.48","blurb":"open daily","ja":"麻布十番","walk_m":73},{"id":"e13021903","name":"Anbai","url":"https://tabelog.com/en/tokyo/A1307/A130702/13021903/","cat":"Set-meal lunches (teishoku), around ¥1,000–2,000","lat":35.65508,"lon":139.73615,"tier":"lunch","closed":[2],"hours":[],"price":null,"pick":null,"score":"3.48","blurb":"closed Tuesday","ja":"麻布十番","walk_m":68},{"id":"e13013983","name":"Fujiya Shokudo","url":"https://tabelog.com/en/tokyo/A1307/A130702/13013983/","cat":"Set-meal lunches (teishoku), around ¥1,000–2,000","lat":35.6539,"lon":139.73483,"tier":"lunch","closed":[0],"hours":[],"price":"under ¥1,000","pick":null,"score":"3.42","blurb":"closed Sunday and holidays","ja":"麻布十番","walk_m":243},{"id":"e13249768","name":"Tonkatsu Ouryu","url":"https://tabelog.com/en/tokyo/A1316/A131602/13249768/","cat":"Noodles and cheap classics, ¥1,000–2,000","lat":35.64486,"lon":139.72807,"tier":"lunch","closed":[1],"hours":[],"price":"¥1,000","pick":"Tabelog 100","score":"3.69","blurb":"closed Monday","ja":"白金高輪","walk_m":593},{"id":"e13264260","name":"Iruka Tokyo","url":"https://tabelog.com/en/tokyo/A1307/A130701/13264260/","cat":"Noodles and cheap classics, ¥1,000–2,000","lat":35.66477,"lon":139.73168,"tier":"lunch","closed":[1],"hours":[],"price":null,"pick":"Tabelog 100","score":"3.80","blurb":"closed Monday","ja":"六本木","walk_m":262},{"id":"e13279264","name":"Chuka Soba Mukan","url":"https://tabelog.com/en/tokyo/A1316/A131603/13279264/","cat":"Noodles and cheap classics, ¥1,000–2,000","lat":35.62689,"lon":139.72205,"tier":"lunch","closed":[],"hours":[],"price":null,"pick":null,"score":"3.75","blurb":"open daily","ja":"目黒","walk_m":981},{"id":"e13001226","name":"Sarashina Horii","url":"https://tabelog.com/en/tokyo/A1307/A130702/13001226/","cat":"Noodles and cheap classics, ¥1,000–2,000","lat":35.65681,"lon":139.73289,"tier":"lunch","closed":[],"hours":[],"price":"¥2,000","pick":null,"score":"3.65","blurb":"open daily","ja":"麻布十番","walk_m":387},{"id":"e13020154","name":"Soba Tajima","url":"https://tabelog.com/en/tokyo/A1307/A130703/13020154/","cat":"Noodles and cheap classics, ¥1,000–2,000","lat":35.65478,"lon":139.72608,"tier":"lunch","closed":[0,1],"hours":[],"price":"¥1,000","pick":"Tabelog 100","score":"3.69","blurb":"Google Maps","ja":"広尾","walk_m":407},{"id":"e13138217","name":"MUHO","url":"https://tabelog.com/en/tokyo/A1316/A131602/13138217/","cat":"Noodles and cheap classics, ¥1,000–2,000","lat":35.64477,"lon":139.73547,"tier":"lunch","closed":[4],"hours":[],"price":"¥1,000","pick":null,"score":"3.48","blurb":"Google Maps","ja":"白金高輪","walk_m":100},{"id":"e13285358","name":"Sushi Misaki","url":"https://tabelog.com/en/tokyo/A1307/A130703/13285358/","cat":"Casual sushi dinner, ¥3,000–6,000","lat":35.6515,"lon":139.72244,"tier":"mid","closed":[],"hours":[],"price":"¥3,000","pick":null,"score":"3.33","blurb":"Google Maps","ja":"広尾","walk_m":66},{"id":"e13307666","name":"Sugidama","url":"https://tabelog.com/en/tokyo/A1307/A130702/13307666/","cat":"Casual sushi dinner, ¥3,000–6,000","lat":35.65562,"lon":139.73536,"tier":"mid","closed":[],"hours":[],"price":"¥3,000","pick":null,"score":"3.33","blurb":"sushi izakaya, dinner ¥3,000–3,999","ja":"麻布十番","walk_m":133},{"id":"e13047377","name":"MIYA","url":"https://tabelog.com/en/tokyo/A1307/A130703/13047377/","cat":"Casual sushi dinner, ¥3,000–6,000","lat":35.65053,"lon":139.72138,"tier":"mid","closed":[0],"hours":[],"price":"¥4,000","pick":null,"score":"3.32","blurb":"Google Maps","ja":"広尾","walk_m":185},{"id":"e13013973","name":"Sushiya no Umataro","url":"https://tabelog.com/en/tokyo/A1316/A131603/13013973/","cat":"Casual sushi dinner, ¥3,000–6,000","lat":35.6263,"lon":139.72564,"tier":"mid","closed":[0],"hours":[],"price":"¥5,000","pick":null,"score":"3.51","blurb":"closed Sunday","ja":"品川","walk_m":1103},{"id":"e13248924","name":"Sushi Dan","url":"https://tabelog.com/en/tokyo/A1307/A130703/13248924/","cat":"Casual sushi dinner, ¥3,000–6,000","lat":35.65078,"lon":139.72191,"tier":"mid","closed":[3],"hours":[],"price":"¥4,000","pick":null,"score":"3.52","blurb":"closed Wednesday","ja":"広尾","walk_m":145},{"id":"e13004540","name":"Katsumidori Meguro","url":"https://tabelog.com/en/tokyo/A1316/A131601/13004540/","cat":"Conveyor-belt sushi, ¥1,500–4,000, no booking","lat":35.63293,"lon":139.716,"tier":"lunch mid","closed":[],"hours":[],"price":"¥1,000–¥1,999","pick":"best value","score":"3.48","blurb":"The chain Tokyo people queue for: big fish for the price, plates from about ¥150. At Meguro station, 12 minutes from the base, so the closes","ja":"目黒","walk_m":128},{"id":"e13294124","name":"Toriton, Atre Shinagawa","url":"https://tabelog.com/en/tokyo/A1314/A131403/13294124/","cat":"Conveyor-belt sushi, ¥1,500–4,000, no booking","lat":35.62872,"lon":139.7405,"tier":"lunch mid","closed":[],"hours":[],"price":"¥3,000–¥3,999","pick":null,"score":"3.51","blurb":"Google Maps","ja":"品川","walk_m":282},{"id":"e13153777","name":"Nemuro Hanamaru, KITTE","url":"https://tabelog.com/en/tokyo/A1302/A130201/13153777/","cat":"Conveyor-belt sushi, ¥1,500–4,000, no booking","lat":35.67937,"lon":139.76502,"tier":"lunch mid","closed":[],"hours":[],"price":"¥2,000–¥2,999","pick":null,"score":"3.55","blurb":"The other Hokkaido name, in the KITTE building beside Tokyo Station. Take a ticket from the machine and shop while you wait; the wait is oft","ja":"東京","walk_m":500},{"id":"e13249372","name":"Haneda Ichiba, Gransta","url":"https://tabelog.com/en/tokyo/A1302/A130201/13249372/","cat":"Conveyor-belt sushi, ¥1,500–4,000, no booking","lat":35.68098,"lon":139.76594,"tier":"lunch mid","closed":[],"hours":[],"price":"¥3,000–¥3,999","pick":null,"score":"3.49","blurb":"Inside Tokyo Station's ticket gates, fish trucked in from Haneda's market. The fastest proper meal on a Disney or Shinkansen day.","ja":"東京","walk_m":303},{"id":"e13264172","name":"Kaiten Sushi Ginza Onodera","url":"https://tabelog.com/en/tokyo/A1306/A130602/13264172/","cat":"Conveyor-belt sushi, ¥1,500–4,000, no booking","lat":35.66581,"lon":139.71003,"tier":"lunch mid","closed":[],"hours":[],"price":"¥4,000–¥4,999","pick":"the fancy one","score":"3.49","blurb":"Conveyor belt from the group behind one of Ginza's famous counters, in Omotesando. Dearer, better fish, still no booking and still a belt.","ja":"表参道","walk_m":238},{"id":"e13294625","name":"Ginza Onodera Musuko, Shibuya","url":"https://tabelog.com/en/tokyo/A1303/A130301/13294625/","cat":"Conveyor-belt sushi, ¥1,500–4,000, no booking","lat":35.65808,"lon":139.70013,"tier":"lunch mid","closed":[],"hours":[],"price":"¥4,000–¥4,999","pick":null,"score":"3.48","blurb":"The same group's younger Shibuya branch, near the station.","ja":"渋谷","walk_m":177},{"id":"e13004192","name":"Numazuko, Shinjuku","url":"https://tabelog.com/en/tokyo/A1304/A130401/13004192/","cat":"Conveyor-belt sushi, ¥1,500–4,000, no booking","lat":35.69039,"lon":139.70316,"tier":"lunch mid","closed":[],"hours":[],"price":"¥2,000–¥2,999","pick":null,"score":"3.46","blurb":"A small, famous shop by Shinjuku-sanchome with fish from Numazu port. Queue, eat, leave; it moves fast.","ja":"新宿三丁目","walk_m":356},{"id":"e13211079","name":"Edokko, Ueno","url":"https://tabelog.com/en/tokyo/A1311/A131101/13211079/","cat":"Conveyor-belt sushi, ¥1,500–4,000, no booking","lat":35.71123,"lon":139.77511,"tier":"lunch mid","closed":[],"hours":[],"price":"¥1,000–¥1,999","pick":null,"score":"3.43","blurb":"Cheap and quick by Keisei Ueno, useful after the museums.","ja":"京成上野","walk_m":60},{"id":"e13075573","name":"Hinatomaru, Asakusa","url":"https://tabelog.com/en/tokyo/A1311/A131102/13075573/","cat":"Conveyor-belt sushi, ¥1,500–4,000, no booking","lat":35.71185,"lon":139.7959,"tier":"lunch mid","closed":[],"hours":[],"price":"¥2,000–¥2,999","pick":null,"score":"3.45","blurb":"Near Sensō-ji; a sit-down break on an Asakusa or Kappabashi day.","ja":"浅草","walk_m":656},{"id":"e13056705","name":"Himawari Zushi, Shinjuku","url":"https://tabelog.com/en/tokyo/A1304/A130401/13056705/","cat":"Conveyor-belt sushi, ¥1,500–4,000, no booking","lat":35.68899,"lon":139.69751,"tier":"lunch mid","closed":[2],"hours":[],"price":"¥1,000–¥1,999","pick":"tried 18 Oct, great","score":"3.43","blurb":"Old-school Shinjuku belt with a loyal lunch crowd.","ja":"新宿","walk_m":116},{"id":"e13241750","name":"Sushi Ya Shota","url":"https://tabelog.com/en/tokyo/A1307/A130702/13241750/","cat":"Omakase, ¥8,000–20,000","lat":35.65362,"lon":139.73555,"tier":"high","closed":[0,1],"hours":[],"price":"¥15,000","pick":null,"score":"3.72","blurb":"closed Sunday and Monday","ja":"麻布十番","walk_m":226},{"id":"e13267404","name":"Tachigui Sushi Tonari","url":"https://tabelog.com/en/tokyo/A1307/A130702/13267404/","cat":"Omakase, ¥8,000–20,000","lat":35.65554,"lon":139.73474,"tier":"high","closed":[1],"hours":[],"price":"¥8,000","pick":null,"score":"3.69","blurb":"closed Monday","ja":"麻布十番","walk_m":187},{"id":"e13286370","name":"Wa Nogi","url":"https://tabelog.com/en/tokyo/A1307/A130703/13286370/","cat":"Omakase, ¥8,000–20,000","lat":35.65039,"lon":139.72078,"tier":"high lunch","closed":[],"hours":[],"price":"¥15,000","pick":null,"score":"3.60","blurb":"closed public holidays","ja":"広尾","walk_m":226},{"id":"e13267332","name":"Sushi Suzume","url":"https://tabelog.com/en/tokyo/A1307/A130702/13267332/","cat":"Omakase, ¥8,000–20,000","lat":35.65794,"lon":139.73229,"tier":"high","closed":[],"hours":[],"price":"¥10,000","pick":null,"score":"3.57","blurb":"¥10,000–14,999","ja":"麻布十番","walk_m":496},{"id":"e13270319","name":"Sushi Mukau","url":"https://tabelog.com/en/tokyo/A1316/A131602/13270319/","cat":"Omakase, ¥8,000–20,000","lat":35.64532,"lon":139.73335,"tier":"high","closed":[],"hours":[[1020,1380]],"price":"¥15,000","pick":"closest","score":"3.54","blurb":"reservation only, 050-5890-7506","ja":"白金高輪","walk_m":165},{"id":"e13255943","name":"Sushi Yoshikawa","url":"https://tabelog.com/en/tokyo/A1307/A130702/13255943/","cat":"Omakase, ¥8,000–20,000","lat":35.65675,"lon":139.73589,"tier":"high","closed":[],"hours":[],"price":"¥10,000","pick":null,"score":"3.52","blurb":"¥10,000–14,999","ja":"麻布十番","walk_m":172},{"id":"e13242515","name":"Ushimatsu","url":"https://tabelog.com/en/tokyo/A1307/A130703/13242515/","cat":"Wagyu: yakiniku, ¥8,000–15,000","lat":35.65706,"lon":139.72404,"tier":"high","closed":[],"hours":[],"price":"¥10,000","pick":"Tabelog 100","score":"","blurb":"open daily","ja":"広尾","walk_m":471},{"id":"e13007145","name":"Kiraku Tei","url":"https://tabelog.com/en/tokyo/A1307/A130703/13007145/","cat":"Wagyu: yakiniku, ¥8,000–15,000","lat":35.64697,"lon":139.7277,"tier":"high","closed":[2],"hours":[],"price":"¥10,000","pick":"Tabelog 100","score":"3.74","blurb":"Google Maps","ja":"白金高輪","walk_m":735},{"id":"e13026377","name":"Yakiniku Jumbo Shirokane","url":"https://tabelog.com/en/tokyo/A1316/A131602/13026377/","cat":"Wagyu: yakiniku, ¥8,000–15,000","lat":35.647,"lon":139.73142,"tier":"high mid","closed":[],"hours":[],"price":"¥4,000","pick":"Tabelog 100","score":"3.73","blurb":"open daily","ja":"白金高輪","walk_m":421},{"id":"e13269923","name":"Niku Yakiya D-29","url":"https://tabelog.com/en/tokyo/A1307/A130703/13269923/","cat":"Wagyu: yakiniku, ¥8,000–15,000","lat":35.64911,"lon":139.71953,"tier":"high","closed":[1],"hours":[],"price":"¥10,000","pick":"Tabelog 100","score":"3.68","blurb":"closed Monday","ja":"広尾","walk_m":407},{"id":"e13275921","name":"KABUN","url":"https://tabelog.com/en/tokyo/A1307/A130702/13275921/","cat":"Wagyu: yakiniku, ¥8,000–15,000","lat":35.65646,"lon":139.73745,"tier":"high","closed":[],"hours":[],"price":"¥8,000","pick":null,"score":"3.59","blurb":"Korean-style, ¥8,000–9,999","ja":"麻布十番","walk_m":132},{"id":"e13145984","name":"Kotakino","url":"https://tabelog.com/en/tokyo/A1316/A131602/13145984/","cat":"Shabu-shabu and sukiyaki, ¥8,000–15,000","lat":35.64529,"lon":139.7334,"tier":"high","closed":[],"hours":[],"price":"¥10,000","pick":"closest","score":"3.57","blurb":"open daily","ja":"白金高輪","walk_m":160},{"id":"e13298402","name":"Sukiyaki Juniten","url":"https://tabelog.com/en/tokyo/A1307/A130703/13298402/","cat":"Shabu-shabu and sukiyaki, ¥8,000–15,000","lat":35.65075,"lon":139.72196,"tier":"high","closed":[],"hours":[],"price":"¥10,000","pick":null,"score":"3.55","blurb":"open daily","ja":"広尾","walk_m":147},{"id":"e13195957","name":"Sugino","url":"https://tabelog.com/en/tokyo/A1307/A130702/13195957/","cat":"Shabu-shabu and sukiyaki, ¥8,000–15,000","lat":35.65703,"lon":139.73265,"tier":"high","closed":[0],"hours":[],"price":"¥8,000","pick":null,"score":"3.54","blurb":"closed Sunday","ja":"麻布十番","walk_m":417},{"id":"e13162115","name":"Kabuto","url":"https://tabelog.com/en/tokyo/A1307/A130702/13162115/","cat":"Shabu-shabu and sukiyaki, ¥8,000–15,000","lat":35.65363,"lon":139.73624,"tier":"high lunch","closed":[],"hours":[],"price":"¥8,000","pick":null,"score":"3.45","blurb":"yakiniku, shabu-shabu and sukiyaki under one roof, ¥8,000–9,999, lunch ¥1,000–1,999","ja":"麻布十番","walk_m":201},{"id":"e13200559","name":"Minami Aoyama Nana Chome","url":"https://tabelog.com/en/tokyo/A1307/A130703/13200559/","cat":"Yakitori, the splurge version","lat":35.65715,"lon":139.71816,"tier":"high","closed":[0,6],"hours":[],"price":"¥15,000","pick":"Award 2026","score":"","blurb":"weekdays only","ja":"広尾","walk_m":567},{"id":"e13303865","name":"Mizuki","url":"https://tabelog.com/en/tokyo/A1316/A131602/13303865/","cat":"Yakitori, the splurge version","lat":35.64431,"lon":139.72139,"tier":"high","closed":[3,4],"hours":[],"price":"¥15,000","pick":"Tabelog 100","score":"","blurb":"closed Wednesday and Thursday","ja":"白金台","walk_m":833},{"id":"e13271040","name":"Torisho Ishii Hina","url":"https://tabelog.com/en/tokyo/A1307/A130702/13271040/","cat":"Yakitori, the splurge version","lat":35.65003,"lon":139.73334,"tier":"high","closed":[0,1],"hours":[],"price":"¥15,000","pick":"Award 2026","score":"","blurb":"closed Sunday and Monday","ja":"麻布十番","walk_m":672},{"id":"e13005504","name":"Shirogane Toritama","url":"https://tabelog.com/en/tokyo/A1316/A131602/13005504/","cat":"Yakitori, the splurge version","lat":35.64449,"lon":139.72191,"tier":"mid","closed":[],"hours":[],"price":"¥5,000","pick":"Tabelog 100","score":"3.58","blurb":"open daily","ja":"白金台","walk_m":825},{"id":"e13047414","name":"Komoto","url":"https://tabelog.com/en/tokyo/A1307/A130703/13047414/","cat":"Tempura and soba together","lat":35.65521,"lon":139.72272,"tier":"high mid","closed":[0],"hours":[],"price":"¥3,000","pick":null,"score":"3.69","blurb":"closed Sunday","ja":"広尾","walk_m":237},{"id":"e13004546","name":"Azabu Kawakami An","url":"https://tabelog.com/en/tokyo/A1307/A130702/13004546/","cat":"Tempura and soba together","lat":35.65314,"lon":139.73596,"tier":"lunch","closed":[],"hours":[],"price":"¥2,000","pick":null,"score":"3.56","blurb":"open daily","ja":"麻布十番","walk_m":261},{"id":"e13184028","name":"Azabu Kogaiken","url":"https://tabelog.com/en/tokyo/A1307/A130703/13184028/","cat":"If a relative wants something familiar","lat":35.65606,"lon":139.72314,"tier":"lunch","closed":[],"hours":[],"price":"¥1,000","pick":"Tabelog 100","score":"3.70","blurb":"open daily","ja":"広尾","walk_m":339},{"id":"e13285741","name":"Restaurant Edoya","url":"https://tabelog.com/en/tokyo/A1316/A131602/13285741/","cat":"If a relative wants something familiar","lat":35.64435,"lon":139.72558,"tier":"mid","closed":[2,3],"hours":[],"price":"¥5,000","pick":null,"score":"3.67","blurb":"closed Tuesday and Wednesday","ja":"白金台","walk_m":700},{"id":"e13014306","name":"AMANOYA","url":"https://tabelog.com/en/tokyo/A1307/A130702/13014306/","cat":"If a relative wants something familiar","lat":35.65326,"lon":139.73637,"tier":"lunch","closed":[2],"hours":[],"price":null,"pick":"Tabelog 100","score":"3.74","blurb":"closed Tuesday","ja":"麻布十番","walk_m":239},{"id":"e13002775","name":"Naniwaya Sohonten","url":"https://tabelog.com/en/tokyo/A1307/A130702/13002775/","cat":"If a relative wants something familiar","lat":35.6562,"lon":139.73512,"tier":"lunch","closed":[2,3],"hours":[],"price":null,"pick":"Tabelog 100","score":"3.78","blurb":"closed Tuesday and Wednesday","ja":"麻布十番","walk_m":177}]}</script>
 <script>
 (function () {
   var secs = [].slice.call(document.querySelectorAll('.wrap > section[id]'));
@@ -5424,6 +5486,200 @@
   run();
 })();
 </script>
+<script>/* plan:js */
+(function () {
+  var el = document.getElementById('plan-data'); if (!el) return;
+  var D = JSON.parse(el.textContent);
+  var $ = function (id) { return document.getElementById(id); };
+  var P = {}, E = {};
+  D.places.forEach(function (p) { P[p.id] = p; });
+  D.eats.forEach(function (e) { E[e.id] = e; });
+  var HOME = { id: 'home', name: D.home.label, ja: D.home.ja, lat: D.home.lat, lon: D.home.lon, cat: 'home' };
+  var CAT = { museum: 'var(--mita)', park: 'var(--oedo)', daytrip: 'var(--oedo)', shopping: 'var(--ginza)', area: 'var(--namboku)', eat: 'var(--home)' };
+  var DAYN = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var state = { date: '', start: '09:30', stops: [], lunch: '', dinner: '' };
+  try { var sv = JSON.parse(localStorage.getItem('fg-plan') || 'null'); if (sv && sv.stops) state = sv; } catch (e) {}
+  function save() { try { localStorage.setItem('fg-plan', JSON.stringify(state)); } catch (e) {} }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function fmt(m) { m = Math.round(m); var h = Math.floor(m / 60) % 24; return pad(h) + ':' + pad(m % 60); }
+  function parseT(s) { var p = (s || '09:30').split(':'); return (+p[0]) * 60 + (+p[1] || 0); }
+  function todayISO() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function dow(iso) { var p = iso.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]).getDay(); }
+  function km(a, b) {
+    var r = Math.PI / 180, la1 = a.lat * r, la2 = b.lat * r, dla = (b.lat - a.lat) * r, dlo = (b.lon - a.lon) * r;
+    var h = Math.sin(dla / 2) * Math.sin(dla / 2) + Math.cos(la1) * Math.cos(la2) * Math.sin(dlo / 2) * Math.sin(dlo / 2);
+    return 2 * 6371 * Math.asin(Math.sqrt(h));
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function yahoo(a, b) { return 'https://transit.yahoo.co.jp/search/result?from=' + encodeURIComponent(a) + '&to=' + encodeURIComponent(b); }
+  function gdir(a, b, mode) {
+    return 'https://www.google.com/maps/dir/?api=1&origin=' + a.lat.toFixed(5) + ',' + a.lon.toFixed(5) + '&destination=' + b.lat.toFixed(5) + ',' + b.lon.toFixed(5) + '&travelmode=' + mode;
+  }
+  function gplace(x) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(x.name); }
+  // Leg estimate. Base legs use the Yahoo-read minutes when the stop has them.
+  function leg(a, b) {
+    var d = km(a, b);
+    if (d < 1.3 || (a.ja && a.ja === b.ja)) return { min: Math.round(d * 1000 / 80 + 2), mode: 'walk', est: true };
+    if (a.id === 'home' && b.min) return { min: b.min, mode: 'train', est: false };
+    if (b.id === 'home' && a.min) return { min: a.min, mode: 'train', est: false };
+    var m = 8 + 4 * d + (d > 4 ? 5 : 0);
+    if (a.id === 'home' || b.id === 'home') m += D.home.walk - 4;
+    return { min: Math.round(m), mode: 'train', est: true };
+  }
+  function detour(prev, x, next) { return leg(prev, x).min + leg(x, next).min - leg(prev, next).min; }
+  function closedOn(x, day) { return (x.closed || []).indexOf(day) >= 0; }
+  function inHours(x, t) {
+    if (!x.hours || !x.hours.length) return null;
+    return x.hours.some(function (h) { return t >= h[0] && t <= h[1] - 30; });
+  }
+  function stopObj(s) { var p = P[s.id]; return p ? Object.assign({}, p, { dwell: s.dwell || p.dwell }) : null; }
+  function eatObj(id, dwell) { var e = E[id]; return e ? Object.assign({}, e, { cat: 'eat', dwell: dwell, min: null }) : null; }
+
+  // Build the ordered day: stops, then lunch and dinner inserted where they cost least and land in their window.
+  function buildDay() {
+    var items = state.stops.map(stopObj).filter(Boolean);
+    function insertMeal(list, meal, lo, hi, target) {
+      if (!meal) return list;
+      var best = null;
+      for (var i = 0; i <= list.length; i++) {
+        var trial = list.slice(0, i).concat([meal], list.slice(i));
+        var rows = timeline(trial), arr = rows.filter(function (r) { return r.item && r.item.id === meal.id; })[0].arrive;
+        var prev = i === 0 ? HOME : list[i - 1], next = i === list.length ? HOME : list[i];
+        var dt = detour(prev, meal, next), inWin = arr >= lo && arr <= hi;
+        var score = (inWin ? 0 : Math.abs(arr - target) * 2) + dt;
+        if (!best || score < best.score) best = { i: i, score: score, dt: dt };
+      }
+      meal.detour = best.dt;
+      return list.slice(0, best.i).concat([meal], list.slice(best.i));
+    }
+    items = insertMeal(items, eatObj(state.lunch, 60), 11 * 60 + 30, 14 * 60, 12 * 60 + 30);
+    items = insertMeal(items, eatObj(state.dinner, 90), 17 * 60 + 30, 20 * 60 + 30, 19 * 60);
+    return items;
+  }
+  function timeline(items) {
+    var t = parseT(state.start), rows = [], prev = HOME;
+    items.forEach(function (x) {
+      var l = leg(prev, x); rows.push({ leg: l, from: prev, to: x, start: t }); t += l.min;
+      var waited = 0;
+      if (x.hours && x.hours.length && t < x.hours[0][0]) { waited = x.hours[0][0] - t; t = x.hours[0][0]; }
+      rows.push({ item: x, arrive: t, leave: t + x.dwell, waited: waited }); t += x.dwell; prev = x;
+    });
+    var l = leg(prev, HOME); rows.push({ leg: l, from: prev, to: HOME, start: t }); rows.push({ home: true, arrive: t + l.min });
+    return rows;
+  }
+  function nearestOrder() {
+    var rest = state.stops.map(stopObj).filter(Boolean), cur = HOME, out = [];
+    var trips = rest.filter(function (p) { return p.cat === 'daytrip'; }); rest = rest.filter(function (p) { return p.cat !== 'daytrip'; });
+    while (rest.length) {
+      rest.sort(function (a, b) { return km(cur, a) - km(cur, b); }); cur = rest.shift(); out.push(cur);
+    }
+    state.stops = out.concat(trips).map(function (p) { return { id: p.id, dwell: p.dwell }; });
+  }
+
+  function renderStops() {
+    var ol = $('pl-stops'); ol.innerHTML = '';
+    if (!state.stops.length) { ol.innerHTML = '<li class="pl-empty" style="display:block;border:0;background:none;padding:0">No stops yet. Add a museum, a district or a park above.</li>'; return; }
+    state.stops.forEach(function (s, i) {
+      var p = P[s.id]; if (!p) return;
+      var li = document.createElement('li'); li.style.setProperty('--k', CAT[p.cat] || 'var(--rule)');
+      var warn = p.note ? '<small>' + esc(p.note) + '</small>' : '';
+      li.innerHTML = '<span class="n">' + (i + 1) + '</span><span class="nm">' + esc(p.name) + '<small>' + esc(p.cat) + ' · ' + p.min + ' min from the base' + (p.hours && p.hours.length ? ' · ' + fmt(p.hours[0][0]) + '–' + fmt(p.hours[0][1]) : '') + '</small>' + warn + '</span>'
+        + '<span class="dw">stay <input type="number" min="15" max="720" step="15" value="' + (s.dwell || p.dwell) + '" aria-label="Minutes at ' + esc(p.name) + '"> min</span>'
+        + '<span class="ops"><button type="button" aria-label="Move up">↑</button><button type="button" aria-label="Move down">↓</button><button type="button" aria-label="Remove">✕</button></span>';
+      li.querySelector('input').addEventListener('change', function (e) { s.dwell = Math.max(15, +e.target.value || p.dwell); update(); });
+      var b = li.querySelectorAll('button');
+      b[0].addEventListener('click', function () { if (i > 0) { state.stops.splice(i - 1, 2, state.stops[i], state.stops[i - 1]); update(); } });
+      b[1].addEventListener('click', function () { if (i < state.stops.length - 1) { state.stops.splice(i, 2, state.stops[i + 1], state.stops[i]); update(); } });
+      b[2].addEventListener('click', function () { state.stops.splice(i, 1); update(); });
+      ol.appendChild(li);
+    });
+  }
+  function renderMeals() {
+    var stops = state.stops.map(stopObj).filter(Boolean), day = dow(state.date || todayISO());
+    var scored = D.eats.map(function (e) {
+      var best = null;
+      stops.forEach(function (p) { var d = km(e, p); if (!best || d < best.d) best = { d: d, p: p }; });
+      var tag = !best ? '' : best.d <= 0.8 ? 'on the way' : best.d <= 1.6 ? 'short detour' : 'detour';
+      return { e: e, d: best ? best.d : 99, p: best ? best.p : null, tag: tag };
+    }).sort(function (a, b) { return a.d - b.d || (+b.e.score) - (+a.e.score); });
+    [['pl-lunch', state.lunch, 'lunch'], ['pl-dinner', state.dinner, 'dinner']].forEach(function (cfg) {
+      var sel = $(cfg[0]), cur = cfg[1]; sel.innerHTML = '<option value="">No ' + cfg[2] + ' planned</option>';
+      scored.forEach(function (s) {
+        var o = document.createElement('option'); o.value = s.e.id;
+        var where = s.p ? (s.tag + ', ' + Math.round(s.d * 1000) + ' m from ' + s.p.name) : (s.e.ja + ' station');
+        o.textContent = s.e.name + ' · ' + s.e.cat.split(',')[0].replace(/\s*\(.*$/, '') + (s.e.price ? ' · ' + s.e.price : '') + ' · ' + where + (closedOn(s.e, day) ? ' · CLOSED that day' : '');
+        if (s.e.id === cur) o.selected = true;
+        sel.appendChild(o);
+      });
+    });
+  }
+  function renderOut() {
+    var out = $('pl-out'); if (!state.stops.length && !state.lunch && !state.dinner) { out.innerHTML = ''; return; }
+    var day = dow(state.date || todayISO()), items = buildDay(), rows = timeline(items), h = [], text = [];
+    var dateLabel = (state.date || todayISO()) + ' (' + DAYN[day] + ')';
+    var warns = [];
+    if (D.trip.depart && state.date === D.trip.depart) warns.push('That is the flight day. Plan nothing.');
+    h.push('<table><colgroup><col class="c1"><col class="c2"><col class="c3"><col class="c4"></colgroup><thead><tr><th>Time</th><th>Where</th><th>Notes</th><th>Go</th></tr></thead><tbody>');
+    h.push('<tr><td class="t">' + fmt(parseT(state.start)) + '</td><td><b>Leave ' + esc(D.home.label) + '</b></td><td>' + esc(dateLabel) + '</td><td></td></tr>');
+    text.push('Plan for ' + dateLabel, fmt(parseT(state.start)) + '  leave ' + D.home.label);
+    rows.forEach(function (r) {
+      if (r.leg) {
+        var l = r.leg, mode = l.mode === 'walk' ? 'walk' : 'train';
+        var links = l.mode === 'walk' ? '<a href="' + gdir(r.from, r.to, 'walking') + '" target="_blank" rel="noopener">Maps walk ↗</a>'
+          : '<a href="' + yahoo(r.from.ja, r.to.ja) + '" target="_blank" rel="noopener">Yahoo trains ↗</a><a href="' + gdir(r.from, r.to, 'transit') + '" target="_blank" rel="noopener">Maps ↗</a>';
+        var via = l.mode === 'walk' ? '' : (r.from.ja === D.home.ja ? '' : esc(r.from.ja) + ' → ' + esc(r.to.ja));
+        h.push('<tr class="leg"><td class="t">' + fmt(r.start) + '</td><td>' + mode + ', about ' + l.min + ' min' + (l.est ? ' <span class="pl-est">est.</span>' : '') + '</td><td>' + via + '</td><td class="links">' + links + '</td></tr>');
+        text.push('  ' + mode + ' ~' + l.min + ' min' + (l.est ? ' (est.)' : ''));
+      } else if (r.item) {
+        var x = r.item, notes = [], isEat = x.cat === 'eat';
+        if (closedOn(x, day)) notes.push('<span class="pl-warn">closed ' + DAYN[day] + '</span>');
+        var ih = inHours(x, r.arrive);
+        if (ih === false) notes.push('<span class="pl-warn">outside listed hours ' + x.hours.map(function (a) { return fmt(a[0]) + '–' + fmt(a[1]); }).join(', ') + '</span>');
+        if (isEat && x.detour !== undefined) notes.push('<span class="' + (x.detour <= 12 ? 'pl-ok' : 'pl-warn') + '">' + (x.detour <= 12 ? 'on the way' : 'detour +' + x.detour + ' min') + '</span>');
+        if (r.waited) notes.push('<span class="pl-est">waits ' + r.waited + ' min for opening</span>');
+        if (x.note) notes.push('<span class="pl-warn">' + esc(x.note) + '</span>');
+        if (!isEat && x.cat === 'museum' && r.arrive > 16 * 60) notes.push('<span class="pl-warn">late for a museum</span>');
+        if (isEat && x.pick) notes.push('<span class="pl-ok">' + esc(x.pick) + '</span>');
+        var sub = isEat ? esc(x.cat.split(',')[0]) + (x.price ? ' · ' + esc(x.price) : '') + ' · ' + esc(x.ja) + ' ' + x.walk_m + ' m' : esc(x.cat);
+        var go = '<a href="' + (isEat ? x.url : gplace(x)) + '" target="_blank" rel="noopener">' + (isEat ? 'Tabelog ↗' : 'Maps ↗') + '</a>' + (isEat ? '<a href="' + gplace(x) + '" target="_blank" rel="noopener">Maps ↗</a>' : '');
+        h.push('<tr><td class="t">' + fmt(r.arrive) + '–' + fmt(r.leave) + '</td><td><b>' + esc(x.name) + '</b><br><span class="pl-est">' + sub + '</span></td><td>' + notes.join(' ') + '</td><td class="links">' + go + '</td></tr>');
+        text.push(fmt(r.arrive) + '–' + fmt(r.leave) + '  ' + x.name + (closedOn(x, day) ? '  [CLOSED ' + DAYN[day] + ']' : ''));
+      } else if (r.home) {
+        h.push('<tr><td class="t">' + fmt(r.arrive) + '</td><td><b>Back at ' + esc(D.home.label) + '</b></td><td>' + (r.arrive > 23 * 60 + 30 ? '<span class="pl-warn">after the last trains, taxi</span>' : '') + '</td><td></td></tr>');
+        text.push(fmt(r.arrive) + '  back at ' + D.home.label);
+      }
+    });
+    h.push('</tbody></table>');
+    var last = rows[rows.length - 1].arrive, total = last - parseT(state.start), moving = rows.filter(function (r) { return r.leg; }).reduce(function (a, r) { return a + r.leg.min; }, 0);
+    h.push('<p class="pl-sum">' + Math.round(total / 60 * 10) / 10 + ' hours out, about ' + moving + ' of them moving. ' + (warns.length ? '<span class="pl-warn">' + warns.join(' ') + '</span> ' : '') + 'Times between stops are estimates; tap Yahoo on a leg for the real train.</p>');
+    out.innerHTML = h.join('');
+    out.dataset.text = text.join('\n');
+  }
+  function update() { save(); renderStops(); renderMeals(); renderOut(); }
+
+  $('pl-date').value = state.date || todayISO();
+  if (!state.date) state.date = todayISO();
+  $('pl-start').value = state.start || '09:30';
+  $('pl-date').addEventListener('change', function (e) { state.date = e.target.value; update(); });
+  $('pl-start').addEventListener('change', function (e) { state.start = e.target.value; update(); });
+  $('pl-add').addEventListener('change', function (e) {
+    var id = e.target.value; if (!id || !P[id]) return;
+    if (!state.stops.some(function (s) { return s.id === id; })) state.stops.push({ id: id, dwell: P[id].dwell });
+    e.target.value = ''; update();
+  });
+  $('pl-lunch').addEventListener('change', function (e) { state.lunch = e.target.value; update(); });
+  $('pl-dinner').addEventListener('change', function (e) { state.dinner = e.target.value; update(); });
+  $('pl-order').addEventListener('click', function () { nearestOrder(); update(); });
+  $('pl-clear').addEventListener('click', function () { state = { date: todayISO(), start: '09:30', stops: [], lunch: '', dinner: '' }; $('pl-date').value = state.date; $('pl-start').value = state.start; update(); });
+  $('pl-copy').addEventListener('click', function () {
+    var t = $('pl-out').dataset.text || ''; if (!t) return;
+    var done = function () { $('pl-copy').textContent = 'Copied'; setTimeout(function () { $('pl-copy').textContent = 'Copy as text'; }, 1500); };
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, function () { window.prompt('Copy your plan', t); });
+    else window.prompt('Copy your plan', t);
+  });
+  update();
+})();
+/* /plan:js */</script>
 
 </body>
 </html>
