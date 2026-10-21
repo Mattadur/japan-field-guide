@@ -101,6 +101,16 @@
   section[data-folded] { padding-block: .9rem .2rem; border-bottom: 1px solid var(--rule); }
   section[data-folded] h2 { margin-bottom: 0; }
   h3 { font: 700 1.05rem/1.3 var(--display); margin: 1.4rem 0 .5rem; }
+  .part { margin: 2rem -18px .2rem; padding: 1.1rem 18px 1rem; background: var(--sign); color: var(--sign-ink); scroll-margin-top: 3.4rem; }
+  .part .part-n { margin: 0; font: 600 .68rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+  .part .part-h { margin: .4rem 0 .35rem; font: 900 1.7rem/1.1 var(--display); }
+  .part .part-d { margin: 0 0 .75rem; font-size: .92rem; opacity: .9; }
+  .part .tool { background: transparent; color: var(--sign-ink); border-color: currentColor; }
+  nav.jump .panel .toc-part { margin: .1rem 0 .4rem; font: 600 .68rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  nav.jump .panel ol + .toc-part { margin-top: .85rem; }
+  nav.jump .panel .row a.tool { min-height: 0; display: inline-block; border-radius: 999px; }
+  nav.jump .bar a.sos { flex: none; text-decoration: none; font: 700 .7rem/1 var(--mono); letter-spacing: .04em; color: var(--home); border: 1px solid var(--home); border-radius: 999px; padding: .55rem .5rem; background: var(--surface); }
+  @media print { .part { background: none; color: var(--ink); border-top: 3px solid var(--ink); margin-inline: 0; padding-inline: 0; break-after: avoid; } .part .tool, nav.jump .bar a.sos { display: none; } }
   p { margin: 0 0 .85rem; }
   a { color: var(--accent); }
 
@@ -336,11 +346,12 @@
     <span class="eyebrow">October 2026 · base in Shirokane, Minato</span>
     <h1>Tokyo Field Guide<span class="ja">東京 · 初めての方へ</span></h1>
     <p class="lede">The layout of the city, your corner of it, day trips, museums and sculpture, amusement parks, where to eat and shop, accessibility, massage and baths, and the mistakes first-timers make.</p>
-    <p class="updated">Last updated <time datetime="2026-10-21">21 Oct 2026, 08:35 JST</time> · <a href="#changes">what changed</a></p>
+    <p class="updated">Last updated <time datetime="2026-10-21">21 Oct 2026, 12:45 JST</time> · <a href="#changes">what changed</a></p>
     <p class="today" id="today" aria-live="polite"></p>
     <details class="changes" id="changes">
       <summary>What changed</summary>
       <ul class="points">
+        <li><b>21 Oct, midday.</b> The guide is now in two parts on one page. <b>Start here</b> holds what you read once: the shape of the city, your base, getting around, how dining works, accessibility, manners and help. <b>Look it up</b> holds the places you come back to: Plan a day, day trips, museums, amusement parks, shopping, where to eat, massage and baths. After your first visit the Start here chapters open folded, and each part has a button to fold or open all its chapters. The Contents panel is grouped the same way, and an <b>SOS</b> button in the top bar jumps to Help from anywhere. The short Hours and booking chapter is gone; its Monday-holiday note and the Ghibli Museum line moved to Museums, and the rest was already in Getting around, Shopping and Dining rules.</li>
         <li><b>21 Oct, morning.</b> Cards and restaurant groups fold. Tap the title of any Shopping, Day trips or Parks card, or any group in Where to eat, to fold it to one line; tap again to open it. Shopping and Where to eat have a <b>Collapse all</b> button (in the In this chapter row, and under the place count) that turns the chapter into a list of titles, and a folded restaurant group shows how many places match the current filters. Jump chips open the card they jump to, your folds are remembered on this phone, and printing always shows everything.</li>
         <li><b>21 Oct, early.</b> Readability pass on Shopping. The camera, Pokémon card, figure, retro game, vintage clothing and vintage watch cards are now lists: one line per shop with what it is for, then where it is and its hours underneath, grouped by neighbourhood, with the before-you-buy advice as short points. The Hakone day trip splits the sculpture park from the loop. Nothing was added or removed.</li>
         <li><b>20 Oct, afternoon.</b> Usability pass. A Today line under the title: the Tokyo weekday, which museums are closed today, how many restaurants are, your saved plan, and the three line-status links. A <b>+ plan</b> button beside every museum, shopping district, park and restaurant adds it to Plan a day, and a 計 button in the sticky bar opens the plan with a count. In-chapter jump chips at the top of Shopping. The page now installs to a phone home screen and works offline once opened (service worker). Destination minutes on the loop and time maps now match the Yahoo-read shopping figures. Restaurant map links read Maps ↗ like everywhere else.</li>
@@ -368,25 +379,29 @@
       <button type="button" id="toc-btn" aria-expanded="false" aria-controls="toc-panel"><span class="ico" aria-hidden="true">☰</span> Contents <span class="cur" id="toc-cur"></span></button>
       <button type="button" class="step" id="toc-prev" aria-label="Previous section">‹</button>
       <button type="button" class="step" id="toc-next" aria-label="Next section">›</button>
+      <a class="sos" id="toc-sos" href="#help" aria-label="Help: hospital, pharmacies, earthquakes, lost things">SOS</a>
       <a class="step plan" id="toc-plan" href="#plan" aria-label="Plan a day">計<span id="plan-count" hidden></span></a>
     </div>
     <div class="panel" id="toc-panel" hidden>
+      <p class="toc-part">Start here</p>
       <ol>
         <li><a href="#shape" aria-current="false"><span class="plate">JY</span>The loop</a></li>
         <li><a href="#base" aria-current="false"><span class="plate">N03</span>Your base</a></li>
-        <li><a href="#trips" aria-current="false"><span class="plate">OH</span>Day trips</a></li>
-        <li><a href="#plan" aria-current="false"><span class="plate">計</span>Plan a day</a></li>
-        <li><a href="#museums" aria-current="false"><span class="plate">美</span>Museums</a></li>
-        <li><a href="#parks" aria-current="false"><span class="plate">遊</span>Parks</a></li>
-        <li><a href="#shop" aria-current="false"><span class="plate">買</span>Shopping</a></li>
         <li><a href="#moving" aria-current="false"><span class="plate">IC</span>Getting around</a></li>
-        <li><a href="#booking" aria-current="false"><span class="plate">10:00</span>Hours &amp; booking</a></li>
-        <li><a href="#eat" aria-current="false"><span class="plate">食</span>Where to eat</a></li>
         <li><a href="#food" aria-current="false"><span class="plate">¥</span>Dining rules</a></li>
-        <li><a href="#spa" aria-current="false"><span class="plate">揉</span>Massage &amp; baths</a></li>
         <li><a href="#access" aria-current="false"><span class="plate">UD</span>Accessibility</a></li>
         <li><a href="#manners" aria-current="false"><span class="plate">礼</span>Manners</a></li>
         <li><a href="#help" aria-current="false"><span class="plate">SOS</span>Help</a></li>
+      </ol>
+      <p class="toc-part">Look it up</p>
+      <ol>
+        <li><a href="#plan" aria-current="false"><span class="plate">計</span>Plan a day</a></li>
+        <li><a href="#trips" aria-current="false"><span class="plate">OH</span>Day trips</a></li>
+        <li><a href="#museums" aria-current="false"><span class="plate">美</span>Museums</a></li>
+        <li><a href="#parks" aria-current="false"><span class="plate">遊</span>Parks</a></li>
+        <li><a href="#shop" aria-current="false"><span class="plate">買</span>Shopping</a></li>
+        <li><a href="#eat" aria-current="false"><span class="plate">食</span>Where to eat</a></li>
+        <li><a href="#spa" aria-current="false"><span class="plate">揉</span>Massage &amp; baths</a></li>
       </ol>
       <div class="row">
         <button type="button" id="fold-all" aria-pressed="false">Fold all</button>
@@ -395,7 +410,14 @@
     </div>
   </nav>
 
-  <section id="shape">
+  <div class="part" id="part-start">
+    <p class="part-n">Part 1 of 2</p>
+    <p class="part-h">Start here</p>
+    <p class="part-d">How the city fits together, your base, getting around, how dining works, accessibility, manners and help. Read them once. After your first visit they open folded, so the page starts with the places.</p>
+    <button type="button" class="tool part-fold" data-part="start">Fold these chapters</button>
+  </div>
+
+  <section id="shape" data-part="start">
     <h2><span class="plate">JY</span><span class="h2-text">The shape of the city</span><button class="fold" type="button" aria-expanded="true" aria-controls="shape-body" aria-label="Collapse The shape of the city"></button></h2>
     <div class="body" id="shape-body">
     <p>Tokyo looks endless on a map. Almost everything a visitor wants sits on or near one rail loop, the JR Yamanote line. It has about 30 stations and takes roughly an hour to go all the way around.</p>
@@ -1274,7 +1296,7 @@
     </div>
   </section>
 
-  <section id="base">
+  <section id="base" data-part="start">
     <h2><span class="plate">N03</span><span class="h2-text">Your corner: Shirokane</span><button class="fold" type="button" aria-expanded="true" aria-controls="base-body" aria-label="Collapse Your corner: Shirokane"></button></h2>
     <div class="body" id="base-body">
     <p>Shirokane is quiet, upscale and residential, in the southern middle of Minato ward. Expect few tourists, good restaurants and calm evenings. Your station is Shirokane-takanawa <span class="stn" style="--line: var(--namboku)"><b>N</b>03</span> <span class="stn" style="--line: var(--mita)"><b>I</b>03</span>, about a 7-minute walk.</p>
@@ -2153,7 +2175,171 @@
     </div>
   </section>
 
-  <section id="trips">
+  <section id="moving" data-part="start">
+    <h2><span class="plate">IC</span><span class="h2-text">Getting around</span><button class="fold" type="button" aria-expanded="true" aria-controls="moving-body" aria-label="Collapse Getting around"></button></h2>
+    <div class="body" id="moving-body">
+    <ul class="points">
+      <li><b>Pick your exit before you arrive.</b> Big stations have dozens of exits, and the wrong one can add 10 minutes outside. Route apps list the exit number.</li>
+      <li><b>JR, Tokyo Metro and Toei are separate companies.</b> One IC card pays for all of them. Changing between companies sometimes means passing through orange transfer gates.</li>
+      <li><b>Put Suica in your phone's wallet.</b> On iPhone it takes a minute, and you top it up with a card.</li>
+      <li><b>Two kinds of link in this guide.</b> <span class="nav" style="font:600 .68rem/1 var(--mono);border:1px solid var(--rule);border-radius:999px;padding:.22rem .5rem">Maps ↗</span> opens Google Maps directions from wherever you are, which is the fastest way to just go. Place names open Yahoo Transit from Shirokane-takanawa, which is better for exact train times and platforms. The restaurant <i>navigate</i> links do the same in Google Maps.</li>
+      <li><b>Check line status before a day trip:</b> <a href="https://www.kotsu.metro.tokyo.jp/eng/operation_status/" target="_blank" rel="noopener">Toei</a> (your Mita line), <a href="https://www.tokyometro.jp/en/" target="_blank" rel="noopener">Tokyo Metro</a> (Namboku line) and <a href="https://traininfo.jreast.co.jp/train_info/e/kanto.aspx" target="_blank" rel="noopener">JR East</a>. Delays under 15 minutes are not posted.</li>
+      <li><b>Avoid rush hour with older relatives and bags.</b> Trains are packed roughly 7:30–9:30 and 17:30–19:30.</li>
+      <li><b>Last trains run around midnight.</b> After that it's a taxi, and night fares cost more.</li>
+      <li><b>Elevators exist at most stations</b> but can be a long walk from your platform. Leave extra time.</li>
+    </ul>
+    <div class="callout">
+      <p><b>Send the bags, not the people.</b> Luggage forwarding, called <i>takkyubin</i>, ships suitcases from hotels and convenience stores to the airport or your next hotel, usually overnight, for a modest fee. It's ideal for the trip back to Narita.</p>
+    </div>
+    <ul class="points">
+      <li><b>Big suitcases need a reserved space on the Shinkansen.</b> Book the oversized-baggage seat when you buy the ticket.</li>
+      <li><b>Skip the nationwide Japan Rail Pass.</b> It rarely pays off for a Tokyo base with day trips.</li>
+    </ul>
+    </div>
+  </section>
+
+  <section id="food" data-part="start">
+    <h2><span class="plate">¥</span><span class="h2-text">How dining works here</span><button class="fold" type="button" aria-expanded="true" aria-controls="food-body" aria-label="Collapse How dining works here"></button></h2>
+    <div class="body" id="food-body">
+    <h3>Getting a table</h3>
+    <ul class="points">
+      <li><b>Lunch is the bargain.</b> The same kitchen often charges half at lunch. Omakase counters that run ¥18,000 at night may do a ¥3,000 lunch set.</li>
+      <li><b>Small counters are reservation only</b> and book out a week or more ahead. Ask the Airbnb host to call, or use TableCheck or Omakase.in, which take bookings in English for many places.</li>
+      <li><b>No-shows are a serious offence.</b> Cancel by phone if plans change. Some counters charge the full course for a no-show.</li>
+      <li><b>Ramen, soba and set-meal shops don't take bookings.</b> Queue, and expect to be in and out in 30 minutes. Many have a ticket machine by the door: pay first, hand over the ticket.</li>
+      <li><b>Restaurants close between services,</b> roughly 14:30 to 17:30, and many close one weekday. Check the closed day before you set out.</li>
+      <li><b>Groups over four are hard</b> at counters. Book ahead, or pick yakiniku, shabu-shabu or izakaya, which seat tables.</li>
+    </ul>
+    <h3>At the table</h3>
+    <ul class="points">
+      <li><b>Izakaya add a cover charge,</b> called otoshi, with a small appetiser you didn't order. Around ¥300–800 a head. That's normal.</li>
+      <li><b>Don't tip.</b> It confuses people. The bill is the bill.</li>
+      <li><b>Say "sumimasen" to call staff.</b> Nobody will come otherwise. Many places have a call button on the table.</li>
+      <li><b>Omakase etiquette:</b> eat each piece in one bite as it's served, soy sauce is already applied, and ginger is a palate cleanser between pieces, not a topping. No perfume. Ask before taking photos.</li>
+      <li><b>Allergies and dietary limits</b> go in the booking, not to the chef mid-course. Vegetarian is hard at sushi and yakitori; shabu-shabu, tempura, soba and set-meal places cope better. Dashi broth almost always contains fish.</li>
+      <li><b>Slurping noodles is fine.</b> Blowing your nose at the table is not.</li>
+    </ul>
+    <h3>Paying</h3>
+    <ul class="points">
+      <li><b>Pay at the register by the door,</b> not at the table. Take the bill up when you're done.</li>
+      <li><b>Carry cash.</b> Small restaurants, ticket-machine shops, shrines and market stalls may not take cards. 7-Eleven ATMs accept foreign cards.</li>
+      <li><b>Bring your passport for tax-free shopping</b> at participating stores on larger purchases.</li>
+    </ul>
+    </div>
+  </section>
+
+  <span id="relatives"></span>
+  <section id="access" data-part="start">
+    <h2><span class="plate">UD</span><span class="h2-text">Accessibility</span><button class="fold" type="button" aria-expanded="true" aria-controls="access-body" aria-label="Collapse Accessibility"></button></h2>
+    <div class="body" id="access-body">
+    <p>Tokyo is kind to slow walkers once you stop treating the train network as a sport. This chapter is for anyone in the party who moves slowly or with help: a cane, a bad knee, a wheelchair, a stroller, or simply a long day. The rules were written for the days the older relatives are along, and they hold for everyone.</p>
+    <h3>What the operators provide</h3>
+    <ul class="points">
+      <li><b>Toei (Mita, Oedo, Asakusa, Shinjuku lines).</b> Elevators at every station give at least one step-free route from street to gate to platform, and every station keeps a portable ramp, so staff can bridge the train gap at any point on the platform. Ask at the gate; they phone ahead so someone meets the train at the other end.</li>
+      <li><b>Tokyo Metro (Namboku, Hibiya, Ginza and the rest).</b> Its own figures put step-free routes at every station by this fiscal year, but at the big interchanges such as Ginza and Shibuya there may be only one or two elevators, often far from the exit you want. Plan the elevator exit, not the nearest one.</li>
+      <li><b>Ticket gates and toilets.</b> The wide gate is the one beside the staffed booth. Multipurpose toilets with grab rails are at almost every station and in every department store and museum.</li>
+      <li><b>Wheelchair taxis.</b> Most Tokyo cabs are the boxy JPN Taxi with a sliding door and a fold-out ramp. For a guaranteed one, request <b>Uber Assist</b> in the Uber app (23 wards): a certified driver helps with boarding, folds a chair or walker into the back, and charges the ordinary metered fare plus any dispatch fee. Chairs up to 120 by 70 cm fit.</li>
+    </ul>
+    <h3>Pace</h3>
+    <ul class="points">
+      <li><b>One anchor a day,</b> with a sit-down lunch in the middle and home by 16:00, before the evening rush. A museum and its café is a full day. Two neighbourhoods is too many.</li>
+      <li><b>Build in chairs.</b> Department stores have lounges on the upper floors, museums have cafés, parks have benches. Shinjuku Gyoen and the Teien garden are the gentlest walks on this list.</li>
+      <li><b>Mornings are better than afternoons</b> for crowds, weather and energy.</li>
+    </ul>
+    <h3>Trains and taxis</h3>
+    <ul class="points">
+      <li><b>Every station has an elevator route,</b> but it may be far from the platform you arrive on. Look for the elevator symbol on the station map at the ticket gate, or ask staff for the <i>erebētā</i>. Namboku line platforms have doors and the cars are new.</li>
+      <li><b>Avoid 7:30–9:30 and 17:30–19:30.</b> No seats, no space for a cane or a chair. Priority seats and the wheelchair bays are at the car ends; people do give them up if asked.</li>
+      <li><b>Taxis are the right answer more often than you'd think.</b> The GO app works in English and takes cards; Uber also works here and sends ordinary taxis. Fares start around ¥500 and a ride from Shirokane to Ginza or Roppongi lands roughly in the ¥2,000–3,000 range. Doors open and close themselves, so don't touch them. Taxi ranks sit outside every department store and big hotel.</li>
+      <li><b>For the day trips, Hakone is the gentle one:</b> a reserved seat from Shinjuku, no changes, then the Open-Air Museum, which has slopes but paths everywhere and places to sit. Skip the ropeway queue. Nikko's shrines are steep stone steps; Kamakura's Great Buddha is flat and the tram is fun.</li>
+    </ul>
+    <h3>Eating with a group</h3>
+    <ul class="points">
+      <li><b>Restaurants are the weak point:</b> many sit up or down a narrow stair with no accessible toilet, so favour ground-floor and department-store dining when a chair or a bad hip is along.</li>
+      <li><b>Use the Seating filter</b> under Where to eat: every restaurant row now carries its seat count, whether it has tables, a counter, a sunken floor or tatami, private rooms, and whether it lists wheelchair access, all from the restaurant's own Tabelog entry.</li>
+      <li><b>Pick table restaurants, not counters.</b> From the list in this guide: the yakiniku places (Ushimatsu, Kiraku Tei, Yakiniku Jumbo, Niku Yakiya D-29, KABUN), the shabu-shabu and sukiyaki places (Kotakino, Sukiyaki Juniten, Sugino, Kabuto), the set-meal lunches and the "familiar" group (Azabu Kogaiken, Edoya, AMANOYA). Omakase sushi and the tasting-menu yakitori are eight-seat counters with fixed courses, which is a lot to ask of someone who doesn't love raw fish.</li>
+      <li><b>Book for five or more,</b> even at lunch. Say the number and the time; the Airbnb host can call.</li>
+      <li><b>Shabu-shabu and sukiyaki are the crowd-pleasers:</b> cooked at the table, mild, and everyone chooses what to eat. Kotakino is a short walk from the Airbnb.</li>
+      <li><b>Chairs, not floor seating.</b> Some traditional rooms are tatami with low tables. Ask for a table seat, <i>tēburu seki</i>, when booking.</li>
+    </ul>
+    <h3>Practical</h3>
+    <ul class="points">
+      <li><b>Toilets are everywhere and clean:</b> every station, convenience store, department store and park. Western-style with heated seats is the norm.</li>
+      <li><b>Luggage goes by courier, not by hand.</b> Any convenience store or the Airbnb host can send bags to the airport or a hotel by <i>takkyubin</i> for a modest fee; allow two days for Narita. Station lockers big enough for a suitcase are scarce.</li>
+      <li><b>Pharmacies</b> with a green cross sign are on most streets, and see the Help section for the hospital nearest the Airbnb with English-speaking staff.</li>
+      <li><b>Bring prescriptions in their original packaging</b> with a copy of the script. Some common US medicines, including pseudoephedrine decongestants and ADHD stimulants, are restricted in Japan.</li>
+    </ul>
+    </div>
+  </section>
+
+  <section id="manners" data-part="start">
+    <h2><span class="plate">礼</span><span class="h2-text">Manners that matter</span><button class="fold" type="button" aria-expanded="true" aria-controls="manners-body" aria-label="Collapse Manners that matter"></button></h2>
+    <div class="body" id="manners-body">
+    <ul class="points">
+      <li><b>No phone calls on trains,</b> and keep your voice low.</li>
+      <li><b>Eating while walking is frowned upon</b> in most places. Market streets are the exception.</li>
+      <li><b>Trash cans are rare.</b> Carry a small bag for rubbish.</li>
+      <li><b>Wear slip-on shoes and decent socks.</b> Temples, traditional inns and some restaurants ask you to take shoes off.</li>
+      <li><b>Ignore street touts</b> in Roppongi and Kabukicho. Some bars they lead you to run up huge bills.</li>
+    </ul>
+    <p>Late October is usually mild and good for walking. It is also the tail of typhoon season, so check train status before a day trip.</p>
+    </div>
+  </section>
+
+  <section id="help" data-part="start">
+    <h2><span class="plate">SOS</span><span class="h2-text">If something goes wrong</span><button class="fold" type="button" aria-expanded="true" aria-controls="help-body" aria-label="Collapse If something goes wrong"></button></h2>
+    <div class="body" id="help-body">
+    <div class="phones">
+      <div class="phone"><span class="num">110</span><span>Police</span></div>
+      <div class="phone"><span class="num">119</span><span>Ambulance or fire</span></div>
+      <div class="phone"><span class="num small">050-3816-2787</span><span>Japan Visitor Hotline, 24 hours, English. Tourist help and emergencies.</span></div>
+      <div class="phone"><span class="num small">03-3224-5000</span><span>US Embassy, 1-10-5 Akasaka. Same number after hours.</span></div>
+    </div>
+    <ul class="points">
+      <li><b>Nearest big hospital with English-speaking staff:</b> Japanese Red Cross Medical Center, 4-1-22 Hiroo, 03-3400-1311, <a class="nav" href="https://www.google.com/maps/search/?api=1&amp;query=Japanese%20Red%20Cross%20Medical%20Center%2C%20Hiroo" target="_blank" rel="noopener" aria-label="Open Japanese Red Cross Medical Center, Hiroo in Google Maps">Maps ↗</a> a short taxi ride from the Airbnb. St. Luke's International Hospital in Tsukiji and the Tokyo Medical and Surgical Clinic near Shiba Park are the other two foreigners use. Hospitals want payment up front; cards work at the big ones, and your travel insurance reimburses.</li>
+      <li><b>Pharmacies:</b> Matsumoto Kiyoshi, Welcia and Sundrug are the chains. Over-the-counter medicine is behind the counter; staff help with a translation app. Prescriptions need a Japanese doctor.</li>
+      <li><b>Earthquakes.</b> Phones blare an alert a few seconds ahead. Stay where you are, away from glass and shelves; don't run outside. Trains stop and restart on their own. The JNTO Safety Tips app gives alerts in English.</li>
+      <li><b>Lost something?</b> Ask station staff, or go to the nearest police box, a <i>kōban</i>, which also give directions. Things come back here.</li>
+      <li><b>Lost card or cash.</b> 7-Eleven and post office ATMs take foreign cards. Call your bank's number on the card; Japan's country code is +81.</li>
+      <li><b>Typhoon.</b> Late October is the tail of the season. If one is forecast, operators announce suspensions a day ahead; check the status links under Getting around and don't plan a day trip for that day.</li>
+    </ul>
+    </div>
+  </section>
+
+  <div class="part" id="part-lookup">
+    <p class="part-n">Part 2 of 2</p>
+    <p class="part-h">Look it up</p>
+    <p class="part-d">Plan a day, then the places: day trips, museums, amusement parks, shopping, where to eat, massage and baths.</p>
+    <button type="button" class="tool part-fold" data-part="lookup">Fold these chapters</button>
+  </div>
+
+  <section id="plan" data-part="lookup">
+    <h2><span class="plate">計</span><span class="h2-text">Plan a day</span><button class="fold" type="button" aria-expanded="true" aria-controls="plan-body" aria-label="Collapse Plan a day"></button></h2>
+    <div class="body" id="plan-body">
+    <p>Pick the places, pick where to eat, and this lays the day out in order with times. Travel times from the base are the Yahoo Transit readings used everywhere in this guide; times between stops are estimates from distance, marked <i>est.</i>, with a live Yahoo link and Google Maps directions on every leg for the exact train. Closed days and opening hours come from the chapters that follow. The plan is saved on this phone.</p>
+    <div class="planner" id="planner">
+      <div class="pl-row">
+        <label>Date <input type="date" id="pl-date"></label>
+        <label>Leave at <input type="time" id="pl-start" value="09:30" step="300"></label>
+        <label>Add a stop <select id="pl-add" aria-label="Add a stop"><option value="">Choose…</option><optgroup label="Museums"><option value="p0">Teien Art Museum · 12 min</option><option value="p1">Mori Art Museum · 18 min</option><option value="p2">teamLab Borderless · 22 min</option><option value="p3">21_21 Design Sight · 30 min</option><option value="p4">National Art Center · 32 min</option><option value="p5">Nezu Museum · 32 min</option><option value="p9">Artizon Museum · 40 min</option><option value="p8">Western Art (Rodin) · 42 min</option><option value="p6">Yayoi Kusama Museum · 45 min</option><option value="p7">Tokyo National Museum · 45 min</option><option value="p10">teamLab Planets · 52 min</option><option value="p11">Hakone Open-Air Museum · 120 min</option></optgroup><optgroup label="Parks and day trips"><option value="p13">Tokyo Dome City · 25 min</option><option value="p12">Tokyo Disney Resort · 45 min</option><option value="p14">Yomiuriland · 60 min</option></optgroup><optgroup label="Day trips"><option value="p40">Kamakura · 75 min</option><option value="p42">Hakone · 120 min</option><option value="p35">Nikko · 160 min</option></optgroup><optgroup label="Shopping"><option value="p15">Azabu-Juban · 12 min</option><option value="p16">Hiroo · 18 min</option><option value="p17">Jimbocho books · 23 min</option><option value="p31">Shibuya · 23 min</option><option value="p22">Ginza · 25 min</option><option value="p29">Harajuku · 25 min</option><option value="p28">Omotesando · 27 min</option><option value="p25">Shinjuku · 30 min</option><option value="p34">Nakameguro · 31 min</option><option value="p23">Tsukiji · 32 min</option><option value="p20">Kuramae · 33 min</option><option value="p21">Tokyo Station · 33 min</option><option value="p33">Daikanyama · 35 min</option><option value="p18">Akihabara · 36 min</option><option value="p24">Ikebukuro · 36 min</option><option value="p32">Shimokitazawa · 38 min</option><option value="p26">Nakano Broadway · 39 min</option><option value="p19">Kappabashi · 41 min</option><option value="p27">Koenji · 41 min</option><option value="p30">Kichijoji · 50 min</option></optgroup><optgroup label="Areas"><option value="p41">Meguro · 12 min</option><option value="p39">Shinagawa · 15 min</option><option value="p43">Roppongi · 15 min</option><option value="p37">Asakusa · 30 min</option><option value="p36">Ueno · 35 min</option><option value="p38">Odaiba · 45 min</option></optgroup></select></label>
+      </div>
+      <ol class="pl-stops" id="pl-stops" aria-label="Stops in order"></ol>
+      <div class="pl-row">
+        <label>Lunch <select id="pl-lunch" aria-label="Lunch"></select></label>
+        <label>Dinner <select id="pl-dinner" aria-label="Dinner"></select></label>
+      </div>
+      <p class="pl-hint">Restaurants are listed nearest your stops first: <b>on the way</b> is within a 10-minute walk of a stop, <b>short detour</b> within about 20.</p>
+      <div class="toolbar">
+        <button type="button" class="tool" id="pl-order">Shortest order</button>
+        <button type="button" class="tool" id="pl-copy">Copy as text</button>
+        <button type="button" class="tool" id="pl-clear">Clear</button>
+      </div>
+      <div class="pl-out" id="pl-out" aria-live="polite"></div>
+    </div>
+    </div>
+  </section>
+
+  <section id="trips" data-part="lookup">
     <h2><span class="plate">OH</span><span class="h2-text">Day trips for your interests</span><button class="fold" type="button" aria-expanded="true" aria-controls="trips-body" aria-label="Collapse Day trips for your interests"></button></h2>
     <div class="body" id="trips-body">
     <p>Each name opens a live route. Sample trains below were read from Yahoo Transit on 18 October for Wednesday 21 October; the pattern holds on other days but check the day before. Late October is leaf season, so the first train out beats the crowds everywhere on this list.</p>
@@ -2708,36 +2894,10 @@
     </div>
   </section>
 
-  <section id="plan">
-    <h2><span class="plate">計</span><span class="h2-text">Plan a day</span><button class="fold" type="button" aria-expanded="true" aria-controls="plan-body" aria-label="Collapse Plan a day"></button></h2>
-    <div class="body" id="plan-body">
-    <p>Pick the places, pick where to eat, and this lays the day out in order with times. Travel times from the base are the Yahoo Transit readings used everywhere in this guide; times between stops are estimates from distance, marked <i>est.</i>, with a live Yahoo link and Google Maps directions on every leg for the exact train. Closed days and opening hours come from the chapters above. The plan is saved on this phone.</p>
-    <div class="planner" id="planner">
-      <div class="pl-row">
-        <label>Date <input type="date" id="pl-date"></label>
-        <label>Leave at <input type="time" id="pl-start" value="09:30" step="300"></label>
-        <label>Add a stop <select id="pl-add" aria-label="Add a stop"><option value="">Choose…</option><optgroup label="Museums"><option value="p0">Teien Art Museum · 12 min</option><option value="p1">Mori Art Museum · 18 min</option><option value="p2">teamLab Borderless · 22 min</option><option value="p3">21_21 Design Sight · 30 min</option><option value="p4">National Art Center · 32 min</option><option value="p5">Nezu Museum · 32 min</option><option value="p9">Artizon Museum · 40 min</option><option value="p8">Western Art (Rodin) · 42 min</option><option value="p6">Yayoi Kusama Museum · 45 min</option><option value="p7">Tokyo National Museum · 45 min</option><option value="p10">teamLab Planets · 52 min</option><option value="p11">Hakone Open-Air Museum · 120 min</option></optgroup><optgroup label="Parks and day trips"><option value="p13">Tokyo Dome City · 25 min</option><option value="p12">Tokyo Disney Resort · 45 min</option><option value="p14">Yomiuriland · 60 min</option></optgroup><optgroup label="Day trips"><option value="p40">Kamakura · 75 min</option><option value="p42">Hakone · 120 min</option><option value="p35">Nikko · 160 min</option></optgroup><optgroup label="Shopping"><option value="p15">Azabu-Juban · 12 min</option><option value="p16">Hiroo · 18 min</option><option value="p17">Jimbocho books · 23 min</option><option value="p31">Shibuya · 23 min</option><option value="p22">Ginza · 25 min</option><option value="p29">Harajuku · 25 min</option><option value="p28">Omotesando · 27 min</option><option value="p25">Shinjuku · 30 min</option><option value="p34">Nakameguro · 31 min</option><option value="p23">Tsukiji · 32 min</option><option value="p20">Kuramae · 33 min</option><option value="p21">Tokyo Station · 33 min</option><option value="p33">Daikanyama · 35 min</option><option value="p18">Akihabara · 36 min</option><option value="p24">Ikebukuro · 36 min</option><option value="p32">Shimokitazawa · 38 min</option><option value="p26">Nakano Broadway · 39 min</option><option value="p19">Kappabashi · 41 min</option><option value="p27">Koenji · 41 min</option><option value="p30">Kichijoji · 50 min</option></optgroup><optgroup label="Areas"><option value="p41">Meguro · 12 min</option><option value="p39">Shinagawa · 15 min</option><option value="p43">Roppongi · 15 min</option><option value="p37">Asakusa · 30 min</option><option value="p36">Ueno · 35 min</option><option value="p38">Odaiba · 45 min</option></optgroup></select></label>
-      </div>
-      <ol class="pl-stops" id="pl-stops" aria-label="Stops in order"></ol>
-      <div class="pl-row">
-        <label>Lunch <select id="pl-lunch" aria-label="Lunch"></select></label>
-        <label>Dinner <select id="pl-dinner" aria-label="Dinner"></select></label>
-      </div>
-      <p class="pl-hint">Restaurants are listed nearest your stops first: <b>on the way</b> is within a 10-minute walk of a stop, <b>short detour</b> within about 20.</p>
-      <div class="toolbar">
-        <button type="button" class="tool" id="pl-order">Shortest order</button>
-        <button type="button" class="tool" id="pl-copy">Copy as text</button>
-        <button type="button" class="tool" id="pl-clear">Clear</button>
-      </div>
-      <div class="pl-out" id="pl-out" aria-live="polite"></div>
-    </div>
-    </div>
-  </section>
-
-  <section id="museums">
+  <section id="museums" data-part="lookup">
     <h2><span class="plate">美</span><span class="h2-text">Museums and sculpture</span><button class="fold" type="button" aria-expanded="true" aria-controls="museums-body" aria-label="Collapse Museums and sculpture"></button></h2>
     <div class="body" id="museums-body">
-    <p>The trap is the closed day. Most museums close on Monday, the Roppongi contemporary ones close on Tuesday instead, and a few close between exhibitions. On this trip the Mondays are 19 and 26 October and the Tuesdays are 20 and 27. Minutes are door-to-door from the Airbnb; tap a name for a live route.</p>
+    <p>The trap is the closed day. Most museums close on Monday, the Roppongi contemporary ones close on Tuesday instead, and a few close between exhibitions. On this trip the Mondays are 19 and 26 October and the Tuesdays are 20 and 27. When a Monday is a public holiday, the closure usually moves to Tuesday. Minutes are door-to-door from the Airbnb; tap a name for a live route.</p>
 
     <figure class="map">
 <svg viewBox="0 0 440 430" role="img" aria-labelledby="mus-title mus-desc">
@@ -3632,11 +3792,12 @@
       <li><b>teamLab needs tickets before you go.</b> Both venues are timed entry, sold only on the official site, and the popular slots go a week or more out. Borderless at Azabudai Hills is the closer one and the better one for a first visit; Planets is the one with water.</li>
       <li><b>Big museums are cheap,</b> usually ¥1,000 to ¥2,000. teamLab is the exception at ¥3,400 and up.</li>
       <li><b>Friday and Saturday evenings</b> are when the Ueno museums stay open late and the crowds thin.</li>
+      <li><b>The Ghibli Museum</b> sells a month in advance, so October is probably gone.</li>
     </ul>
     </div>
   </section>
 
-  <section id="parks">
+  <section id="parks" data-part="lookup">
     <h2><span class="plate">遊</span><span class="h2-text">Amusement parks</span><button class="fold" type="button" aria-expanded="true" aria-controls="parks-body" aria-label="Collapse Amusement parks"></button></h2>
     <div class="body" id="parks-body">
     <p>Tokyo Disney Resort is the main event and it is in Halloween mode for your whole stay, which runs to 31 October. Minutes are door-to-door from the Airbnb.</p>
@@ -3657,7 +3818,7 @@
     </div>
   </section>
 
-  <section id="shop">
+  <section id="shop" data-part="lookup">
     <h2><span class="plate">買</span><span class="h2-text">Shopping</span><button class="fold" type="button" aria-expanded="true" aria-controls="shop-body" aria-label="Collapse Shopping"></button></h2>
     <div class="body" id="shop-body">
     <p>Tokyo shopping is organised by district, and each district does one thing well. Pick the kind of shopping first, then the area. Minutes are door-to-door from the Airbnb by train, read from Yahoo Transit for a weekday late morning. Tap any name for a live route.</p>
@@ -4566,41 +4727,7 @@
     </div>
   </section>
 
-  <section id="moving">
-    <h2><span class="plate">IC</span><span class="h2-text">Getting around</span><button class="fold" type="button" aria-expanded="true" aria-controls="moving-body" aria-label="Collapse Getting around"></button></h2>
-    <div class="body" id="moving-body">
-    <ul class="points">
-      <li><b>Pick your exit before you arrive.</b> Big stations have dozens of exits, and the wrong one can add 10 minutes outside. Route apps list the exit number.</li>
-      <li><b>JR, Tokyo Metro and Toei are separate companies.</b> One IC card pays for all of them. Changing between companies sometimes means passing through orange transfer gates.</li>
-      <li><b>Put Suica in your phone's wallet.</b> On iPhone it takes a minute, and you top it up with a card.</li>
-      <li><b>Two kinds of link in this guide.</b> <span class="nav" style="font:600 .68rem/1 var(--mono);border:1px solid var(--rule);border-radius:999px;padding:.22rem .5rem">Maps ↗</span> opens Google Maps directions from wherever you are, which is the fastest way to just go. Place names open Yahoo Transit from Shirokane-takanawa, which is better for exact train times and platforms. The restaurant <i>navigate</i> links do the same in Google Maps.</li>
-      <li><b>Check line status before a day trip:</b> <a href="https://www.kotsu.metro.tokyo.jp/eng/operation_status/" target="_blank" rel="noopener">Toei</a> (your Mita line), <a href="https://www.tokyometro.jp/en/" target="_blank" rel="noopener">Tokyo Metro</a> (Namboku line) and <a href="https://traininfo.jreast.co.jp/train_info/e/kanto.aspx" target="_blank" rel="noopener">JR East</a>. Delays under 15 minutes are not posted.</li>
-      <li><b>Avoid rush hour with older relatives and bags.</b> Trains are packed roughly 7:30–9:30 and 17:30–19:30.</li>
-      <li><b>Last trains run around midnight.</b> After that it's a taxi, and night fares cost more.</li>
-      <li><b>Elevators exist at most stations</b> but can be a long walk from your platform. Leave extra time.</li>
-    </ul>
-    <div class="callout">
-      <p><b>Send the bags, not the people.</b> Luggage forwarding, called <i>takkyubin</i>, ships suitcases from hotels and convenience stores to the airport or your next hotel, usually overnight, for a modest fee. It's ideal for the trip back to Narita.</p>
-    </div>
-    <ul class="points">
-      <li><b>Big suitcases need a reserved space on the Shinkansen.</b> Book the oversized-baggage seat when you buy the ticket.</li>
-      <li><b>Skip the nationwide Japan Rail Pass.</b> It rarely pays off for a Tokyo base with day trips.</li>
-    </ul>
-    </div>
-  </section>
-
-  <section id="booking">
-    <h2><span class="plate">10:00</span><span class="h2-text">Hours and booking</span><button class="fold" type="button" aria-expanded="true" aria-controls="booking-body" aria-label="Collapse Hours and booking"></button></h2>
-    <div class="body" id="booking-body">
-    <ul class="points">
-      <li><b>Many museums close on Mondays.</b> On this trip that's 19 and 26 October. When a Monday is a public holiday, the closure usually moves to Tuesday.</li>
-      <li><b>Book popular places ahead.</b> Disney tickets are dated. teamLab entry is timed. The Ghibli Museum sells a month in advance, so October is probably gone.</li>
-      <li><b>Shops open around 10 or 11.</b> Many restaurants close between lunch and dinner, roughly 14:30–17:30.</li>
-    </ul>
-    </div>
-  </section>
-
-  <section id="eat">
+  <section id="eat" data-part="lookup">
     <h2><span class="plate">食</span><span class="h2-text">Where to eat near the base</span><button class="fold" type="button" aria-expanded="true" aria-controls="eat-body" aria-label="Collapse Where to eat near the base"></button></h2>
     <div class="body" id="eat-body">
     <p>These come from Tabelog, Japan's restaurant guide. Its scores run low: 3.5 is very good and anything over 4.0 is rare. Prices are Tabelog's average spend per person, before drinks. Everything here is within one or two stops of Shirokane-takanawa, most of it walkable, except the conveyor-belt sushi and the breakfast places, which live at the big stations and the fish market.</p>
@@ -5244,37 +5371,7 @@
     </div>
   </section>
 
-  <section id="food">
-    <h2><span class="plate">¥</span><span class="h2-text">How dining works here</span><button class="fold" type="button" aria-expanded="true" aria-controls="food-body" aria-label="Collapse How dining works here"></button></h2>
-    <div class="body" id="food-body">
-    <h3>Getting a table</h3>
-    <ul class="points">
-      <li><b>Lunch is the bargain.</b> The same kitchen often charges half at lunch. Omakase counters that run ¥18,000 at night may do a ¥3,000 lunch set.</li>
-      <li><b>Small counters are reservation only</b> and book out a week or more ahead. Ask the Airbnb host to call, or use TableCheck or Omakase.in, which take bookings in English for many places.</li>
-      <li><b>No-shows are a serious offence.</b> Cancel by phone if plans change. Some counters charge the full course for a no-show.</li>
-      <li><b>Ramen, soba and set-meal shops don't take bookings.</b> Queue, and expect to be in and out in 30 minutes. Many have a ticket machine by the door: pay first, hand over the ticket.</li>
-      <li><b>Restaurants close between services,</b> roughly 14:30 to 17:30, and many close one weekday. Check the closed day before you set out.</li>
-      <li><b>Groups over four are hard</b> at counters. Book ahead, or pick yakiniku, shabu-shabu or izakaya, which seat tables.</li>
-    </ul>
-    <h3>At the table</h3>
-    <ul class="points">
-      <li><b>Izakaya add a cover charge,</b> called otoshi, with a small appetiser you didn't order. Around ¥300–800 a head. That's normal.</li>
-      <li><b>Don't tip.</b> It confuses people. The bill is the bill.</li>
-      <li><b>Say "sumimasen" to call staff.</b> Nobody will come otherwise. Many places have a call button on the table.</li>
-      <li><b>Omakase etiquette:</b> eat each piece in one bite as it's served, soy sauce is already applied, and ginger is a palate cleanser between pieces, not a topping. No perfume. Ask before taking photos.</li>
-      <li><b>Allergies and dietary limits</b> go in the booking, not to the chef mid-course. Vegetarian is hard at sushi and yakitori; shabu-shabu, tempura, soba and set-meal places cope better. Dashi broth almost always contains fish.</li>
-      <li><b>Slurping noodles is fine.</b> Blowing your nose at the table is not.</li>
-    </ul>
-    <h3>Paying</h3>
-    <ul class="points">
-      <li><b>Pay at the register by the door,</b> not at the table. Take the bill up when you're done.</li>
-      <li><b>Carry cash.</b> Small restaurants, ticket-machine shops, shrines and market stalls may not take cards. 7-Eleven ATMs accept foreign cards.</li>
-      <li><b>Bring your passport for tax-free shopping</b> at participating stores on larger purchases.</li>
-    </ul>
-    </div>
-  </section>
-
-  <section id="spa">
+  <section id="spa" data-part="lookup">
     <h2><span class="plate">揉</span><span class="h2-text">Massage and baths</span><button class="fold" type="button" aria-expanded="true" aria-controls="spa-body" aria-label="Collapse Massage and baths"></button></h2>
     <div class="body" id="spa-body">
     <p>Japan treats a massage as maintenance, not a treat, so it is cheap, everywhere and open late. There are three kinds, and knowing which door you are walking through saves money and surprises.</p>
@@ -5308,84 +5405,6 @@
     </div>
   </section>
 
-  <span id="relatives"></span>
-  <section id="access">
-    <h2><span class="plate">UD</span><span class="h2-text">Accessibility</span><button class="fold" type="button" aria-expanded="true" aria-controls="access-body" aria-label="Collapse Accessibility"></button></h2>
-    <div class="body" id="access-body">
-    <p>Tokyo is kind to slow walkers once you stop treating the train network as a sport. This chapter is for anyone in the party who moves slowly or with help: a cane, a bad knee, a wheelchair, a stroller, or simply a long day. The rules were written for the days the older relatives are along, and they hold for everyone.</p>
-    <h3>What the operators provide</h3>
-    <ul class="points">
-      <li><b>Toei (Mita, Oedo, Asakusa, Shinjuku lines).</b> Elevators at every station give at least one step-free route from street to gate to platform, and every station keeps a portable ramp, so staff can bridge the train gap at any point on the platform. Ask at the gate; they phone ahead so someone meets the train at the other end.</li>
-      <li><b>Tokyo Metro (Namboku, Hibiya, Ginza and the rest).</b> Its own figures put step-free routes at every station by this fiscal year, but at the big interchanges such as Ginza and Shibuya there may be only one or two elevators, often far from the exit you want. Plan the elevator exit, not the nearest one.</li>
-      <li><b>Ticket gates and toilets.</b> The wide gate is the one beside the staffed booth. Multipurpose toilets with grab rails are at almost every station and in every department store and museum.</li>
-      <li><b>Wheelchair taxis.</b> Most Tokyo cabs are the boxy JPN Taxi with a sliding door and a fold-out ramp. For a guaranteed one, request <b>Uber Assist</b> in the Uber app (23 wards): a certified driver helps with boarding, folds a chair or walker into the back, and charges the ordinary metered fare plus any dispatch fee. Chairs up to 120 by 70 cm fit.</li>
-    </ul>
-    <h3>Pace</h3>
-    <ul class="points">
-      <li><b>One anchor a day,</b> with a sit-down lunch in the middle and home by 16:00, before the evening rush. A museum and its café is a full day. Two neighbourhoods is too many.</li>
-      <li><b>Build in chairs.</b> Department stores have lounges on the upper floors, museums have cafés, parks have benches. Shinjuku Gyoen and the Teien garden are the gentlest walks on this list.</li>
-      <li><b>Mornings are better than afternoons</b> for crowds, weather and energy.</li>
-    </ul>
-    <h3>Trains and taxis</h3>
-    <ul class="points">
-      <li><b>Every station has an elevator route,</b> but it may be far from the platform you arrive on. Look for the elevator symbol on the station map at the ticket gate, or ask staff for the <i>erebētā</i>. Namboku line platforms have doors and the cars are new.</li>
-      <li><b>Avoid 7:30–9:30 and 17:30–19:30.</b> No seats, no space for a cane or a chair. Priority seats and the wheelchair bays are at the car ends; people do give them up if asked.</li>
-      <li><b>Taxis are the right answer more often than you'd think.</b> The GO app works in English and takes cards; Uber also works here and sends ordinary taxis. Fares start around ¥500 and a ride from Shirokane to Ginza or Roppongi lands roughly in the ¥2,000–3,000 range. Doors open and close themselves, so don't touch them. Taxi ranks sit outside every department store and big hotel.</li>
-      <li><b>For the day trips, Hakone is the gentle one:</b> a reserved seat from Shinjuku, no changes, then the Open-Air Museum, which has slopes but paths everywhere and places to sit. Skip the ropeway queue. Nikko's shrines are steep stone steps; Kamakura's Great Buddha is flat and the tram is fun.</li>
-    </ul>
-    <h3>Eating with a group</h3>
-    <ul class="points">
-      <li><b>Restaurants are the weak point:</b> many sit up or down a narrow stair with no accessible toilet, so favour ground-floor and department-store dining when a chair or a bad hip is along.</li>
-      <li><b>Use the Seating filter</b> under Where to eat: every restaurant row now carries its seat count, whether it has tables, a counter, a sunken floor or tatami, private rooms, and whether it lists wheelchair access, all from the restaurant's own Tabelog entry.</li>
-      <li><b>Pick table restaurants, not counters.</b> From the list in this guide: the yakiniku places (Ushimatsu, Kiraku Tei, Yakiniku Jumbo, Niku Yakiya D-29, KABUN), the shabu-shabu and sukiyaki places (Kotakino, Sukiyaki Juniten, Sugino, Kabuto), the set-meal lunches and the "familiar" group (Azabu Kogaiken, Edoya, AMANOYA). Omakase sushi and the tasting-menu yakitori are eight-seat counters with fixed courses, which is a lot to ask of someone who doesn't love raw fish.</li>
-      <li><b>Book for five or more,</b> even at lunch. Say the number and the time; the Airbnb host can call.</li>
-      <li><b>Shabu-shabu and sukiyaki are the crowd-pleasers:</b> cooked at the table, mild, and everyone chooses what to eat. Kotakino is a short walk from the Airbnb.</li>
-      <li><b>Chairs, not floor seating.</b> Some traditional rooms are tatami with low tables. Ask for a table seat, <i>tēburu seki</i>, when booking.</li>
-    </ul>
-    <h3>Practical</h3>
-    <ul class="points">
-      <li><b>Toilets are everywhere and clean:</b> every station, convenience store, department store and park. Western-style with heated seats is the norm.</li>
-      <li><b>Luggage goes by courier, not by hand.</b> Any convenience store or the Airbnb host can send bags to the airport or a hotel by <i>takkyubin</i> for a modest fee; allow two days for Narita. Station lockers big enough for a suitcase are scarce.</li>
-      <li><b>Pharmacies</b> with a green cross sign are on most streets, and see the Help section for the hospital nearest the Airbnb with English-speaking staff.</li>
-      <li><b>Bring prescriptions in their original packaging</b> with a copy of the script. Some common US medicines, including pseudoephedrine decongestants and ADHD stimulants, are restricted in Japan.</li>
-    </ul>
-    </div>
-  </section>
-
-  <section id="manners">
-    <h2><span class="plate">礼</span><span class="h2-text">Manners that matter</span><button class="fold" type="button" aria-expanded="true" aria-controls="manners-body" aria-label="Collapse Manners that matter"></button></h2>
-    <div class="body" id="manners-body">
-    <ul class="points">
-      <li><b>No phone calls on trains,</b> and keep your voice low.</li>
-      <li><b>Eating while walking is frowned upon</b> in most places. Market streets are the exception.</li>
-      <li><b>Trash cans are rare.</b> Carry a small bag for rubbish.</li>
-      <li><b>Wear slip-on shoes and decent socks.</b> Temples, traditional inns and some restaurants ask you to take shoes off.</li>
-      <li><b>Ignore street touts</b> in Roppongi and Kabukicho. Some bars they lead you to run up huge bills.</li>
-    </ul>
-    <p>Late October is usually mild and good for walking. It is also the tail of typhoon season, so check train status before a day trip.</p>
-    </div>
-  </section>
-
-  <section id="help">
-    <h2><span class="plate">SOS</span><span class="h2-text">If something goes wrong</span><button class="fold" type="button" aria-expanded="true" aria-controls="help-body" aria-label="Collapse If something goes wrong"></button></h2>
-    <div class="body" id="help-body">
-    <div class="phones">
-      <div class="phone"><span class="num">110</span><span>Police</span></div>
-      <div class="phone"><span class="num">119</span><span>Ambulance or fire</span></div>
-      <div class="phone"><span class="num small">050-3816-2787</span><span>Japan Visitor Hotline, 24 hours, English. Tourist help and emergencies.</span></div>
-      <div class="phone"><span class="num small">03-3224-5000</span><span>US Embassy, 1-10-5 Akasaka. Same number after hours.</span></div>
-    </div>
-    <ul class="points">
-      <li><b>Nearest big hospital with English-speaking staff:</b> Japanese Red Cross Medical Center, 4-1-22 Hiroo, 03-3400-1311, <a class="nav" href="https://www.google.com/maps/search/?api=1&amp;query=Japanese%20Red%20Cross%20Medical%20Center%2C%20Hiroo" target="_blank" rel="noopener" aria-label="Open Japanese Red Cross Medical Center, Hiroo in Google Maps">Maps ↗</a> a short taxi ride from the Airbnb. St. Luke's International Hospital in Tsukiji and the Tokyo Medical and Surgical Clinic near Shiba Park are the other two foreigners use. Hospitals want payment up front; cards work at the big ones, and your travel insurance reimburses.</li>
-      <li><b>Pharmacies:</b> Matsumoto Kiyoshi, Welcia and Sundrug are the chains. Over-the-counter medicine is behind the counter; staff help with a translation app. Prescriptions need a Japanese doctor.</li>
-      <li><b>Earthquakes.</b> Phones blare an alert a few seconds ahead. Stay where you are, away from glass and shelves; don't run outside. Trains stop and restart on their own. The JNTO Safety Tips app gives alerts in English.</li>
-      <li><b>Lost something?</b> Ask station staff, or go to the nearest police box, a <i>kōban</i>, which also give directions. Things come back here.</li>
-      <li><b>Lost card or cash.</b> 7-Eleven and post office ATMs take foreign cards. Call your bank's number on the card; Japan's country code is +81.</li>
-      <li><b>Typhoon.</b> Late October is the tail of the season. If one is forecast, operators announce suspensions a day ahead; check the status links under Getting around and don't plan a day trip for that day.</li>
-    </ul>
-    </div>
-  </section>
-
   <footer>
     <p>Prepared 17 October 2026, last updated 21 October; the Today line and the Plan a day chapter use the Tokyo date and the minutes, closed days and hours already in this guide, estimates the legs between stops from straight-line distance (about 4 minutes per kilometre by train plus 8 for the platforms, 80 metres a minute on foot) and never looks anything up live; see the change list at the top. Restaurant ratings, prices and closed days were read from Tabelog on 18 October 2026 JST; seat counts, seating types, private rooms and wheelchair access from each restaurant's Tabelog page on 19 October. Travel minutes to the shopping districts were read from Yahoo Transit the same day. Sample day-trip trains were read from Yahoo Transit on 18 October for 21 October. Museum closed days, exhibition dates, Disney prices and the phone numbers were checked against web sources on 18 October. Shop, district and museum descriptions are general knowledge, not live lookups; the vintage watch shops' hours and stock categories were read from each shop's own website on 19 October. Pokémon Center hours and the card-set lottery notices come from the official store pages; the Akihabara card shops', Mandarake's, Super Potato's, Trader's, Radio Kaikan's, BerBerJin's and Flamingo's hours and floors were read from their own sites or listings on 19 October; pack prices are list prices from the official card database as quoted by a July 2026 guide; the remaining collector and vintage shop descriptions are general knowledge and 2026 shop guides. Minutes to Koenji were read from Yahoo Transit on 19 October. Mizutani Camera's hours come from its Google Business listing, last updated by the shop itself about twelve weeks before 20 October. Confirm opening hours, prices and ticket availability before you go. Station numbers follow Tokyo Metro and Toei signage. Massage and bath hours, prices and tattoo rules were read from each business's own website or listing on 19 October 2026; accessibility facts come from Toei's and Tokyo Metro's own pages and Uber's Assist page the same day. Map geometry (coastline, rivers, parks, roads, rail) is © OpenStreetMap contributors, ODbL, read through Overpass on 19 October; the maps are drawn by the guide's own scripts, not tiles.</p>
   </footer>
@@ -5398,7 +5417,7 @@
   var prev = document.getElementById('toc-prev'), next = document.getElementById('toc-next'), foldAll = document.getElementById('fold-all');
   var links = [].slice.call(panel.querySelectorAll('ol a'));
   var names = links.map(function (a) { var pl = a.querySelector('.plate'); return a.textContent.replace(pl ? pl.textContent : '', '').trim(); });
-  var folds = {};
+  var folds = {}, partLabels = [];
   try { folds = JSON.parse(localStorage.getItem('fg-folds') || '{}') || {}; } catch (e) { folds = {}; }
   function allFolded() { return secs.every(function (x) { return x.hasAttribute('data-folded'); }); }
   function setFold(sec, folded, save) {
@@ -5411,15 +5430,27 @@
     var all = allFolded();
     foldAll.textContent = all ? 'Unfold all' : 'Fold all';
     foldAll.setAttribute('aria-pressed', all ? 'true' : 'false');
+    partLabels.forEach(function (f) { f(); });
   }
+  // Start-here chapters open folded after the first visit, unless you opened or folded them yourself.
+  var seen = false;
+  try { seen = !!localStorage.getItem('fg-seen'); localStorage.setItem('fg-seen', '1'); } catch (e) {}
   secs.forEach(function (sec) {
-    if (folds[sec.id]) setFold(sec, true, false);
+    var auto = seen && sec.getAttribute('data-part') === 'start';
+    if (Object.prototype.hasOwnProperty.call(folds, sec.id) ? folds[sec.id] : auto) setFold(sec, true, false);
     sec.querySelector('h2').addEventListener('click', function (e) {
       if (e.target.closest('a')) return;
       setFold(sec, !sec.hasAttribute('data-folded'));
     });
   });
   foldAll.addEventListener('click', function () { var all = allFolded(); secs.forEach(function (x) { setFold(x, !all); }); });
+  [].slice.call(document.querySelectorAll('.part button.part-fold')).forEach(function (b) {
+    var ps = secs.filter(function (x) { return x.getAttribute('data-part') === b.getAttribute('data-part'); });
+    function folded() { return ps.every(function (x) { return x.hasAttribute('data-folded'); }); }
+    function label() { b.textContent = folded() ? 'Open these chapters' : 'Fold these chapters'; }
+    b.addEventListener('click', function () { var f = folded(); ps.forEach(function (x) { setFold(x, !f); }); });
+    partLabels.push(label); label();
+  });
   function unfoldHash() {
     var id = location.hash.slice(1); if (!id) return;
     var el = document.getElementById(id), sec = el && el.closest('section');
