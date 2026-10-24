@@ -1,5 +1,5 @@
 /* Tokyo Field Guide offline copy. Version is stamped by _share.py at publish time. */
-var VERSION = 'fg-2026-10-21-21Oct20262145JST';
+var VERSION = 'fg-2026-10-24-24Oct20261714JST';
 var CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function (e) {
@@ -13,12 +13,14 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (e) {
   var req = e.request, url = new URL(req.url);
   if (req.method !== 'GET') return;
-  var isPage = req.mode === 'navigate' || url.pathname.endsWith('/') || url.pathname.endsWith('/index.html');
+  var isPage = req.mode === 'navigate' || url.pathname.endsWith('/') || url.pathname.endsWith('.html');
   if (url.origin === location.origin && isPage) {
     // Network first so a republished guide shows up; the cached copy answers underground.
+    // Each page is cached under its own name (index.html, osaka.html), so one guide never overwrites another.
+    var key = url.pathname.endsWith('/') ? './index.html' : '.' + url.pathname.slice(url.pathname.lastIndexOf('/'));
     e.respondWith(fetch(req).then(function (res) {
-      var copy = res.clone(); caches.open(VERSION).then(function (c) { c.put('./index.html', copy); }); return res;
-    }).catch(function () { return caches.match('./index.html').then(function (r) { return r || caches.match('./'); }); }));
+      var copy = res.clone(); caches.open(VERSION).then(function (c) { c.put(key, copy); }); return res;
+    }).catch(function () { return caches.match(key).then(function (r) { return r || caches.match('./index.html'); }); }));
     return;
   }
   if (url.origin === location.origin || /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname)) {
