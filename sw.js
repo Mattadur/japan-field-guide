@@ -1,5 +1,5 @@
 /* Tokyo Field Guide offline copy. Version is stamped by _share.py at publish time. */
-var VERSION = 'fg-2026-10-24-24Oct20261714JST';
+var VERSION = 'fg-2026-10-24-24Oct20261720JST';
 var CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', function (e) {
