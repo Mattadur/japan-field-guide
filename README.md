@@ -1,4 +1,4 @@
-# Japan, October 2026
+# Japan Field Guide
 
 A family field guide for a trip to Japan: one trip page and one guide per city (Tokyo, Osaka). Built from the private travel-agent project; this repo holds only the published site.
 
