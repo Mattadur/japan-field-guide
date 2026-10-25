@@ -1,7 +1,7 @@
 {
-  "name": "Tokyo Field Guide",
-  "short_name": "Tokyo Guide",
-  "description": "The family's Tokyo guide: the loop, day trips, museums, shopping, where to eat, and a day planner.",
+  "name": "Japan Field Guide",
+  "short_name": "Japan Guide",
+  "description": "The family's Japan trip, October 2026: the trip page, then a field guide for each city with getting around, museums, shopping, where to eat and a day planner.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

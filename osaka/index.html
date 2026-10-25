@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111715">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<style>html,body{margin:0;padding:0}
+  nav.site { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; padding: .75rem 0 0; font: 600 .72rem/1 var(--mono, monospace); letter-spacing: .06em; text-transform: uppercase; }
+  nav.site a { color: var(--muted, #55625d); text-decoration: none; padding: .45rem .6rem; border-radius: 999px; border: 1px solid transparent; }
+  nav.site a[aria-current="page"] { color: var(--sign-ink, #f4f6f5); background: var(--sign, #1c2a26); }
+  nav.site a.site-home { margin-right: auto; color: var(--ink, #17201d); border-color: var(--rule, #d6dedb); background: var(--surface, #fff); }
+  @media print { nav.site { display: none; } }
+</style>
+<title>Osaka Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<style>
+  /* Layout: one reading column sized for a phone, styled like Tokyo station signage.
+     Line colors are the real signage colors and appear only where a line is meant. */
+  :root {
+    --bg: #f4f6f5;
+    --surface: #ffffff;
+    --ink: #17201d;
+    --muted: #55625d;
+    --rule: #d6dedb;
+    --accent: #0a7f73;
+    --sign: #1c2a26;
+    --sign-ink: #f4f6f5;
+    --badge-bg: #ffffff;
+    --map-loop: #8cc63f;
+    --home: #d9480f;
+
+    --yamanote: #8cc63f;
+    --namboku: #00ac9b;
+    --mita: #0079c2;
+    --ginza: #f39700;
+    --asakusa: #e85298;
+    --oedo: #b6007a;
+
+    --display: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+    --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #111715; --surface: #18201d; --ink: #e5ece9; --muted: #9daaa5; --rule: #2c3833;
+      --accent: #3cc4b4; --sign: #e5ece9; --sign-ink: #111715; --badge-bg: #111715;
+      --map-loop: #8cc63f; --home: #ff7a45; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #111715; --surface: #18201d; --ink: #e5ece9; --muted: #9daaa5; --rule: #2c3833;
+    --accent: #3cc4b4; --sign: #e5ece9; --sign-ink: #111715; --badge-bg: #111715;
+    --map-loop: #8cc63f; --home: #ff7a45; color-scheme: dark;
+  }
+
+  body { background: var(--bg); color: var(--ink); font: 17px/1.55 var(--body); }
+  .wrap { max-width: 40rem; margin: 0 auto; padding-inline: 18px; padding-block: 0 3rem; }
+
+  header.masthead { padding-block: 1.75rem 1.25rem; display: grid; gap: .6rem; }
+  .eyebrow { font: 600 .72rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  h1 { font: 900 clamp(2.2rem, 9vw, 3.1rem)/1.02 var(--display); margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+  h1 .ja { display: block; font-size: .42em; font-weight: 700; color: var(--muted); letter-spacing: .08em; margin-top: .35rem; }
+  .lede { margin: 0; color: var(--muted); max-width: 34rem; }
+
+  nav.jump { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg);
+    border-block: 1px solid var(--rule); margin-inline: -18px; padding: .45rem 18px; }
+  nav.jump .bar { display: flex; align-items: center; gap: .4rem; }
+  nav.jump button { font: 600 .8rem/1 var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 999px; padding: .55rem .75rem; cursor: pointer; }
+  nav.jump #toc-btn { flex: 1; min-width: 0; display: flex; align-items: center; gap: .45rem; text-align: left; }
+  nav.jump #toc-btn .ico { font-size: .95rem; line-height: 1; }
+  nav.jump #toc-btn .cur { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-weight: 500; }
+  nav.jump #toc-btn .cur:not(:empty)::before { content: "· "; }
+  nav.jump #toc-btn[aria-expanded="true"] { background: var(--sign); color: var(--sign-ink); border-color: var(--sign); }
+  nav.jump #toc-btn[aria-expanded="true"] .cur { color: var(--sign-ink); opacity: .75; }
+  nav.jump .step { flex: none; width: 2.4rem; padding-inline: 0; font-size: 1.15rem; line-height: .8; }
+  nav.jump .step[disabled] { opacity: .35; cursor: default; }
+  nav.jump .panel { position: absolute; left: 0; right: 0; top: 100%; background: var(--bg); border-bottom: 1px solid var(--rule);
+    padding: .65rem 18px .9rem; box-shadow: 0 14px 28px rgba(0, 0, 0, .14); max-height: calc(100vh - 4.5rem); overflow: auto; }
+  nav.jump .panel[hidden] { display: none; }
+  nav.jump .panel ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; }
+  @media (min-width: 560px) { nav.jump .panel ol { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  nav.jump .panel a { display: flex; align-items: center; gap: .5rem; font: 600 .84rem/1.2 var(--body); color: var(--ink); text-decoration: none;
+    border: 1px solid var(--rule); border-radius: 8px; padding: .5rem .6rem; background: var(--surface); min-height: 2.6rem; }
+  nav.jump .panel a .plate { font-size: .62rem; padding: .3rem .4rem; }
+  nav.jump .panel a[aria-current="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+  nav.jump .panel .row { display: flex; gap: .45rem; margin-top: .65rem; flex-wrap: wrap; align-items: center; }
+  nav.jump .panel .row a.tool { font: 600 .78rem/1 var(--mono); color: var(--ink); text-decoration: none; border: 1px solid var(--rule);
+    border-radius: 999px; padding: .55rem .75rem; background: var(--surface); }
+  nav.jump a:focus-visible, nav.jump button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  section { padding-block: 1.9rem .4rem; scroll-margin-top: 3.4rem; }
+  h2 { display: flex; align-items: center; gap: .6rem; font: 700 1.45rem/1.2 var(--display); margin: 0 0 .9rem; text-wrap: balance; cursor: pointer; }
+  h2 .h2-text { flex: 1; }
+  .plate { font: 600 .7rem/1 var(--mono); letter-spacing: .1em; background: var(--sign); color: var(--sign-ink);
+    padding: .38rem .5rem; border-radius: 4px; flex: none; }
+  button.fold { flex: none; width: 2rem; height: 2rem; border-radius: 50%; border: 1px solid var(--rule); background: var(--surface);
+    cursor: pointer; position: relative; padding: 0; }
+  button.fold::before { content: ""; position: absolute; left: 50%; top: 50%; width: .5rem; height: .5rem; border-right: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink); transform: translate(-50%, -72%) rotate(45deg); transition: transform .15s; }
+  section[data-folded] button.fold::before { transform: translate(-50%, -30%) rotate(-135deg); }
+  section[data-folded] .body { display: none; }
+  section[data-folded] { padding-block: .9rem .2rem; border-bottom: 1px solid var(--rule); }
+  section[data-folded] h2 { margin-bottom: 0; }
+  h3 { font: 700 1.05rem/1.3 var(--display); margin: 1.4rem 0 .5rem; }
+  .part { margin: 2rem -18px .2rem; padding: 1.1rem 18px 1rem; background: var(--sign); color: var(--sign-ink); scroll-margin-top: 3.4rem; }
+  .part .part-n { margin: 0; font: 600 .68rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+  .part .part-h { margin: .4rem 0 .35rem; font: 900 1.7rem/1.1 var(--display); }
+  .part .part-d { margin: 0 0 .75rem; font-size: .92rem; opacity: .9; }
+  .part .tool { background: transparent; color: var(--sign-ink); border-color: currentColor; }
+  nav.jump .panel .toc-part { margin: .1rem 0 .4rem; font: 600 .68rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  nav.jump .panel ol + .toc-part { margin-top: .85rem; }
+  nav.jump .panel .row a.tool { min-height: 0; display: inline-block; border-radius: 999px; }
+  nav.jump .bar a.sos { flex: none; text-decoration: none; font: 700 .7rem/1 var(--mono); letter-spacing: .04em; color: var(--home); border: 1px solid var(--home); border-radius: 999px; padding: .55rem .5rem; background: var(--surface); }
+  @media print { .part { background: none; color: var(--ink); border-top: 3px solid var(--ink); margin-inline: 0; padding-inline: 0; break-after: avoid; } .part .tool, nav.jump .bar a.sos { display: none; } }
+  p { margin: 0 0 .85rem; }
+  a { color: var(--accent); }
+
+  ul.points { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
+  ul.points li { padding-left: 1rem; position: relative; }
+  ul.points li::before { content: ""; position: absolute; left: 0; top: .62em; width: .42rem; height: .42rem;
+    border-radius: 50%; background: var(--line, var(--muted)); }
+  ul.points b { font-weight: 700; }
+
+  figure.map { margin: 0 0 1rem; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: .75rem .5rem .5rem; }
+  figure.map svg { display: block; width: 100%; height: auto; }
+  figure.map figcaption { font-size: .82rem; color: var(--muted); padding: .35rem .5rem 0; }
+  .svg-label { font: 600 12px var(--body); fill: var(--ink); }
+  .svg-muted { font: italic 11px var(--body); fill: var(--muted); }
+  .svg-home { font: 700 12px var(--body); fill: var(--home); }
+
+  figure.map .ring { fill: none; stroke: var(--rule); stroke-width: 1; }
+  figure.map .ring-label { font: italic 10px var(--body); fill: var(--muted); }
+  figure.map .stn { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+  figure.map .stn-label { font: 600 10.5px var(--body); fill: var(--ink); }
+  figure.map .dot { stroke: var(--surface); stroke-width: 1; }
+  figure.map .dot.sushi { fill: var(--mita); }
+  figure.map .dot.beef { fill: var(--home); }
+  figure.map .dot.pot { fill: var(--oedo); }
+  figure.map .dot.tori { fill: var(--ginza); }
+  figure.map .dot.set, figure.map .dot.dest { fill: var(--accent); }
+  figure.map .eat-label { font: 10px var(--body); fill: var(--ink); }
+  figure.map .eat-label, figure.map .stn-label, figure.map .home-label, figure.map .off-label, figure.map .svg-muted, figure.map .road-label { paint-order: stroke; stroke: var(--surface); stroke-width: 3px; stroke-linejoin: round; }
+  figure.map .num { font: 700 8px var(--body); fill: #fff; }
+  figure.map .key-label { font: 9.5px var(--body); fill: var(--ink); }
+  figure.map .home { fill: var(--home); }
+  figure.map .home-label { font: 700 11px var(--body); fill: var(--home); }
+  figure.map .off-label { font: italic 9.5px var(--body); fill: var(--muted); }
+  .map-key { display: flex; flex-wrap: wrap; gap: .35rem .9rem; font-size: .82rem; color: var(--muted); padding: .4rem .5rem 0; }
+  .map-key span::before { content: ""; display: inline-block; width: .6rem; height: .6rem; border-radius: 50%; margin-right: .35rem; background: var(--k); vertical-align: -.05em; }
+
+  .stn { display: inline-flex; align-items: center; gap: .15rem; font: 600 .78rem/1 var(--mono);
+    border: 2.5px solid var(--line); border-radius: 999px; padding: .18rem .42rem; background: var(--badge-bg);
+    color: var(--ink); vertical-align: .08em; white-space: nowrap; }
+  .stn b { color: var(--line); font-weight: 700; }
+
+  .lines { display: grid; gap: .6rem; margin: .4rem 0 1rem; }
+  .line-row { display: grid; grid-template-columns: .45rem 1fr; gap: .75rem; align-items: stretch; }
+  .line-row .bar { background: var(--line); border-radius: 3px; }
+  .line-row div:last-child { min-width: 0; }
+  .line-row strong { font-family: var(--display); }
+
+  table.trips { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  .table-scroll { overflow-x: auto; margin: 0 0 1rem; }
+  table.trips th, table.trips td { text-align: left; padding: .55rem .5rem .55rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  table.trips th { font: 600 .72rem/1.2 var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  table.trips td.t { font-variant-numeric: tabular-nums; white-space: nowrap; font-family: var(--mono); font-size: .85rem; }
+
+  .budget { display: grid; grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr)); gap: .6rem; margin: .4rem 0 1.2rem; }
+  .budget div { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: .7rem .85rem; }
+  .budget .yen { font: 600 1.25rem/1.1 var(--mono); display: block; margin-bottom: .2rem; }
+  .budget span:last-child { font-size: .85rem; color: var(--muted); }
+  ul.eats { list-style: none; margin: 0 0 .6rem; padding: 0; display: grid; gap: .55rem; }
+  ul.eats li { display: grid; grid-template-columns: 3.1rem 1fr; gap: .6rem; align-items: baseline; min-width: 0; }
+  ul.eats .score { font: 600 .85rem/1.5 var(--mono); color: var(--accent); white-space: nowrap; }
+  ul.eats .score.hi { color: var(--home); }
+  ul.eats .who { min-width: 0; }
+  ul.eats .who a { color: var(--ink); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--rule); }
+  ul.eats .meta { display: block; font-size: .88rem; color: var(--muted); }
+  .pick { font: 600 .7rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--home); margin-left: .35rem; }
+
+  .callout { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--home); border-radius: 6px; padding: .85rem 1rem; margin: 1rem 0; }
+  .callout p:last-child { margin: 0; }
+
+  .phones { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .6rem; margin: .5rem 0 1rem; }
+  .phone { background: var(--sign); color: var(--sign-ink); border-radius: 8px; padding: .75rem .9rem; }
+  .phone .num { font: 600 1.6rem/1 var(--mono); display: block; }
+  .phone span:last-child { font-size: .85rem; }
+
+  footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .85rem; }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .updated { margin: 0; font: 600 .78rem/1.4 var(--mono); color: var(--muted); }
+  .updated time { color: var(--ink); }
+  details.changes { font-size: .92rem; border: 1px solid var(--rule); border-radius: 8px; padding: .5rem .85rem; background: var(--surface); }
+  details.changes summary { cursor: pointer; font: 600 .78rem/1.4 var(--mono); color: var(--muted); }
+  details.changes ul { margin-top: .5rem; }
+  .tool, .chips button { font: 600 .78rem/1 var(--mono); color: var(--ink); background: var(--surface);
+    border: 1px solid var(--rule); border-radius: 999px; padding: .5rem .8rem; cursor: pointer; text-decoration: none; }
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin: 0 0 .6rem; }
+  .chips .lab { font: 600 .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: .2rem; }
+  .chips button[aria-pressed="true"] { background: var(--sign); color: var(--sign-ink); border-color: var(--sign); }
+  ul.eats .seat { color: var(--muted); }
+  .count { font-size: .85rem; color: var(--muted); margin: .2rem 0 1rem; }
+  ul.eats li[hidden], .group[hidden] { display: none; }
+  ul.eats .meta a { color: var(--accent); font-weight: 400; border: 0; }
+  figure.map a { cursor: pointer; }
+  figure.map a:hover .eat-label, figure.map a:focus .eat-label { fill: var(--accent); text-decoration: underline; }
+  figure.map a:focus { outline: none; }
+  figure.map .dot.fash { fill: var(--mita); }
+  figure.map .dot.craft { fill: var(--home); }
+  figure.map .dot.geek { fill: var(--oedo); }
+  figure.map .dot.vint { fill: var(--ginza); }
+  figure.map .dot.near, figure.map .dot.garden { fill: var(--accent); }
+  figure.map .dot.modern { fill: var(--mita); }
+  figure.map .dot.classic { fill: var(--home); }
+  figure.map .dot.digital { fill: var(--oedo); }
+  table.trips td.c { white-space: nowrap; }
+  .museum-list b a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .pill { display: inline-block; font: 600 .68rem/1 var(--mono); letter-spacing: .04em; color: var(--home); border: 1px solid var(--home); border-radius: 999px; padding: .2rem .45rem; margin: 0 .2rem; vertical-align: .1em; white-space: nowrap; }
+  .phones .phone .num.small { font-size: .92rem; line-height: 1.3; letter-spacing: -.01em; }
+  figure.map .lead { stroke: var(--muted); stroke-width: .7; opacity: .7; }
+  figure.map .bay { fill: var(--rule); opacity: .5; stroke: none; }
+  figure.map .palace { fill: var(--map-loop); opacity: .25; stroke: none; }
+  figure.map .water { fill: var(--rule); opacity: .55; stroke: none; }
+  figure.map .land { fill: var(--surface); stroke: none; }
+  figure.map .park { fill: var(--map-loop); opacity: .2; stroke: none; }
+  figure.map .river { fill: none; stroke: var(--rule); stroke-width: 1.4; }
+  figure.map .rail { fill: none; stroke-width: 1.5; opacity: .75; stroke-linejoin: round; }
+  figure.map .rail-mita { stroke: var(--mita); }
+  figure.map .rail-namboku { stroke: var(--namboku); }
+  figure.map .rail-oedo { stroke: var(--oedo); opacity: .3; stroke-width: 1.2; }
+  figure.map .legend { stroke-width: 3; opacity: .9; }
+  figure.map .loop.legend { stroke-width: 4; }
+  figure.map .road { fill: none; stroke: var(--rule); stroke-width: 1; stroke-linejoin: round; }
+  figure.map .road.major { stroke-width: 2.2; }
+  figure.map .track { fill: none; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 2; opacity: .6; }
+  figure.map .road-label { font: italic 7px var(--body); fill: var(--muted); opacity: .85; }
+  figure.map .loop { fill: none; stroke: var(--map-loop); stroke-width: 5; stroke-linejoin: round; }
+  figure.map .loop.thin { stroke-width: 2; }
+  figure.map circle.stn { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+  figure.map .tick { stroke: var(--muted); stroke-width: 1; }
+  figure.map .compass { font: 700 10px var(--body); fill: var(--muted); }
+  figure.map .grat { stroke: var(--rule); stroke-width: .6; stroke-dasharray: 3 3; }
+  figure.map .scale { stroke: var(--ink); stroke-width: 1.2; }
+  figure.map .peak { fill: var(--muted); }
+  figure.map .dot.ref { fill: var(--muted); }
+  table.trips td a { color: var(--ink); font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .shops { display: grid; gap: .8rem; margin: .4rem 0 1.2rem; }
+  .shops > div { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--k, var(--rule)); border-radius: 8px; padding: .8rem .95rem; }
+  .shops h4 { margin: 0 0 .3rem; font: 700 1rem/1.3 var(--display); }
+  .shops p { margin: 0; font-size: .95rem; }
+  .shops .go { display: flex; flex-wrap: wrap; gap: .3rem .8rem; font: 600 .74rem/1.4 var(--mono); color: var(--muted); margin-top: .5rem; }
+  .shops .go a { color: var(--accent); text-decoration: none; }
+  .shops p + p, .shops ul + p { margin-top: .55rem; }
+  .shops p.sub { margin: .85rem 0 .1rem; font: 700 .7rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .shops p.sub b { color: var(--ink); }
+  .shops ul.sl { list-style: none; margin: .35rem 0 0; padding: 0; font-size: .95rem; }
+  .shops ul.sl > li { position: relative; padding: .4rem 0 .4rem .9rem; border-top: 1px dotted var(--rule); }
+  .shops ul.sl > li:first-child { border-top: 0; }
+  .shops ul.sl > li::before { content: ""; position: absolute; left: 0; top: .9em; width: .36rem; height: .36rem; border-radius: 50%; background: var(--k, var(--rule)); }
+  .shops .meta { display: block; margin-top: .15rem; font: 600 .72rem/1.45 var(--mono); color: var(--muted); }
+  .shops ul.tips { margin: .3rem 0 0; padding-left: 1.1rem; font-size: .92rem; }
+  .shops ul.tips li { margin: .18rem 0; }
+  .shops ul.tips li::marker { color: var(--muted); }
+  @media print { .shops ul.sl > li { break-inside: avoid; } }
+  a.nav { display: inline-block; font: 600 .68rem/1 var(--mono); color: var(--accent); text-decoration: none;
+    border: 1px solid var(--rule); border-radius: 999px; padding: .22rem .5rem; margin-left: .15rem; vertical-align: .1em; white-space: nowrap; background: var(--surface); }
+  .museum-list a.nav, ul.points a.nav { margin-left: .3rem; }
+  #base-moved { border-left: 3px solid var(--accent); padding: .4rem 0 .4rem .7rem; }
+  /* stays:css */
+  #stays .stay-h { margin: 1.6rem 0 .2rem; padding-top: .7rem; border-top: 2px solid var(--ink); font-size: 1.05rem; }
+  #stays .stay-h span { display: block; font: 600 .78rem/1.5 var(--mono); color: var(--muted); }
+  #stays .stay-note { margin: 0 0 .6rem; font-size: .9rem; color: var(--muted); }
+  #stays .why { font-size: .9rem; color: var(--muted); margin: .1rem 0 .5rem; }
+  #stays .why a { color: var(--accent); }
+  #stays h4.src { margin: .8rem 0 .3rem; font: 600 .74rem/1.4 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink); }
+  #stays h4.src span { color: var(--muted); font-weight: 400; margin-left: .3rem; }
+  p.src { font-size: .82rem; color: var(--muted); margin: .6rem 0 0; }
+  #stays .none { font-size: .9rem; color: var(--muted); }
+  #stays .ja { white-space: nowrap; }
+  ul.eats.stays li { grid-template-columns: 4.5rem 1fr; }
+  #stays .who a { overflow-wrap: anywhere; }
+  @media screen {
+    #stays .group[data-fold] > :not(h3) { display: none; }
+    #stays .group[data-fold] > h3 { margin-bottom: .2rem; }
+  }
+  /* /stays:css */
+  /* plan:css */
+  .planner { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: .9rem 1rem; margin: .6rem 0 1.2rem; }
+  .pl-row { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: end; margin: 0 0 .7rem; }
+  .pl-row label { display: flex; flex-direction: column; gap: .25rem; font: 600 .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .planner input, .planner select { font: 500 .95rem/1.3 var(--body); color: var(--ink); background: var(--bg); border: 1px solid var(--rule); border-radius: 6px; padding: .4rem .5rem; max-width: 100%; }
+  .planner select { max-width: 20rem; }
+  .pl-stops { list-style: none; margin: 0 0 .8rem; padding: 0; display: grid; gap: .4rem; }
+  .pl-stops li { display: grid; grid-template-columns: 1.4rem 1fr auto auto; gap: .4rem .6rem; align-items: center; border: 1px solid var(--rule); border-left: 4px solid var(--k, var(--rule)); border-radius: 6px; padding: .45rem .6rem; background: var(--bg); }
+  .pl-stops .n { font: 700 .8rem/1 var(--mono); color: var(--muted); }
+  .pl-stops .nm { font-weight: 600; }
+  .pl-stops .nm small { display: block; font: 500 .72rem/1.3 var(--mono); color: var(--muted); }
+  .pl-stops .dw { display: flex; align-items: center; gap: .3rem; font: 600 .68rem/1 var(--mono); color: var(--muted); }
+  .pl-stops .dw input { width: 3.6rem; padding: .25rem .35rem; font-size: .85rem; }
+  .pl-stops .ops { display: flex; gap: .2rem; }
+  .pl-stops .ops button { font: 600 .8rem/1 var(--mono); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 5px; padding: .3rem .45rem; cursor: pointer; }
+  .pl-empty { color: var(--muted); font-size: .9rem; margin: 0 0 .8rem; }
+  .pl-hint { font-size: .85rem; color: var(--muted); margin: 0 0 .7rem; }
+  .pl-out { margin-top: .9rem; }
+  .pl-out table { width: 100%; border-collapse: collapse; font-size: .92rem; table-layout: fixed; }
+  .pl-out col.c1 { width: 24%; } .pl-out col.c2 { width: 32%; } .pl-out col.c3 { width: 26%; } .pl-out col.c4 { width: 18%; }
+  .pl-out th, .pl-out td { text-align: left; vertical-align: top; padding: .45rem .5rem; border-top: 1px solid var(--rule); }
+  .pl-out th { font: 600 .68rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-top: 0; }
+  .pl-out td.t { font: 600 .8rem/1.4 var(--mono); }
+  .pl-out tr.leg td { color: var(--muted); font-size: .85rem; }
+  .pl-out tr.leg td.t { color: var(--muted); font-weight: 500; }
+  .pl-out .links a { display: inline-block; font: 600 .72rem/1.4 var(--mono); color: var(--accent); text-decoration: none; margin: 0 .5rem .2rem 0; }
+  .pl-warn { display: inline-block; font: 600 .68rem/1.3 var(--mono); color: var(--home); border: 1px solid var(--home); border-radius: 999px; padding: .15rem .45rem; margin: .15rem .25rem 0 0; }
+  .pl-ok { display: inline-block; font: 600 .68rem/1.3 var(--mono); color: var(--accent); border: 1px solid var(--accent); border-radius: 999px; padding: .15rem .45rem; margin: .15rem .25rem 0 0; }
+  .pl-est { font: 500 .7rem/1 var(--mono); color: var(--muted); }
+  .pl-sum { font-size: .9rem; color: var(--muted); margin: .6rem 0 0; }
+  @media (max-width: 600px) { .pl-stops li { grid-template-columns: 1.2rem 1fr; } .pl-stops .dw, .pl-stops .ops { grid-column: 2; } }
+  @media print { .planner .pl-row, .planner .pl-stops .ops, .planner .pl-hint, .planner .toolbar { display: none; } .pl-stops input { border: 0; } }
+  .today { margin: .4rem 0 0; font-size: .86rem; line-height: 1.5; color: var(--muted); display: flex; flex-wrap: wrap; gap: .25rem .9rem; }
+  .today .td-day { font: 700 .78rem/1.6 var(--mono); color: var(--ink); letter-spacing: .06em; text-transform: uppercase; }
+  .today b { color: var(--ink); font-weight: 600; }
+  .today a { color: var(--accent); }
+  .today .td-links a { font: 600 .74rem/1.6 var(--mono); text-decoration: none; margin-left: .25rem; }
+  nav.jump .bar a.plan { text-decoration: none; display: inline-flex; align-items: center; gap: .25rem; padding-inline: .55rem; }
+  nav.jump .bar a.plan span { font: 700 .66rem/1 var(--mono); background: var(--accent); color: var(--bg); border-radius: 999px; padding: .15rem .38rem; }
+  button.addplan { font: 600 .66rem/1 var(--mono); color: var(--accent); background: transparent; border: 1px solid var(--accent); border-radius: 999px; padding: .18rem .45rem; margin: 0 .35rem; cursor: pointer; vertical-align: .1em; white-space: nowrap; }
+  button.addplan:hover, button.addplan:focus-visible { background: var(--accent); color: var(--bg); }
+  #fg-toast { position: fixed; left: 50%; bottom: 1.1rem; transform: translateX(-50%); max-width: calc(100vw - 2rem); background: var(--sign); color: var(--sign-ink); font-size: .9rem; padding: .6rem .9rem; border-radius: 8px; box-shadow: 0 6px 24px rgba(0,0,0,.25); z-index: 50; }
+  #fg-toast a { color: inherit; font: 600 .78rem/1 var(--mono); margin-left: .4rem; }
+  #fg-toast b { font-weight: 600; }
+  .chips-jump { margin: .2rem 0 .9rem; }
+  @media print { .today, button.addplan, #fg-toast, .chips-jump, nav.jump .bar a.plan { display: none !important; } }
+  .fold-head { cursor: pointer; display: flex; align-items: flex-start; gap: .45rem; }
+  .fold-head > button.fold.sub { margin-left: auto; width: 1.7rem; height: 1.7rem; margin-top: -.15rem; }
+  [data-fkey][data-fold] > .fold-head > button.fold.sub::before { transform: translate(-50%, -30%) rotate(-135deg); }
+  .fold-n { display: none; flex: none; font: 600 .7rem/1.9 var(--mono); color: var(--muted); white-space: nowrap; }
+  .chips button.fold-all-sub { color: var(--accent); border-color: var(--accent); }
+  .fold-row { margin: .2rem 0 .9rem; }
+  @media screen {
+    .shops > div[data-fold] > :not(h4), #eat .group[data-fold] > :not(h3) { display: none; }
+    .shops > div[data-fold] > h4 { margin: 0; }
+    #eat .group[data-fold] > h3 { margin-bottom: .2rem; }
+    [data-fkey][data-fold] .fold-n { display: inline; }
+  }
+  .pl-near { margin: .2rem 0 .9rem; padding-top: .7rem; border-top: 1px dashed var(--rule); }
+  .pl-near .pl-row { margin-bottom: .4rem; }
+  .pl-near details.ng { border-top: 1px solid var(--rule); padding: .45rem 0; }
+  .pl-near details.ng summary { cursor: pointer; font-size: .92rem; line-height: 1.4; }
+  .pl-near details.ng summary .ng-top { display: block; font-size: .82rem; color: var(--muted); padding-left: 1rem; }
+  .pl-near details.ng ul { list-style: none; margin: .4rem 0 0; padding: 0; display: grid; gap: .5rem; }
+  .pl-near details.ng li { display: grid; grid-template-columns: 2.6rem 1fr; gap: .5rem; align-items: baseline; font-size: .9rem; }
+  .pl-near .ng-sc { font: 600 .82rem/1.5 var(--mono); color: var(--accent); }
+  .pl-near .ng-who small { display: block; color: var(--muted); font-size: .8rem; line-height: 1.4; }
+  .pl-near .ng-go { display: block; margin-top: .15rem; }
+  .pl-near .ng-go a { font: 600 .72rem/1.4 var(--mono); color: var(--accent); text-decoration: none; margin-right: .4rem; }
+  .pl-near .ng-go button.addplan { margin: .1rem .3rem .1rem 0; }
+  .pl-near .ng-none { margin: 0; padding: .45rem 0; border-top: 1px solid var(--rule); font-size: .88rem; color: var(--muted); }
+  .pl-near .ng-none b { color: var(--ink); }
+  @media print { .pl-near { display: none; } }
+  .pl-own { margin: 0 0 .7rem; }
+  .pl-custom { margin-top: .6rem; padding: .7rem .8rem; border: 1px dashed var(--rule); border-radius: 8px; }
+  .pl-custom .pl-row label { flex: 1 1 14rem; }
+  .pl-custom input[type=text] { width: 100%; box-sizing: border-box; font: 400 1rem/1.3 var(--body); letter-spacing: normal; text-transform: none; padding: .45rem .55rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--bg); color: var(--ink); }
+  .pl-c-hits { display: flex; flex-direction: column; align-items: flex-start; gap: .35rem; margin-top: .4rem; }
+  .pl-c-list { list-style: none; margin: .5rem 0 0; padding: 0; display: grid; gap: .35rem; font-size: .9rem; }
+  .pl-c-list li { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+  .pl-c-list small { color: var(--muted); }
+  @media print { .pl-own { display: none; } }
+  /* /plan:css */
+  @media print { a.nav { display: none; } }
+
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  @media print {
+    nav.jump, .chips, .toolbar, .count, button.fold { display: none; }
+    section[data-folded] .body { display: block; }
+    ul.eats li[hidden] { display: grid; }
+    .group[hidden] { display: block; }
+    body { font-size: 11.5pt; }
+    section { break-inside: auto; padding-block: 1rem .2rem; }
+    h2, h3, figure.map, .line-row, .callout, table.trips tr { break-inside: avoid; }
+    h2 { break-after: avoid; }
+  }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <nav class="site" aria-label="Trip"><a class="site-home" href="../">Japan, October 2026</a><a href="../tokyo/">Tokyo</a><a href="../osaka/" aria-current="page">Osaka</a></nav>
+  <header class="masthead">
+    <span class="eyebrow">24–29 October · Osaka Airbnb</span>
+    <h1>Osaka Field Guide<span class="ja">大阪 · 初めての方へ</span></h1>
+    <p class="lede">Your base, getting around, where to eat near the house, thrift and vintage shopping, the city's sights and day trips with train times from your door, and the trip back to Tokyo.</p>
+    <p class="updated">Last updated <time datetime="2026-10-25">25 Oct 2026, 11:24 JST</time></p>
+    <div class="toolbar"><button class="tool" id="theme" type="button" aria-pressed="false">Dark mode</button></div>
+  </header>
+
+  <nav class="jump" aria-label="Sections">
+    <div class="bar">
+      <button type="button" id="toc-btn" aria-expanded="false" aria-controls="toc-panel"><span class="ico" aria-hidden="true">☰</span> Contents <span class="cur" id="toc-cur"></span></button>
+      <button type="button" class="step" id="toc-prev" aria-label="Previous section">‹</button>
+      <button type="button" class="step" id="toc-next" aria-label="Next section">›</button>
+    </div>
+    <div class="panel" id="toc-panel" hidden>
+      <p class="toc-part">Start here</p>
+      <ol>
+        <li><a href="#base" aria-current="false"><span class="plate">家</span>Your base</a></li>
+        <li><a href="#moving" aria-current="false"><span class="plate">IC</span>Getting around</a></li>
+      </ol>
+      <p class="toc-part">Look it up</p>
+      <ol>
+        <li><a href="#eat" aria-current="false"><span class="plate">食</span>Where to eat</a></li>
+        <li><a href="#shop" aria-current="false"><span class="plate">買</span>Shopping</a></li>
+        <li><a href="#see" aria-current="false"><span class="plate">見</span>Around Osaka</a></li>
+        <li><a href="#trips" aria-current="false"><span class="plate">旅</span>Day trips</a></li>
+        <li><a href="#leave" aria-current="false"><span class="plate">発</span>Leaving for Tokyo</a></li>
+      </ol>
+      <div class="row">
+        <button type="button" id="fold-all" aria-pressed="false">Fold all</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="part" id="part-start">
+    <p class="part-n">Part 1 of 2</p>
+    <p class="part-h">Start here</p>
+    <button type="button" class="tool part-fold" data-part="start">Fold these chapters</button>
+  </div>
+  <section id="base" data-part="start">
+    <h2><span class="plate">家</span><span class="h2-text">Your base</span><button class="fold" type="button" aria-expanded="true" aria-controls="base-body" aria-label="Collapse Your base"></button></h2>
+    <div class="body" id="base-body">
+    <p>Osaka Airbnb, 2026-10-24 to 2026-10-29. Times in this guide start from <b>Shin-Imamiya</b> (新今宮), about 5 min on foot.</p>
+    <ul class="points">
+      <li><b>Shin-Imamiya</b> <span class="ja">新今宮</span> · 287 m, about 5 min on foot</li>
+      <li><b>Imamiya-Ebisu</b> <span class="ja">今宮戎</span> · 310 m, about 5 min on foot</li>
+      <li><b>Shin-Imamiya-Ekimae</b> <span class="ja">新今宮駅前</span> · 345 m, about 6 min on foot</li>
+      <li><b>Dobutsuen-mae</b> <span class="ja">動物園前</span> · 425 m, about 7 min on foot</li>
+      <li><b>Ebisucho</b> <span class="ja">恵美須町</span> · 451 m, about 7 min on foot</li>
+      <li><b>Daikokucho</b> <span class="ja">大国町</span> · 609 m, about 10 min on foot</li>
+    </ul>
+    <p class="src">Stations within walking distance from OpenStreetMap; walking minutes are estimated from straight-line distance, not a walking route.</p>
+    </div>
+  </section>
+  <section id="moving" data-part="start">
+    <h2><span class="plate">IC</span><span class="h2-text">Getting around</span><button class="fold" type="button" aria-expanded="true" aria-controls="moving-body" aria-label="Collapse Getting around"></button></h2>
+    <div class="body" id="moving-body">
+    <ul class="points">
+      <li><b>Your IC card works here.</b> Suica, PASMO or ICOCA pay for JR, the Osaka Metro, Nankai, Kintetsu and the buses alike.</li>
+      <li><b>Several companies, one card.</b> JR (the Loop line and the fast trains to Kyoto, Kobe and Nara), the Osaka Metro (the red Midosuji line runs north–south through Namba, Umeda and Shin-Osaka), and private lines such as Nankai and Kintetsu. Changing companies usually means going out through one set of gates and in through another.</li>
+      <li><b>Stand on the right</b> on escalators in Osaka, the opposite of Tokyo.</li>
+      <li><b>For Kyoto take the JR Special Rapid (新快速)</b> from Osaka station: no extra fare, about 30 minutes.</li>
+      <li><b>Taxis and Uber</b> work as in Tokyo; for the station run with bags it's the easy option.</li>
+      <li><b>Rush hours</b> are roughly 7:30–9:30 and 17:30–19:30, worst on the Midosuji line.</li>
+    </ul>
+    </div>
+  </section>
+
+  <div class="part" id="part-lookup">
+    <p class="part-n">Part 2 of 2</p>
+    <p class="part-h">Look it up</p>
+    <button type="button" class="tool part-fold" data-part="lookup">Fold these chapters</button>
+  </div>
+  <section id="eat" data-part="lookup">
+    <h2><span class="plate">食</span><span class="h2-text">Where to eat</span><button class="fold" type="button" aria-expanded="true" aria-controls="eat-body" aria-label="Collapse Where to eat"></button></h2>
+    <div class="body" id="eat-body">
+    <p>Dinner around ¥5,000 a head or less; places whose Tabelog price band starts above that are marked stretch. Areas: Ebisu &amp; Imamiya &amp; Ashihara, Nanba &amp; Nihonbashi &amp; Dotonbori, Tennoji &amp; Abeno. Tabelog lists closed days, not opening hours, so check the page before walking over. Above 3.5 on Tabelog is excellent.</p>
+    <div class="group">
+    <h3>Closest to the house</h3>
+    <p>The Tabelog area the house is in, best rated first.</p>
+    <ul class="eats">
+      <li><span class="score">3.71</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27005006/" target="_blank" rel="noopener">Mutekko Oosaka ten</a><span class="meta">Imamiyaebisu, 127 m · Ramen · dinner ¥1,000 - ¥1,999 · closed Monday · 2489 reviews · <a href="https://www.google.com/maps/search/Mutekko%20Oosaka%20ten%20Imamiyaebisu%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.65</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27001518/" target="_blank" rel="noopener">Curry Ya Madras</a><span class="meta">Ebisucho, 463 m · Curry · dinner - ¥999 · closed days not listed · 1061 reviews · <a href="https://www.google.com/maps/search/Curry%20Ya%20Madras%20Ebisucho%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.63</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27004092/" target="_blank" rel="noopener">Magic Spice Naniwa ten</a><span class="meta">JR Namba, 431 m · Soup Curry, Indonesian, Creative · dinner ¥1,000 - ¥1,999 · closed Wednesday, Thursday · 694 reviews · <a href="https://www.google.com/maps/search/Magic%20Spice%20Naniwa%20ten%20JR%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.62</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27017860/" target="_blank" rel="noopener">Sennariya Coffee</a><span class="meta">Dobutsuen Mae, 195 m · Kissa (Japanese coffee shop), Cafe, Bread · dinner - ¥999 · closed days not listed · 849 reviews · <a href="https://www.google.com/maps/search/Sennariya%20Coffee%20Dobutsuen%20Mae%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.61</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27019100/" target="_blank" rel="noopener">Okonomiyaki Chitose</a><span class="meta">Dobutsuen Mae, 164 m · Okonomiyaki (Japanese savory pancake), Stir-fried noodles, Teppanyaki · dinner ¥1,000 - ¥1,999 · closed Tuesday, Wednesday · 378 reviews · <a href="https://www.google.com/maps/search/Okonomiyaki%20Chitose%20Dobutsuen%20Mae%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.59</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27001105/" target="_blank" rel="noopener">Grill Bon</a><span class="meta">Ebisucho, 281 m · Yoshoku (Japanese style western cuisine), Sandwich, Steak · dinner ¥2,000 - ¥2,999 · closed days not listed · 508 reviews · <a href="https://www.google.com/maps/search/Grill%20Bon%20Ebisucho%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.58</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27058258/" target="_blank" rel="noopener">Chuka Soba Fujii Ashiharabashi honten</a><span class="meta">Ashiharacho, 171 m · Ramen · dinner ¥1,000 - ¥1,999 · closed Thursday · 1017 reviews · <a href="https://www.google.com/maps/search/Chuka%20Soba%20Fujii%20Ashiharabashi%20honten%20Ashiharacho%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.56</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27140375/" target="_blank" rel="noopener">Ramen So Rekishi o Kizame Nipponbashi ten</a><span class="meta">Ebisucho, 81 m · Ramen, Abura-soba, Maze-soba · dinner ¥1,000 - ¥1,999 · closed Sunday · 378 reviews · <a href="https://www.google.com/maps/search/Ramen%20So%20Rekishi%20o%20Kizame%20Nipponbashi%20ten%20Ebisucho%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.54</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27003532/" target="_blank" rel="noopener">Yako</a><span class="meta">Dobutsuen Mae, 360 m · Kushi-age (Deep-fried skewers) · dinner ¥2,000 - ¥2,999 · closed Monday, Tuesday, Friday · 362 reviews · <a href="https://www.google.com/maps/search/Yako%20Dobutsuen%20Mae%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.54</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27143760/" target="_blank" rel="noopener">556</a><span class="meta">Daikokucho, 367 m · Izakaya (Japanese style tavern) · dinner ¥5,000 - ¥5,999 · closed days not listed · 49 reviews · <a href="https://www.google.com/maps/search/556%20Daikokucho%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+    </ul>
+    </div>
+    <div class="group">
+    <h3>Kushikatsu</h3>
+    <p>Breaded, deep-fried skewers: Shinsekai&#x27;s dish. Don&#x27;t double-dip in the shared sauce.</p>
+    <ul class="eats">
+      <li><span class="score">3.54</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27003532/" target="_blank" rel="noopener">Yako</a><span class="meta">Dobutsuen Mae, 360 m · Kushi-age (Deep-fried skewers) · dinner ¥2,000 - ¥2,999 · closed Monday, Tuesday, Friday · 362 reviews · <a href="https://www.google.com/maps/search/Yako%20Dobutsuen%20Mae%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.53</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27052767/" target="_blank" rel="noopener">Kushi Katsu Hanamichi</a><span class="meta">Dobutsuen Mae, 358 m · Kushi-age (Deep-fried skewers) · dinner ¥2,000 - ¥2,999 · closed Tuesday · 178 reviews · <a href="https://www.google.com/maps/search/Kushi%20Katsu%20Hanamichi%20Dobutsuen%20Mae%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.49</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27000442/" target="_blank" rel="noopener">Tengu</a><span class="meta">Dobutsuen Mae, 216 m · Kushi-age (Deep-fried skewers), Izakaya (Japanese style tavern) · dinner ¥2,000 - ¥2,999 · closed Monday · 1122 reviews · <a href="https://www.google.com/maps/search/Tengu%20Dobutsuen%20Mae%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.49</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27079311/" target="_blank" rel="noopener">Gifuya Honke</a><span class="meta">Dobutsuen Mae, 319 m · Kushi-age (Deep-fried skewers), Izakaya (Japanese style tavern), Sukiyaki (Japanese sweet soy hotpot) · dinner ¥3,000 - ¥3,999 · closed days not listed · 618 reviews · <a href="https://www.google.com/maps/search/Gifuya%20Honke%20Dobutsuen%20Mae%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.49</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27015054/" target="_blank" rel="noopener">Sake no Ana</a><span class="meta">Dobutsuen Mae, 364 m · Izakaya (Japanese style tavern), Kushi-age (Deep-fried skewers), Oden · dinner ¥1,000 - ¥1,999 · closed days not listed · 510 reviews · <a href="https://www.google.com/maps/search/Sake%20no%20Ana%20Dobutsuen%20Mae%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.49</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27110118/" target="_blank" rel="noopener">Kushikatsu Doteyaki Fujiyama</a><span class="meta">Dobutsuen Mae, 238 m · Izakaya (Japanese style tavern), Kushi-age (Deep-fried skewers), Okonomiyaki (Japanese savory pancake) · dinner ¥2,000 - ¥2,999 · closed days not listed · 458 reviews · <a href="https://www.google.com/maps/search/Kushikatsu%20Doteyaki%20Fujiyama%20Dobutsuen%20Mae%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+    </ul>
+    </div>
+    <div class="group">
+    <h3>Yakiniku</h3>
+    <p>Grill-your-own beef and offal. Saturday nights fill early; the Tabelog page shows whether a place takes bookings.</p>
+    <ul class="eats">
+      <li><span class="score">3.7</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27003344/" target="_blank" rel="noopener">Seoul</a><span class="meta">JR Namba, 504 m · Yakiniku (Japanese BBQ), Tripe, Korean cold noodles · dinner ¥4,000 - ¥4,999 · closed Thursday · 700 reviews · <a href="https://www.google.com/maps/search/Seoul%20JR%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.68</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27005087/" target="_blank" rel="noopener">Tahei</a><span class="meta">Namba, 179 m · Yakiniku (Japanese BBQ), Tripe · dinner ¥4,000 - ¥4,999 · closed Wednesday · 1189 reviews · <a href="https://www.google.com/maps/search/Tahei%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.58</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27152989/" target="_blank" rel="noopener">WAGYU Oukoku</a><span class="meta">Namba, 467 m · Yakiniku (Japanese BBQ), Tripe, Izakaya (Japanese style tavern) · dinner ¥5,000 - ¥5,999 · closed days not listed · 225 reviews · <a href="https://www.google.com/maps/search/WAGYU%20Oukoku%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.56</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27100744/" target="_blank" rel="noopener">YAKINIKU KAPPOU YPRYU Souemonchou honten</a><span class="meta">Nippombashi, 290 m · Yakiniku (Japanese BBQ), Teppanyaki, Japanese Cuisine · dinner ¥5,000 - ¥5,999 · closed days not listed · 611 reviews · <a href="https://www.google.com/maps/search/YAKINIKU%20KAPPOU%20YPRYU%20Souemonchou%20honten%20Nippombashi%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.56</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27020009/" target="_blank" rel="noopener">Tsukishima Ya</a><span class="meta">Kintetsu Nippombashi, 215 m · Yakiniku (Japanese BBQ), Tripe, Korean · dinner ¥5,000 - ¥5,999 · closed days not listed · 253 reviews · <a href="https://www.google.com/maps/search/Tsukishima%20Ya%20Kintetsu%20Nippombashi%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.56</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270203/27068117/" target="_blank" rel="noopener">Kawahara</a><span class="meta">Momodani, 1017 m · Yakiniku (Japanese BBQ) · dinner ¥2,000 - ¥2,999 · closed Monday · 119 reviews · <a href="https://www.google.com/maps/search/Kawahara%20Momodani%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.55</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27133361/" target="_blank" rel="noopener">Manryo Nipponbashi ten</a><span class="meta">Kintetsu Nippombashi, 212 m · Yakiniku (Japanese BBQ), Tripe, Korean cold noodles · dinner ¥5,000 - ¥5,999 · closed Wednesday · 282 reviews · <a href="https://www.google.com/maps/search/Manryo%20Nipponbashi%20ten%20Kintetsu%20Nippombashi%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.55</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27140395/" target="_blank" rel="noopener">Live Yakiniku Tengu Sennichimae ten</a><span class="meta">Kintetsu Nippombashi, 180 m · Yakiniku (Japanese BBQ), Tripe, Izakaya (Japanese style tavern) · dinner ¥4,000 - ¥4,999 · closed days not listed · 281 reviews · <a href="https://www.google.com/maps/search/Live%20Yakiniku%20Tengu%20Sennichimae%20ten%20Kintetsu%20Nippombashi%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+    </ul>
+    </div>
+    <div class="group">
+    <h3>Okonomiyaki</h3>
+    <p>The savoury cabbage pancake grilled at your table.</p>
+    <ul class="eats">
+      <li><span class="score">3.71</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27002665/" target="_blank" rel="noopener">Fukutarou Honten</a><span class="meta">Kintetsu Nippombashi, 202 m · Okonomiyaki (Japanese savory pancake), Teppanyaki, Steak · dinner ¥2,000 - ¥2,999 · closed days not listed · 2796 reviews · <a href="https://www.google.com/maps/search/Fukutarou%20Honten%20Kintetsu%20Nippombashi%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.63</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270203/27096277/" target="_blank" rel="noopener">Tapioca Shokudo</a><span class="meta">Teradacho, 455 m · Okonomiyaki (Japanese savory pancake) · dinner ¥1,000 - ¥1,999 · closed Tuesday · 464 reviews · <a href="https://www.google.com/maps/search/Tapioca%20Shokudo%20Teradacho%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.61</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27019100/" target="_blank" rel="noopener">Okonomiyaki Chitose</a><span class="meta">Dobutsuen Mae, 164 m · Okonomiyaki (Japanese savory pancake), Stir-fried noodles, Teppanyaki · dinner ¥1,000 - ¥1,999 · closed Tuesday, Wednesday · 378 reviews · <a href="https://www.google.com/maps/search/Okonomiyaki%20Chitose%20Dobutsuen%20Mae%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.59</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27001439/" target="_blank" rel="noopener">Ajinoya Honten</a><span class="meta">Namba, 122 m · Okonomiyaki (Japanese savory pancake), Stir-fried noodles, Teppanyaki · dinner ¥3,000 - ¥3,999 · closed Monday · 1788 reviews · <a href="https://www.google.com/maps/search/Ajinoya%20Honten%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.56</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27113630/" target="_blank" rel="noopener">Moegi</a><span class="meta">Namba, 272 m · Okonomiyaki (Japanese savory pancake) · dinner ¥2,000 - ¥2,999 · closed Wednesday · 88 reviews · <a href="https://www.google.com/maps/search/Moegi%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.55</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27001278/" target="_blank" rel="noopener">Mizuno</a><span class="meta">Namba, 301 m · Okonomiyaki (Japanese savory pancake) · dinner ¥2,000 - ¥2,999 · closed days not listed · 1752 reviews · <a href="https://www.google.com/maps/search/Mizuno%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+    </ul>
+    </div>
+    <div class="group">
+    <h3>Ramen</h3>
+    <ul class="eats">
+      <li><span class="score">3.73</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27084754/" target="_blank" rel="noopener">Menya Joroku Nanba ten</a><span class="meta">Namba, 281 m · Ramen · dinner - ¥999 · closed Wednesday · 2754 reviews · <a href="https://www.google.com/maps/search/Menya%20Joroku%20Nanba%20ten%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.71</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27005006/" target="_blank" rel="noopener">Mutekko Oosaka ten</a><span class="meta">Imamiyaebisu, 127 m · Ramen · dinner ¥1,000 - ¥1,999 · closed Monday · 2489 reviews · <a href="https://www.google.com/maps/search/Mutekko%20Oosaka%20ten%20Imamiyaebisu%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.71</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27112089/" target="_blank" rel="noopener">Naniwa Menjiro</a><span class="meta">Osaka Namba, 87 m · Ramen, Tsukemen (Dipping noodles) · dinner - ¥999 · closed days not listed · 2223 reviews · <a href="https://www.google.com/maps/search/Naniwa%20Menjiro%20Osaka%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.71</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270203/27116315/" target="_blank" rel="noopener">Kamigata Rainbow</a><span class="meta">Momodani, 430 m · Ramen · dinner ¥1,000 - ¥1,999 · closed Thursday · 861 reviews · <a href="https://www.google.com/maps/search/Kamigata%20Rainbow%20Momodani%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.7</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27072765/" target="_blank" rel="noopener">Men no Youji</a><span class="meta">Nippombashi, 496 m · Ramen, Tsukemen (Dipping noodles), Abura-soba, Maze-soba · dinner - ¥999 · closed days not listed · 1488 reviews · <a href="https://www.google.com/maps/search/Men%20no%20Youji%20Nippombashi%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.7</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27079226/" target="_blank" rel="noopener">Yuai Tei</a><span class="meta">Ebisucho, 426 m · Ramen · dinner ¥1,000 - ¥1,999 · closed Monday · 1089 reviews · <a href="https://www.google.com/maps/search/Yuai%20Tei%20Ebisucho%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+    </ul>
+    </div>
+    <div class="group">
+    <h3>Best rated around you</h3>
+    <p>All the guide&#x27;s eating areas together, best rated first.</p>
+    <ul class="eats">
+      <li><span class="score">3.83</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27064091/" target="_blank" rel="noopener">Bar</a><span class="meta">Namba, 317 m · Bar · dinner ¥4,000 - ¥4,999 · closed days not listed · 266 reviews · <a href="https://www.google.com/maps/search/Bar%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.81</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270203/27066977/" target="_blank" rel="noopener">Niji no Hotoke</a><span class="meta">Shitennoji Mae Yuhigaoka, 239 m · Curry, Yoshoku (Japanese style western cuisine) · dinner ¥1,000 - ¥1,999 · closed days not listed · 1218 reviews · <a href="https://www.google.com/maps/search/Niji%20no%20Hotoke%20Shitennoji%20Mae%20Yuhigaoka%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.76</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27001576/" target="_blank" rel="noopener">Gyokusei Ya</a><span class="meta">Nippombashi, 99 m · Japanese traditional sweets · dinner ¥1,000 - ¥1,999 · closed days not listed · 1291 reviews · <a href="https://www.google.com/maps/search/Gyokusei%20Ya%20Nippombashi%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.73</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27084754/" target="_blank" rel="noopener">Menya Joroku Nanba ten</a><span class="meta">Namba, 281 m · Ramen · dinner - ¥999 · closed Wednesday · 2754 reviews · <a href="https://www.google.com/maps/search/Menya%20Joroku%20Nanba%20ten%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.73</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27001443/" target="_blank" rel="noopener">Mikuni Tei</a><span class="meta">Nippombashi, 252 m · Chinese · dinner ¥3,000 - ¥3,999 · closed Wednesday · 466 reviews · <a href="https://www.google.com/maps/search/Mikuni%20Tei%20Nippombashi%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.72</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27003897/" target="_blank" rel="noopener">Creperie Alcyon</a><span class="meta">Namba, 182 m · Crepe, Galette, Cafe, Bistro · dinner ¥2,000 - ¥2,999 · closed days not listed · 2331 reviews · <a href="https://www.google.com/maps/search/Creperie%20Alcyon%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.72</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27002763/" target="_blank" rel="noopener">Chitose Honten</a><span class="meta">Namba, 210 m · Udon (Wheat noodles), Soba (Buckwheat noodles) · dinner - ¥999 · closed Tuesday · 2311 reviews · <a href="https://www.google.com/maps/search/Chitose%20Honten%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.71</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270206/27005006/" target="_blank" rel="noopener">Mutekko Oosaka ten</a><span class="meta">Imamiyaebisu, 127 m · Ramen · dinner ¥1,000 - ¥1,999 · closed Monday · 2489 reviews · <a href="https://www.google.com/maps/search/Mutekko%20Oosaka%20ten%20Imamiyaebisu%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.71</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27002665/" target="_blank" rel="noopener">Fukutarou Honten</a><span class="meta">Kintetsu Nippombashi, 202 m · Okonomiyaki (Japanese savory pancake), Teppanyaki, Steak · dinner ¥2,000 - ¥2,999 · closed days not listed · 2796 reviews · <a href="https://www.google.com/maps/search/Fukutarou%20Honten%20Kintetsu%20Nippombashi%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.71</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27112089/" target="_blank" rel="noopener">Naniwa Menjiro</a><span class="meta">Osaka Namba, 87 m · Ramen, Tsukemen (Dipping noodles) · dinner - ¥999 · closed days not listed · 2223 reviews · <a href="https://www.google.com/maps/search/Naniwa%20Menjiro%20Osaka%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.71</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270203/27116315/" target="_blank" rel="noopener">Kamigata Rainbow</a><span class="meta">Momodani, 430 m · Ramen · dinner ¥1,000 - ¥1,999 · closed Thursday · 861 reviews · <a href="https://www.google.com/maps/search/Kamigata%20Rainbow%20Momodani%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+      <li><span class="score">3.7</span><span class="who"><a href="https://tabelog.com/en/osaka/A2701/A270202/27072765/" target="_blank" rel="noopener">Men no Youji</a><span class="meta">Nippombashi, 496 m · Ramen, Tsukemen (Dipping noodles), Abura-soba, Maze-soba · dinner - ¥999 · closed days not listed · 1488 reviews · <a href="https://www.google.com/maps/search/Men%20no%20Youji%20Nippombashi%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></span></li>
+    </ul>
+    </div>
+    <p class="src">Restaurants from Tabelog, read 24 Oct 17:02–24 Oct 18:57 JST.</p>
+    </div>
+  </section>
+  <section id="shop" data-part="lookup">
+    <h2><span class="plate">買</span><span class="h2-text">Shopping</span><button class="fold" type="button" aria-expanded="true" aria-controls="shop-body" aria-label="Collapse Shopping"></button></h2>
+    <div class="body" id="shop-body">
+    <p>Amerikamura (アメ村), a five-minute walk west of the Shinsaibashi arcade across Midosuji and centred on Triangle Park (三角公園), is where Osaka buys second-hand clothes. Nearly everything closes at 20:00. Prices below are how the shops are described, not checked on the day; addresses are the ones most sources and the shops&#x27; own pages agree on.</p>
+    <div class="group">
+    <h3>Amerikamura: thrift and vintage clothes</h3>
+    <ul class="points">
+      <li><b>2nd Street Amerikamura</b> <span class="pick">cheap</span><br>Nationwide used-clothes chain: lowest prices here, big racks, mixed quality.<span class="meta">Centre of Amemura · to about 20:00 · <a href="https://www.google.com/maps/search/2nd%20Street%20Amerikamura%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></li>
+      <li><b>JAM Amerikamura</b> <span class="pick">mid</span><br>The big one: about 8,000 pieces, strongest in 80s–90s military, work, sports and outdoor. Prices set by category, fair for what they are.<span class="meta">Big Step South M1, 2-9-28 Nishishinsaibashi · 11:00–20:00 · <a href="https://www.google.com/maps/search/JAM%20Amerikamura%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></li>
+      <li><b>Kinji</b> <span class="pick">mid</span><br>Large, curated retro and casual stock from Japan and abroad; you pay a little for the edit.<span class="meta">BIGSTEP 2F, 1-6-14 Nishishinsaibashi · 11:00–20:00 · <a href="https://www.google.com/maps/search/Kinji%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></li>
+      <li><b>Kindal Amerikamura</b> <span class="pick">mid</span><br>Buy-and-sell chain with more designer and brand pieces, priced to the resale market. Not the same shop as Kinji.<span class="meta">2-18-7 Nishishinsaibashi · 11:00–20:00 · <a href="https://www.google.com/maps/search/Kindal%20Amerikamura%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></li>
+      <li><b>Pigsty Amemura</b> <span class="pick">pricier</span><br>Proper 1930s–80s vintage, graded and priced for rarity, plus antiques, jewellery, kids&#x27; and sneakers.<span class="meta">3F, 1-7-14 Nishishinsaibashi · 12:00–20:00 · <a href="https://www.google.com/maps/search/Pigsty%20Amemura%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></li>
+    </ul>
+    </div>
+    <div class="group">
+    <h3>Bags and brand pieces</h3>
+    <ul class="points">
+      <li><b>Daikokuya and Brand Off</b> <span class="pick">resale</span><br>High-volume luxury resellers; stock is priced to turn over, so a bag usually costs less than in a curated boutique, with less atmosphere. Both are on OpenStreetMap at the north end of the Shinsaibashi arcade.<span class="meta">Shinsaibashi-suji 1-chome · not read · <a href="https://www.google.com/maps/search/Daikokuya%20and%20Brand%20Off%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></li>
+      <li><b>Vintage Qoo Tokyo, Shinsaibashi</b> <span class="pick">top</span><br>Salon-style authenticated vintage Chanel from the 1960s to the 2000s; collector pricing. Opened January 2024; not confirmed trading this month.<span class="meta">Meridian Shinsaibashi Bldg 1–2F, 1-1-16 Shinsaibashisuji · 11:30–20:00 · <a href="https://www.google.com/maps/search/Vintage%20Qoo%20Tokyo%2C%20Shinsaibashi%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></li>
+    </ul>
+    </div>
+    <div class="group">
+    <h3>Further out</h3>
+    <ul class="points">
+      <li><b>Horie and Orange Street</b> <span class="pick">mid</span><br>Eight minutes west of Amemura: calmer, more designer and well-chosen. JAM Horie is the chain&#x27;s biggest branch, with a designer-outlet corner.<span class="meta">Minami-Horie, west of Yotsubashi · shops vary · <a href="https://www.google.com/maps/search/Horie%20and%20Orange%20Street%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></li>
+      <li><b>Nakazakicho</b> <span class="pick">mid</span><br>Osaka&#x27;s other thrift district, up by Umeda: small shops in old houses with cafés between. Better as a slow browse on a separate day.<span class="meta">Nakazakicho station, Tanimachi line, one stop from Higashi-Umeda · shops vary · <a href="https://www.google.com/maps/search/Nakazakicho%20Osaka" target="_blank" rel="noopener">Maps ↗</a></span></li>
+    </ul>
+    </div>
+    <p class="src">Osaka Tourism, Kawaii Osaka, Japan Nakama, Welove Osaka, Magical Trip, The Smart Local, Tokyo Weekender and the shops&#x27; own pages, read 24 Oct 2026; two guides disagree on JAM&#x27;s and Kinji&#x27;s street numbers.</p>
+    </div>
+  </section>
+  <section id="see" data-part="lookup">
+    <h2><span class="plate">見</span><span class="h2-text">Around Osaka</span><button class="fold" type="button" aria-expanded="true" aria-controls="see-body" aria-label="Collapse Around Osaka"></button></h2>
+    <div class="body" id="see-body">
+    <ul class="points">
+      <li><b>Shinsekai &amp; Tsutenkaku</b>, on foot from the house. The retro neon district around Tsutenkaku tower: kushikatsu counters, shogi parlours and arcades.</li>
+      <li><b>Spa World</b>, on foot from the house. A large bath complex at the edge of Shinsekai with themed floors. Check its tattoo rules before going.</li>
+    </ul>
+    <p>Times leave home at 09:30 on Sunday 25 Oct, walking to 新今宮 first. Trains run all day; the minutes and fares hold for other times too.</p>
+    <ul class="points">
+      <li><b>Dotonbori &amp; Namba</b> <span class="ja">なんば</span><br>The canal-side food streets under the giant neon signs, and the shopping arcades running north to Shinsaibashi. Best after dark.<br><b>~8 min</b> door to door · no change · ¥180 · Yahoo station: なんば(南海線)<span class="meta">09:36 新今宮 → 09:39 なんば(南海線) · 南海線</span> · <a href="https://www.google.com/maps/search/Dotonbori%20%26%20Namba%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+      <li><b>Amerikamura</b> <span class="ja">四ツ橋</span><br>Osaka&#x27;s thrift and vintage district, west of the Shinsaibashi arcade around Triangle Park; see Shopping. Most shops close at 20:00.<br><b>~20 min</b> door to door · 1 change · ¥240<span class="meta">09:47 動物園前 → 09:49 大国町 · OsakaMetro御堂筋線 · 09:50 大国町 → 09:54 四ツ橋 · OsakaMetro四つ橋線</span> · <a href="https://www.google.com/maps/search/Amerikamura%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+      <li><b>Kuromon Market</b> <span class="ja">日本橋(大阪府)</span><br>A covered market of fish, fruit and street snacks. Go in the morning; many stalls close by late afternoon.<br><b>~16 min</b> door to door · no change · ¥190<span class="meta">09:46 動物園前 → 09:49 日本橋(大阪府) · OsakaMetro堺筋線</span> · <a href="https://www.google.com/maps/search/Kuromon%20Market%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+      <li><b>Osaka Castle</b> <span class="ja">大阪城公園</span><br>The rebuilt main tower is a museum with a lookout at the top; the moats and park around it are free.<br><b>~23 min</b> door to door · no change · ¥200<span class="meta">09:38 新今宮 → 09:56 大阪城公園 · ＪＲ大阪環状線内回り</span> · <a href="https://www.google.com/maps/search/Osaka%20Castle%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+      <li><b>Umeda</b> <span class="ja">大阪</span><br>The north hub: department stores, the Umeda Sky Building&#x27;s rooftop observatory, and the trains to Kyoto and Kobe.<br><b>~19 min</b> door to door · no change · ¥200<span class="meta">09:39 新今宮 → 09:53 大阪 · ＪＲ大和路快速339号</span> · <a href="https://www.google.com/maps/search/Umeda%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+      <li><b>Tennoji &amp; Abeno Harukas</b> <span class="ja">天王寺</span><br>Abeno Harukas, one of Japan&#x27;s tallest buildings, has an observatory on its top floors; Tennoji Park, the zoo and Shitennoji temple are next to it.<br><b>~7 min</b> door to door · no change · ¥150<span class="meta">09:35 新今宮 → 09:37 天王寺 · ＪＲ大和路線</span> · <a href="https://www.google.com/maps/search/Tennoji%20%26%20Abeno%20Harukas%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+      <li><b>Nakanoshima museums</b> <span class="ja">渡辺橋</span><br>The National Museum of Art, Osaka (contemporary, mostly underground) and the Nakanoshima Museum of Art stand side by side on the river island.<br><b>~31 min</b> door to door · 1 change · ¥240<span class="meta">09:47 動物園前 → 09:49 大国町 · OsakaMetro御堂筋線 · 09:50 大国町 → 09:57 肥後橋 · OsakaMetro四つ橋線</span> · <a href="https://www.google.com/maps/search/Nakanoshima%20museums%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+      <li><b>Universal Studios Japan</b> <span class="ja">ユニバーサルシティ</span><br>Super Nintendo World and the Harry Potter area. Express Passes and timed entry to Nintendo World sell out, so buy tickets online before going.<br><b>~22 min</b> door to door · 1 change · ¥200<span class="meta">09:55 新今宮 → 10:03 西九条 · ＪＲ大和路快速345号 · 10:07 西九条 → 10:12 ユニバーサルシティ · ＪＲゆめ咲線</span> · <a href="https://www.google.com/maps/search/Universal%20Studios%20Japan%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+    </ul>
+    <p class="src">Train times from Yahoo! Transit timetables, read 25 Oct 11:22 JST.</p>
+    </div>
+  </section>
+  <section id="trips" data-part="lookup">
+    <h2><span class="plate">旅</span><span class="h2-text">Day trips</span><button class="fold" type="button" aria-expanded="true" aria-controls="trips-body" aria-label="Collapse Day trips"></button></h2>
+    <div class="body" id="trips-body">
+    <p>Times leave home at 09:30 on Sunday 25 Oct, walking to 新今宮 first. Trains run all day; the minutes and fares hold for other times too.</p>
+    <ul class="points">
+      <li><b>Kyoto</b> <span class="ja">京都</span><br>Temples, Gion and the Nishiki market. Fushimi Inari&#x27;s gates are a few stops south of Kyoto Station.<br><b>~55 min</b> door to door · 1 change · ¥960<span class="meta">09:39 新今宮 → 09:53 大阪 · ＪＲ大和路快速339号 · 10:00 大阪 → 10:29 京都 · ＪＲ京都線新快速</span> · <a href="https://www.google.com/maps/search/Kyoto%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+      <li><b>Nara</b> <span class="ja">奈良</span><br>Todaiji&#x27;s great Buddha and the park&#x27;s bowing deer. JR Nara station is about 20–30 minutes&#x27; walk from the deer park and Todaiji, or a short bus ride.<br><b>~42 min</b> door to door · no change · ¥580<span class="meta">09:41 新今宮 → 10:18 奈良 · ＪＲ大和路快速330号</span> · <a href="https://www.google.com/maps/search/Nara%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+      <li><b>Kobe</b> <span class="ja">三ノ宮</span><br>Harbourfront, Chinatown and Kobe beef. Sannomiya is the centre.<br><b>~47 min</b> door to door · 1 change · ¥750<span class="meta">09:39 新今宮 → 09:53 大阪 · ＪＲ大和路快速339号 · 10:00 大阪 → 10:21 三ノ宮 · ＪＲ神戸線新快速</span> · <a href="https://www.google.com/maps/search/Kobe%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+      <li><b>Himeji</b> <span class="ja">姫路</span><br>Japan&#x27;s finest original castle, a straight walk up from the station. The fastest way there is the Shinkansen from Shin-Osaka.<br><b>~70 min</b> door to door · 2 changes · ¥3,400<span class="meta">09:55 新今宮 → 10:08 大阪 · ＪＲ大和路快速345号 · 10:15 大阪 → 10:19 新大阪 · ＪＲ京都線新快速 · 10:32 新大阪 → 11:00 姫路 · ＪＲ新幹線のぞみ61号</span> · <a href="https://www.google.com/maps/search/Himeji%20Osaka" target="_blank" rel="noopener">Maps ↗</a></li>
+    </ul>
+    <p class="src">Train times from Yahoo! Transit timetables, read 25 Oct 11:22 JST.</p>
+    </div>
+  </section>
+  <section id="leave" data-part="lookup">
+    <h2><span class="plate">発</span><span class="h2-text">Leaving for Tokyo</span><button class="fold" type="button" aria-expanded="true" aria-controls="leave-body" aria-label="Collapse Leaving for Tokyo"></button></h2>
+    <div class="body" id="leave-body">
+    <p>Checkout day is Thursday 29 Oct. The Tokyo night is not booked yet; <a href="../tokyo/#stays">Where to stay</a> in the Tokyo guide lists the rooms. Until the night is booked, Nippori (日暮里) stands in for the Tokyo end point: it is the Skyliner stop nearest the Ueno-area rooms, so the times below are a placeholder, not a plan.</p>
+    <ul class="points">
+      <li><b>To 新大阪 by train</b>, leaving home at 10:15: <b>~30 min</b> door to door · 1 change · ¥240<span class="meta">10:24 新今宮 → 10:37 大阪 · ＪＲ大和路快速349号 · 10:45 大阪 → 10:49 新大阪 · ＪＲ京都線新快速</span></li>
+      <li><b>Or by taxi or Uber</b> with the bags, straight to the Shinkansen gates.</li>
+      <li><b>Shinkansen and on to 日暮里</b>, an hour later: <b>11:21 → 14:15</b>, 2時間54分 · ¥13,870 unreserved<span class="meta">11:21 新大阪 → 13:51 東京 · ＪＲ新幹線のぞみ368号 · 14:05 東京 → 14:15 日暮里 · ＪＲ上野東京ライン</span></li>
+      <li><b>Book seats ahead</b>, and the oversized-baggage row if a bag is over 160 cm (length + width + height). If smartEX rejects your cards, the NAVITIME booking site, the station machines and the ticket office are the fallbacks.</li>
+    </ul>
+    <p class="src">Train times from Yahoo! Transit timetables, read 25 Oct 11:22–25 Oct 11:23 JST.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Built 25 October 2026 from live reads: Yahoo! Transit for trains, Tabelog for restaurants, OpenStreetMap for stations. Read-only; nothing here books anything. Reservations and tickets are yours to make.</p>
+  </footer>
+</div>
+<script>
+(function () {
+  var secs = [].slice.call(document.querySelectorAll('.wrap > section[id]'));
+  var btn = document.getElementById('toc-btn'), panel = document.getElementById('toc-panel'), cur = document.getElementById('toc-cur');
+  var prev = document.getElementById('toc-prev'), next = document.getElementById('toc-next'), foldAll = document.getElementById('fold-all');
+  var links = [].slice.call(panel.querySelectorAll('ol a'));
+  var names = links.map(function (a) { var pl = a.querySelector('.plate'); return a.textContent.replace(pl ? pl.textContent : '', '').trim(); });
+  var folds = {}, partLabels = [];
+  try { folds = JSON.parse(localStorage.getItem('og-folds') || '{}') || {}; } catch (e) { folds = {}; }
+  function allFolded() { return secs.every(function (x) { return x.hasAttribute('data-folded'); }); }
+  function setFold(sec, folded, save) {
+    if (folded) sec.setAttribute('data-folded', ''); else sec.removeAttribute('data-folded');
+    var b = sec.querySelector('button.fold');
+    b.setAttribute('aria-expanded', folded ? 'false' : 'true');
+    b.setAttribute('aria-label', (folded ? 'Expand ' : 'Collapse ') + sec.querySelector('.h2-text').textContent);
+    folds[sec.id] = folded;
+    if (save !== false) { try { localStorage.setItem('og-folds', JSON.stringify(folds)); } catch (e) {} }
+    var all = allFolded();
+    foldAll.textContent = all ? 'Unfold all' : 'Fold all';
+    foldAll.setAttribute('aria-pressed', all ? 'true' : 'false');
+    partLabels.forEach(function (f) { f(); });
+  }
+  // Start-here chapters open folded after the first visit, unless you opened or folded them yourself.
+  var seen = false;
+  try { seen = !!localStorage.getItem('og-seen'); localStorage.setItem('og-seen', '1'); } catch (e) {}
+  secs.forEach(function (sec) {
+    var auto = seen && sec.getAttribute('data-part') === 'start';
+    if (Object.prototype.hasOwnProperty.call(folds, sec.id) ? folds[sec.id] : auto) setFold(sec, true, false);
+    sec.querySelector('h2').addEventListener('click', function (e) {
+      if (e.target.closest('a')) return;
+      setFold(sec, !sec.hasAttribute('data-folded'));
+    });
+  });
+  foldAll.addEventListener('click', function () { var all = allFolded(); secs.forEach(function (x) { setFold(x, !all); }); });
+  [].slice.call(document.querySelectorAll('.part button.part-fold')).forEach(function (b) {
+    var ps = secs.filter(function (x) { return x.getAttribute('data-part') === b.getAttribute('data-part'); });
+    function folded() { return ps.every(function (x) { return x.hasAttribute('data-folded'); }); }
+    function label() { b.textContent = folded() ? 'Open these chapters' : 'Fold these chapters'; }
+    b.addEventListener('click', function () { var f = folded(); ps.forEach(function (x) { setFold(x, !f); }); });
+    partLabels.push(label); label();
+  });
+  function unfoldHash() {
+    var id = location.hash.slice(1); if (!id) return;
+    var el = document.getElementById(id), sec = el && el.closest('section');
+    if (sec && sec.hasAttribute('data-folded')) setFold(sec, false);
+  }
+  window.addEventListener('hashchange', unfoldHash);
+  unfoldHash();
+  var current = -1;
+  function setCurrent(i) {
+    if (i === current) return;
+    current = i;
+    cur.textContent = i >= 0 ? names[i] : '';
+    links.forEach(function (a, j) { a.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    prev.disabled = i <= 0;
+    next.disabled = i >= secs.length - 1;
+  }
+  function onScroll() {
+    var line = 64, i = -1;
+    for (var k = 0; k < secs.length; k++) { if (secs[k].getBoundingClientRect().top <= line) i = k; }
+    setCurrent(i);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+  function openPanel(open) {
+    panel.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) { var c = links[current >= 0 ? current : 0]; if (c) c.focus(); }
+  }
+  function go(i) {
+    var sec = secs[i]; if (!sec) return;
+    openPanel(false);
+    if (sec.hasAttribute('data-folded')) setFold(sec, false);
+    try { history.pushState(null, '', '#' + sec.id); } catch (e) {}
+    sec.scrollIntoView({ block: 'start' });
+    setTimeout(onScroll, 50);
+  }
+  prev.addEventListener('click', function () { go(current - 1); });
+  next.addEventListener('click', function () { go(current + 1); });
+  btn.addEventListener('click', function () { openPanel(panel.hidden); });
+  links.forEach(function (a, j) { a.addEventListener('click', function (e) { e.preventDefault(); go(j); }); });
+  var panelLink = panel.querySelector('a.tool');  // the What changed link; a guide without a change list has none
+  if (panelLink) panelLink.addEventListener('click', function () { openPanel(false); });
+  document.addEventListener('click', function (e) { if (!panel.hidden && !panel.contains(e.target) && !btn.contains(e.target)) openPanel(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) { openPanel(false); btn.focus(); } });
+})();
+(function () {
+  // Theme toggle. Stored per device; falls back to the system setting.
+  var root = document.documentElement, btn = document.getElementById('theme');
+  function apply(t) {
+    if (t) root.setAttribute('data-theme', t); else root.removeAttribute('data-theme');
+    var dark = t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches);
+    btn.textContent = dark ? 'Light mode' : 'Dark mode';
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('fg-theme'); } catch (e) {}
+  apply(saved);
+  btn.addEventListener('click', function () {
+    var dark = root.getAttribute('data-theme') === 'dark' || (!root.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = dark ? 'light' : 'dark';
+    apply(next);
+    try { localStorage.setItem('fg-theme', next); } catch (e) {}
+  });
+
+})();
+</script>
+
+<script>if ('serviceWorker' in navigator && location.protocol === 'https:') { window.addEventListener('load', function () { navigator.serviceWorker.register('../sw.js').catch(function () {}); }); }</script>
+</body>
+</html>

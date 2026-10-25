@@ -1,6 +1,7 @@
-# Tokyo Field Guide
+# Japan, October 2026
 
-A family field guide for an October 2026 Tokyo trip. Built from the private travel-agent project; this repo holds only the published page.
+A family field guide for a trip to Japan: one trip page and one guide per city (Tokyo, Osaka). Built from the private travel-agent project; this repo holds only the published site.
 
-- Web: index.html (served by GitHub Pages)
-- Print: Tokyo-Field-Guide.pdf
+- `/` the trip page
+- `/tokyo/` Tokyo guide (print version `Tokyo-Field-Guide.pdf` beside it)
+- `/osaka/` Osaka guide
