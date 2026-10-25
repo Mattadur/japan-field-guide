@@ -1,6 +1,6 @@
 /* Japan Field Guide offline copy: the trip page and every city guide under it.
    Version is stamped by _share.py at publish time from the newest page stamp. */
-var VERSION = 'fg-dc8f13e475';
+var VERSION = 'fg-abe7e141f8';
 var PAGES = ["index.html", "tokyo/index.html", "osaka/index.html"];   /* scope-relative: ['index.html', 'tokyo/index.html', 'osaka/index.html'] */
 var CORE = ['./', './manifest.webmanifest', './icon-192.png', './icon-512.png'].concat(PAGES.map(function (p) { return './' + p; }));
 
